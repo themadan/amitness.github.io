@@ -10,7 +10,8 @@ env.deploy_path = 'output'
 DEPLOY_PATH = env.deploy_path
 
 # Branch to push on GitHub
-env.github_pages_branch = "master"
+env.gp_branch = 'master'
+env.msg = 'Update blog'
 SERVER = '127.0.0.1'
 PORT = 8000
 
@@ -75,5 +76,5 @@ def publish():
     """Publish to GitHub Pages"""
     clean()
     local('pelican -s publishconf.py')
-    local("ghp-import -b {github_pages_branch} {deploy_path}".format(**env))
+    local("ghp-import -m '{msg}' -b {gp_branch} {deploy_path}".format(**env))
     local("git push origin {github_pages_branch}".format(**env))
