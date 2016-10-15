@@ -17,3 +17,7 @@ GOOGLE_ANALYTICS = "UA-35734550-1"
 
 # Delete the output directory, before generating new files
 DELETE_OUTPUT_DIRECTORY = True
+
+# Custom settings
+GOOGLE_SITE_VERIFICATION = "PS9s0BdL6V07SPvYwyNDF6NfcpXFVZATd_o5DZqySkA"
+HTTPS = True
