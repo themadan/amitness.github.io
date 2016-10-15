@@ -1,0 +1,93 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*- #
+
+# Pelican Settings
+
+# Basic
+AUTHOR = 'Amit Chaudhary'
+SITEURL = 'http://localhost:8000'
+SITENAME = "Amit Chaudhary's Blog"
+SITETITLE = AUTHOR
+SITESUBTITLE = 'Thoughts and Writings'
+SITEDESCRIPTION = '%s\'s Thoughts and Writings' % AUTHOR
+ROBOTS = 'index, follow'
+PATH = 'content'
+TIMEZONE = 'Asia/Kathmandu'
+DEFAULT_LANG = 'en'
+OG_LOCALE = 'en_US'
+LOCALE = 'en_US'
+DATE_FORMATS = {
+    'en': '%B %d, %Y',
+}
+USE_FOLDER_AS_CATEGORY = False
+COPYRIGHT_YEAR = 2016
+DEFAULT_PAGINATION = 10
+
+# Theme Settings
+SITELOGO = '/images/amit.png'
+FAVICON = '/images/favicon.ico'
+THEME = 'themes/flex'
+BROWSER_COLOR = '#333333'
+PYGMENTS_STYLE = 'monokai'
+
+# Feeds
+FEED_DOMAIN = SITEURL
+FEED_ALL_ATOM = 'feeds/all.atom.xml'
+CATEGORY_FEED_ATOM = 'feeds/%s.atom.xml'
+TRANSLATION_FEED_ATOM = None
+AUTHOR_FEED_ATOM = None
+AUTHOR_FEED_RSS = None
+
+# Main Menu
+MAIN_MENU = True
+MENUITEMS = (('Archives', '/archives.html'),
+             ('Categories', '/categories.html'),
+             ('Tags', '/tags.html'),)
+
+# Sidebar
+LINKS = (('Projects', 'https://np.linkedin.com/in/amitify'),)
+SOCIAL = (('linkedin', 'https://np.linkedin.com/in/amitify'),
+          ('github', 'https://github.com/studenton'),
+          ('twitter', 'https://twitter.com/studentoncom'),
+          ('stack-overflow', 'http://stackoverflow.com/users/story/3485241'),
+          ('envelope-o', 'mailto:studenton.com@gmail.com?Subject=Contact%3A%20Amit%27s%20Blog&Body=Hi%20Amit%2C%0A%0A%0A'),
+          ('rss', '//studenton.com/feeds/all.atom.xml'))
+
+# Plugins
+# See: http://docs.getpelican.com/en/latest/plugins.html
+PLUGIN_PATHS = ['./pelican-plugins']
+PLUGINS = ['sitemap', 'post_stats']
+
+# Sitemap Settings
+SITEMAP = {
+    'format': 'xml',
+    'priorities': {
+        'articles': 0.6,
+        'indexes': 0.6,
+        'pages': 0.5,
+    },
+    'changefreqs': {
+        'articles': 'monthly',
+        'indexes': 'daily',
+        'pages': 'monthly',
+    }
+}
+
+# The static paths you want to have accessible on the output path "static"
+STATIC_PATHS = ['images', 'extra']
+
+# Extra metadata dictionaries keyed by relative path
+EXTRA_PATH_METADATA = {
+    'extra/custom.css': {'path': 'static/custom.css'},
+    'extra/CNAME': {'path': 'CNAME'},
+    'extra/robots.txt': {'path': 'robots.txt'}
+}
+
+# Custom settings
+CUSTOM_CSS = 'static/custom.css'
+HOME_HIDE_TAGS = True
+USE_LESS = False
+
+# Accounts
+STATUSCAKE = False
+DISQUS_SITENAME = "studenton"
