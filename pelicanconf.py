@@ -56,7 +56,7 @@ SOCIAL = (('linkedin', 'https://np.linkedin.com/in/amitify'),
 # Plugins
 # See: http://docs.getpelican.com/en/latest/plugins.html
 PLUGIN_PATHS = ['./pelican-plugins']
-PLUGINS = ['sitemap', 'post_stats', 'share_post']
+PLUGINS = ['sitemap', 'post_stats', 'share_post', 'feed_summary']
 
 # Sitemap Settings
 SITEMAP = {
@@ -87,6 +87,7 @@ EXTRA_PATH_METADATA = {
 CUSTOM_CSS = 'static/custom.css'
 HOME_HIDE_TAGS = True
 USE_LESS = False
+FEED_USE_SUMMARY = True
 
 # Accounts
 STATUSCAKE = False
