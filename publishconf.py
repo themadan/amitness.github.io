@@ -10,6 +10,7 @@ from pelicanconf import *
 
 # Deployment Settings
 SITEURL = 'https://studenton.com'
+FEED_DOMAIN = SITEURL
 RELATIVE_URLS = False
 USE_LESS = False
 GOOGLE_ANALYTICS = "UA-35734550-1"
