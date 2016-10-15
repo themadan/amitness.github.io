@@ -40,9 +40,9 @@ AUTHOR_FEED_RSS = None
 
 # Main Menu
 MAIN_MENU = True
-MENUITEMS = (('Archives', '/archives.html'),
-             ('Categories', '/categories.html'),
-             ('Tags', '/tags.html'),)
+MENUITEMS = (('Archives', '/archives'),
+             ('Categories', '/categories'),
+             ('Tags', '/tags'),)
 
 # Sidebar
 LINKS = (('Projects', 'https://np.linkedin.com/in/amitify'),)
@@ -92,3 +92,11 @@ FEED_USE_SUMMARY = True
 # Accounts
 STATUSCAKE = False
 DISQUS_SITENAME = "studenton"
+
+# Formatting for URLS
+ARTICLE_URL = '{slug}'
+PAGE_URL = 'pages/{slug}'
+CATEGORY_URL = 'category/{slug}'
+TAG_URL = 'tag/{slug}'
+AUTHOR_SAVE_AS = False
+AUTHORS_SAVE_AS = False
