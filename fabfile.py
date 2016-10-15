@@ -77,4 +77,4 @@ def publish():
     clean()
     local('pelican -s publishconf.py')
     local("ghp-import -m '{msg}' -b {gp_branch} {deploy_path}".format(**env))
-    local("git push origin {github_pages_branch}".format(**env))
+    local("git push origin {gp_branch}".format(**env))
