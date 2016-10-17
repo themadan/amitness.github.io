@@ -1,4 +1,5 @@
 from fabric.api import *
+from datetime import datetime
 import os
 import shutil
 import sys
@@ -14,6 +15,32 @@ env.gp_branch = 'master'
 env.msg = 'Update blog'
 SERVER = '127.0.0.1'
 PORT = 8000
+
+TEMPLATE = """
+Title: {title}
+Date: {year}-{month}-{day} {hour}:{minute}
+Modified: {year}-{month}-{day} {hour}:{minute}
+Category:
+Tags:
+Slug: {slug}
+Summary:
+Status: draft
+"""
+
+
+def newpost(title):
+    today = datetime.today()
+    slug = title.lower().strip().replace(' ', '-')
+    file_location = "content/articles/{}.md".format(slug)
+    t = TEMPLATE.strip().format(title=title,
+                                year=today.year,
+                                month=today.month,
+                                day=today.day,
+                                hour=today.hour,
+                                minute=today.minute,
+                                slug=slug)
+    with open(file_location, 'w') as output_article:
+        output_article.write(t)
 
 
 def clean():
