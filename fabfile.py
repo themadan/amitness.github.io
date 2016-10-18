@@ -99,7 +99,8 @@ def preview():
     local('pelican -s publishconf.py')
 
 
-def publish():
+def publish(commit_message):
+    env.msg = commit_message
     """Publish to GitHub Pages"""
     clean()
     local('pelican -s publishconf.py')
