@@ -50,7 +50,7 @@ SOCIAL = (('linkedin', 'https://np.linkedin.com/in/amitify'),
           ('github', 'https://github.com/studenton'),
           ('stack-overflow', 'http://stackoverflow.com/users/story/3485241'),
           ('envelope-o', 'mailto:meamitkc@gmail.com?Subject=Contact%3A%20Amit%27s%20Blog&Body=Hi%20Amit%2C%0A%0A%0A'),
-          ('rss', '//studenton.com/feeds/all.atom.xml'))
+          ('rss', '//amitness.com/feeds/all.atom.xml'))
 
 # Plugins
 # See: http://docs.getpelican.com/en/latest/plugins.html
