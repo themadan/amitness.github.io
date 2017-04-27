@@ -13,7 +13,7 @@ SITEURL = 'https://amitness.com'
 FEED_DOMAIN = SITEURL
 RELATIVE_URLS = False
 USE_LESS = False
-GOOGLE_ANALYTICS = "UA-35734550-1"
+GOOGLE_ANALYTICS = "UA-98232022-1"
 
 # Delete the output directory, before generating new files
 DELETE_OUTPUT_DIRECTORY = True
