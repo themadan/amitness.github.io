@@ -26,7 +26,7 @@ DEFAULT_PAGINATION = 10
 # Theme Settings
 SITELOGO = '/images/amit.png'
 FAVICON = '/images/favicon.ico'
-THEME = 'themes/flex'
+THEME = 'themes/Flex'
 BROWSER_COLOR = '#333333'
 PYGMENTS_STYLE = 'monokai'
 
