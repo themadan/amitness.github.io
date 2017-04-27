@@ -91,7 +91,7 @@ FEED_USE_SUMMARY = True
 
 # Accounts
 STATUSCAKE = False
-DISQUS_SITENAME = "studenton"
+DISQUS_SITENAME = "amit-chaudharys-blog"
 
 # Formatting for URLS
 ARTICLE_URL = '{slug}'
