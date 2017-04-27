@@ -96,7 +96,7 @@ def reserve():
 
 def preview():
     """Build production version of site"""
-        local('pelican -s publishconf.py')
+    local('pelican -s publishconf.py')
 
 
 def publish(commit_message):
