@@ -65,4 +65,4 @@ This blog is hosted by [GitHub Pages](https://pages.github.com/) and uses [Cloud
 
 ## Contact
 
-If you have any questions, tweet to [@studentoncom](https://twitter.com/intent/tweet?screen_name=studentoncom)
+If you have any questions, you can [email](mailto:meamitkc@gmail.com) me.
