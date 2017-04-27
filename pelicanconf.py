@@ -48,7 +48,6 @@ MENUITEMS = (('Archives', '/archives'),
 LINKS = (('Projects', 'https://np.linkedin.com/in/amitify'),)
 SOCIAL = (('linkedin', 'https://np.linkedin.com/in/amitify'),
           ('github', 'https://github.com/studenton'),
-          ('twitter', 'https://twitter.com/studentoncom'),
           ('stack-overflow', 'http://stackoverflow.com/users/story/3485241'),
           ('envelope-o', 'mailto:studenton.com@gmail.com?Subject=Contact%3A%20Amit%27s%20Blog&Body=Hi%20Amit%2C%0A%0A%0A'),
           ('rss', '//studenton.com/feeds/all.atom.xml'))
