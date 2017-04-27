@@ -96,7 +96,7 @@ def reserve():
 
 def preview():
     """Build production version of site"""
-    local('pelican -s publishconf.py')
+        local('pelican -s publishconf.py')
 
 
 def publish(commit_message):
@@ -106,5 +106,6 @@ def publish(commit_message):
     """Publish to GitHub Pages"""
     clean()
     local('pelican -s publishconf.py')
-    local("ghp-import -m '{msg}' -b {gp_branch} {deploy_path}".format(**env))
-    local("git push -fq https://{GH_TOKEN}@github.com/{TRAVIS_REPO_SLUG}.git {gp_branch}".format(**env))
+    with hide('running', 'stdout', 'stderr'):
+        local("ghp-import -m '{msg}' -b {gp_branch} {deploy_path}".format(**env))
+        local("git push -fq https://{GH_TOKEN}@github.com/{TRAVIS_REPO_SLUG}.git {gp_branch}".format(**env))
