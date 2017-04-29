@@ -52,7 +52,7 @@ And you should see the blog if you visit [http://localhost:8000](http://localhos
 
 If you're interested in writing a blog post for the website, you need to:
 
-- [Fork](https://github.com/studenton/studenton.github.io/fork) the repository
+- [Fork](https://github.com/amitness/amitness.github.io/fork) the repository
 - Write a blog post using Markdown in the `content` directory
 - Push the changes to a topic branch, like `an-example-article`, on *your* fork of the repository
 - Make a [pull request](https://help.github.com/articles/using-pull-requests/) against the `source` branch
