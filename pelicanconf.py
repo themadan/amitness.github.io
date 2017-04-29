@@ -46,9 +46,9 @@ MENUITEMS = (('Archives', '/archives'),
              ('Tags', '/tags'),)
 
 # Sidebar
-LINKS = (('Projects', 'https://np.linkedin.com/in/amitify'),)
-SOCIAL = (('icon-linkedin', 'https://np.linkedin.com/in/amitify'),
-          ('icon-github-circled', 'https://github.com/studenton'),
+LINKS = (('Projects', 'https://np.linkedin.com/in/amitness'),)
+SOCIAL = (('icon-linkedin', 'https://np.linkedin.com/in/amitness'),
+          ('icon-github-circled', 'https://github.com/amitness'),
           ('icon-mail', 'mailto:meamitkc@gmail.com?Subject=Contact%3A%20Amit%27s%20Blog&Body=Hi%20Amit%2C%0A%0A%0A'))
 
 # Plugins
