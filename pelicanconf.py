@@ -46,9 +46,9 @@ MENUITEMS = (('Archives', '/archives'),
 
 # Sidebar
 LINKS = (('Projects', 'https://np.linkedin.com/in/amitify'),)
-SOCIAL = (('linkedin', 'https://np.linkedin.com/in/amitify'),
-          ('github', 'https://github.com/studenton'),
-          ('envelope-o', 'mailto:meamitkc@gmail.com?Subject=Contact%3A%20Amit%27s%20Blog&Body=Hi%20Amit%2C%0A%0A%0A'))
+SOCIAL = (('icon-linkedin', 'https://np.linkedin.com/in/amitify'),
+          ('icon-github-circled', 'https://github.com/studenton'),
+          ('icon-mail', 'mailto:meamitkc@gmail.com?Subject=Contact%3A%20Amit%27s%20Blog&Body=Hi%20Amit%2C%0A%0A%0A'))
 
 # Plugins
 # See: http://docs.getpelican.com/en/latest/plugins.html
