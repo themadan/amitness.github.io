@@ -5,6 +5,7 @@
 
 # Basic
 AUTHOR = 'Amit Chaudhary'
+COPYRIGHT_NAME = AUTHOR
 SITEURL = 'http://localhost:8000'
 SITENAME = "Amit Chaudhary's Blog"
 SITETITLE = AUTHOR
