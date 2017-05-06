@@ -1,4 +1,4 @@
-# Personal Blog [![Build Status](https://travis-ci.org/studenton/studenton.github.io.svg?branch=source)](https://travis-ci.org/studenton/studenton.github.io)
+# Personal Blog [![Build Status](https://travis-ci.org/amitness/amitness.github.io.svg?branch=source)](https://travis-ci.org/amitness/amitness.github.io)
 
 This repository hosts the code for my personal [blog](https://amitness.com).
 
