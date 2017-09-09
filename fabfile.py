@@ -1,4 +1,4 @@
-from fabric.api import *
+from fabric.api import env, local, hide
 from datetime import datetime
 import os
 import shutil
