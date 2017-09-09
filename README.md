@@ -24,7 +24,7 @@ This creates a virtual environment and then activates it. If you want to exit th
 
 If you haven't already, clone your version of the repo:
 
-    $ git clone --recurse-submodules https://github.com/yourusername/fork
+    $ git clone --recurse-submodules https://github.com/yourusername/repo/fork
 
 ### Install Pelican & Dependancies
 
