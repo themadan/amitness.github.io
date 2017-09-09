@@ -87,7 +87,7 @@ extras = ['CNAME', 'favicon.ico', 'keybase.txt', 'robots.txt']
 EXTRA_PATH_METADATA = {'extra/%s' % file: {'path': file} for file in extras}
 
 PLUGIN_PATHS = ['./pelican-plugins']
-PLUGINS = ['assets', 'neighbors', 'render_math', 'sitemap']
+PLUGINS = ['assets', 'neighbors', 'render_math', 'sitemap', 'share_post']
 ASSET_SOURCE_PATHS = ['static']
 ASSET_CONFIG = [
     ('cache', False),
