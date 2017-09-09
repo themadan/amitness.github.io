@@ -29,6 +29,7 @@ Status: draft
 
 
 def newpost(title):
+    """Generate template for new post"""
     today = datetime.today()
     slug = title.lower().strip().replace(' ', '-')
     file_location = "content/articles/{}.md".format(slug)
@@ -98,12 +99,19 @@ def preview():
     """Build production version of site"""
     local('pelican -s publishconf.py')
 
+def deploy():
+    """Push to GitHub pages"""
+    env.msg = "Build site"
+    clean()
+    preview()
+    local("ghp-import -m '{msg}' -b {gp_branch} {deploy_path}".format(**env))
+    local("git push origin {gp_branch}".format(**env))
 
 def publish(commit_message):
+    """Automatic deploy  to GitHub Pages"""
     env.msg = commit_message
     env.GH_TOKEN = os.getenv('GH_TOKEN')
     env.TRAVIS_REPO_SLUG = os.getenv('TRAVIS_REPO_SLUG')
-    """Publish to GitHub Pages"""
     clean()
     local('pelican -s publishconf.py')
     with hide('running', 'stdout', 'stderr'):
