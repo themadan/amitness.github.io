@@ -6,6 +6,7 @@ branches:
 python:
 - 2.7
 install:
+- gem install sass
 - pip install -r requirements.txt
 - git config --global user.email "meamitkc@gmail.com"
 - git config --global user.name "Amit Chaudhary"
