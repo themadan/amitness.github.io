@@ -2,7 +2,7 @@
 
 This repository hosts the code for my personal [blog](https://amitness.com).
 
-The website is powered by [Pelican](http://getpelican.com/) — a static site generator written in Python — and uses a theme based on [Flex](https://github.com/alexandrevicenzi/Flex).
+The website is powered by [Pelican](http://getpelican.com/) — a static site generator written in Python — and uses a theme based on [Pneumatic](https://github.com/amitness/pneumatic).
 
 
 ## Build Locally
