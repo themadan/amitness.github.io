@@ -20,15 +20,15 @@ sudo chmod u+s /sbin/shutdown
 
 - Then goto System Settings > Keyboard and in the shortcuts tab, click Custom Shortcuts
 
-![Keyboard Shortcuts](images/keyboard-shortcuts.png){.img-center}
+![Keyboard Shortcuts](/images/keyboard-shortcuts.png){.img-center}
 
 - Then click the “Add custom shortcut” button and a popup will open. In it add name as *“Shutdown”* and command as **“shutdown -h now”** . Then click add.
 
-![Custom Shortcut Menu](images/custom-shortcut.png){.img-center}
+![Custom Shortcut Menu](/images/custom-shortcut.png){.img-center}
 
 - After adding, you will get a list of shortcuts as shown below. In that click shutdown and below it, there will be three unassigned. Click the first unassigned and it will change into *“Pick an accelerator“*. Then click ```Ctrl+Alt+K``` at the same time. This will be our shortcut for shutdown.
 
-![Key Binding Menu](images/keyboard-binding.png){.img-center}
+![Key Binding Menu](/images/keyboard-binding.png){.img-center}
 
 **Tip**: You can make a shortcut for restart as well, follow the same tutorial except in step 3, use code *shutdown **-r** now* .
 

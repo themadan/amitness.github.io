@@ -12,7 +12,7 @@ from pelicanconf import *
 SITEURL = 'https://amitness.com'
 FEED_DOMAIN = SITEURL
 RELATIVE_URLS = False
-USE_LESS = False
+# USE_LESS = False
 GOOGLE_ANALYTICS = "UA-98232022-1"
 
 # Delete the output directory, before generating new files

@@ -4,7 +4,7 @@ Modified: 2015-07-18 08:00
 
 ### Who I am
 
-Hi, I'm **Amit Chaudhary** and I live in Kathmandu - Nepal.
+Hi, I'm Amit Chaudhary and I live in Kathmandu - Nepal.
 
 ### What I do
 

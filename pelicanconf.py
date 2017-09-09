@@ -1,60 +1,101 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*- #
 
-# Pelican Settings
+# Theme-specific settings
+SITENAME = "Amit Chaudhary"
+DOMAIN = 'http://localhost:8000'
+BIO_TEXT = 'Ideas & Thoughts'
 
-# Basic
-AUTHOR = 'Amit Chaudhary'
-COPYRIGHT_NAME = AUTHOR
-SITEURL = 'http://localhost:8000'
-SITENAME = "Amit Chaudhary's Blog"
-SITETITLE = AUTHOR
-SITESUBTITLE = 'Ideas & Thoughts'
-SITEDESCRIPTION = '%s\'s Thoughts and Writings' % AUTHOR
-ROBOTS = 'index, follow'
-PATH = 'content'
+SITE_AUTHOR = 'Amit Chaudhary'
+INDEX_DESCRIPTION = 'Website of Amit Chaudhary, a developer from Kathmandu'
+
+SIDEBAR_LINKS = [
+    '<a href="/about/">About</a>',
+    '<a href="/contact/">Contact</a>',
+]
+
+ICONS_PATH = 'images/icons'
+
+GOOGLE_FONTS = [
+    "Nunito Sans:300,700",
+    "Source Code Pro",
+]
+
+SOCIAL_ICONS = [
+    ('mailto:meamitkc@gmail.com', 'Email me', 'fa-envelope'),
+    ('http://github.com/amitness', 'Browse my projects', 'fa-github'),
+    ('https://np.linkedin.com/in/amitness', 'View Linkedin Profile', 'fa-linkedin'),
+    ('/atom.xml', 'Atom Feed', 'fa-rss'),
+]
+
+THEME_COLOR = '#FF8000'
+
+# Pelican settings
+RELATIVE_URLS = True
+SITEURL ='http://localhost:8000'
 TIMEZONE = 'Asia/Kathmandu'
-DEFAULT_LANG = 'en'
-OG_LOCALE = 'en_US'
-LOCALE = 'en_US'
-DATE_FORMATS = {
-    'en': '%B %d, %Y',
-}
-USE_FOLDER_AS_CATEGORY = False
-COPYRIGHT_YEAR = 2017
-DEFAULT_PAGINATION = 10
+DEFAULT_DATE = 'fs'
+DEFAULT_DATE_FORMAT = '%B %d, %Y'
+DEFAULT_PAGINATION = False
+SUMMARY_MAX_LENGTH = 42
 
-# Theme Settings
-SITELOGO = '/images/amit.png'
-FAVICON = '/images/favicon.ico'
-THEME = 'themes/Flex'
-BROWSER_COLOR = '#333333'
-PYGMENTS_STYLE = 'monokai'
+THEME = 'themes/pneumatic'
 
-# Feeds
-FEED_DOMAIN = SITEURL
-FEED_ALL_ATOM = 'feeds/all.atom.xml'
-CATEGORY_FEED_ATOM = 'feeds/%s.atom.xml'
+ARTICLE_URL = '{date:%Y}/{date:%m}/{slug}/'
+ARTICLE_SAVE_AS = ARTICLE_URL + 'index.html'
+
+PAGE_URL = '{slug}/'
+PAGE_SAVE_AS = PAGE_URL + 'index.html'
+
+ARCHIVES_SAVE_AS = 'archive/index.html'
+YEAR_ARCHIVE_SAVE_AS = '{date:%Y}/index.html'
+MONTH_ARCHIVE_SAVE_AS = '{date:%Y}/{date:%m}/index.html'
+
+# Disable authors, categories, tags, and category pages
+DIRECT_TEMPLATES = ['index', 'archives']
+CATEGORY_SAVE_AS = ''
+
+# Disable Atom feed generation
+FEED_ATOM = 'atom.xml'
+FEED_ALL_ATOM = None
+CATEGORY_FEED_ATOM = None
 TRANSLATION_FEED_ATOM = None
-AUTHOR_FEED_ATOM = None
-AUTHOR_FEED_RSS = None
 
-# Main Menu
-MAIN_MENU = True
-MENUITEMS = (('Archives', '/archives'),
-             ('Categories', '/categories'),
-             ('Tags', '/tags'),)
+TYPOGRIFY = True
 
-# Sidebar
-LINKS = (('Projects', 'https://github.com/amitness'),)
-SOCIAL = (('icon-linkedin', 'https://np.linkedin.com/in/amitness'),
-          ('icon-github-circled', 'https://github.com/amitness'),
-          ('icon-mail', 'mailto:meamitkc@gmail.com?Subject=Contact%3A%20Amit%27s%20Blog&Body=Hi%20Amit%2C%0A%0A%0A'))
+MARKDOWN = {
+    'extension_configs': {
+        'markdown.extensions.admonition': {},
+        'markdown.extensions.codehilite': {'linenums': True},
+        'markdown.extensions.extra': {},
+    },
+    'output_format': 'html5',
+}
 
-# Plugins
-# See: http://docs.getpelican.com/en/latest/plugins.html
+CACHE_CONTENT = False
+# DELETE_OUTPUT_DIRECTORY = True
+# OUTPUT_PATH = 'develop'
+PATH = 'content'
+
+templates = ['404.html']
+TEMPLATE_PAGES = {page: page for page in templates}
+
+STATIC_PATHS = ['images', 'extra']
+IGNORE_FILES = ['.DS_Store', 'pneumatic.scss', 'pygments.css']
+
+extras = ['CNAME', 'favicon.ico', 'keybase.txt', 'robots.txt']
+EXTRA_PATH_METADATA = {'extra/%s' % file: {'path': file} for file in extras}
+
 PLUGIN_PATHS = ['./pelican-plugins']
-PLUGINS = ['sitemap', 'post_stats', 'share_post', 'feed_summary']
+PLUGINS = ['assets', 'neighbors', 'render_math', 'sitemap']
+ASSET_SOURCE_PATHS = ['static']
+ASSET_CONFIG = [
+    ('cache', False),
+    ('manifest', False),
+    ('url_expire', False),
+    ('versions', False),
+]
+
 
 # Sitemap Settings
 SITEMAP = {
@@ -71,30 +112,5 @@ SITEMAP = {
     }
 }
 
-# The static paths you want to have accessible on the output path "static"
-STATIC_PATHS = ['images', 'extra']
-
-# Extra metadata dictionaries keyed by relative path
-EXTRA_PATH_METADATA = {
-    'extra/custom.css': {'path': 'static/custom.css'},
-    'extra/CNAME': {'path': 'CNAME'},
-    'extra/robots.txt': {'path': 'robots.txt'}
-}
-
-# Custom settings
-CUSTOM_CSS = 'static/custom.css'
-HOME_HIDE_TAGS = True
-USE_LESS = False
-FEED_USE_SUMMARY = True
-
-# Accounts
-STATUSCAKE = False
+# Enable comments
 DISQUS_SITENAME = "amit-chaudharys-blog"
-
-# Formatting for URLS
-ARTICLE_URL = '{slug}'
-PAGE_URL = 'pages/{slug}'
-CATEGORY_URL = 'category/{slug}'
-TAG_URL = 'tag/{slug}'
-AUTHOR_SAVE_AS = False
-AUTHORS_SAVE_AS = False

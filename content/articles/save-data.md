@@ -35,7 +35,7 @@ To access the setting, go to https://www.youtube.com/account_playback and tick �
 
 Also, YouTube has an experimental video player that uses HTML5 instead of Flash to play videos. It can play videos with an average bandwidth reduction of 35 percent. To enable it, go to TestTube and on the bottom, click “Get the player” under Try out the Redesigned YouTube Player.
 
-![YouTube HTML5 Player](images/youtube_player1.png){.img-center}
+![YouTube HTML5 Player](/images/youtube_player1.png){.img-center}
 
 **3. Run Plugins on Demand:**
 

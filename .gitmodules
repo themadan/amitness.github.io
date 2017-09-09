@@ -4,4 +4,4 @@
 	
 [submodule "theme"]
 	path = theme
-	url = git@github.com/amitness/Flex.git
+	url = git@github.com/amitness/pneumatic.git
