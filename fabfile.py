@@ -3,6 +3,7 @@ from datetime import datetime
 import os
 import shutil
 import sys
+import webbrowser
 
 from pelican.server import ComplexHTTPRequestHandler, socketserver
 
@@ -66,7 +67,6 @@ def regenerate():
     """Automatically regenerate site upon file modification"""
     local('pelican -r -s pelicanconf.py')
 
-
 def serve():
     """Serve site at http://localhost:8000/"""
     os.chdir(env.deploy_path)
@@ -81,6 +81,7 @@ def serve():
         sys.exit(getattr(e, 'exitcode', 1))
 
     print("Serving at https://%s:%s." % (SERVER, PORT))
+    webbrowser.open_new_tab("http://127.0.0.1:8000/")
 
     try:
         httpd.serve_forever()
@@ -99,6 +100,7 @@ def preview():
     """Build production version of site"""
     local('pelican -s publishconf.py')
 
+
 def deploy():
     """Push to GitHub pages"""
     env.msg = "Build site"
@@ -106,6 +108,7 @@ def deploy():
     preview()
     local("ghp-import -m '{msg}' -b {gp_branch} {deploy_path}".format(**env))
     local("git push origin {gp_branch}".format(**env))
+
 
 def publish(commit_message):
     """Automatic deploy  to GitHub Pages"""
