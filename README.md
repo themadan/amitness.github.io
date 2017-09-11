@@ -13,8 +13,8 @@ The easiest way to do this is in a Python [virtual environment](http://docs.pyth
 
 Once you have `virtualenv` installed, create a virtual environment to hold Pelican and its dependencies:
 
-    $ virtualenv venv
-    $ source venv/bin/activate
+    $ virtualenv .venv
+    $ source .venv/bin/activate
 
 This creates a virtual environment and then activates it. If you want to exit the virtual environment, type:
 
