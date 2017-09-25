@@ -1,10 +1,10 @@
-from fabric.api import env, local, hide
-from datetime import datetime
 import os
 import shutil
 import sys
 import webbrowser
+from datetime import datetime
 
+from fabric.api import env, local, hide
 from pelican.server import ComplexHTTPRequestHandler, socketserver
 
 # Local path configuration (can be absolute or relative to fabfile)
