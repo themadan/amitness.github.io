@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 # Theme-specific settings
-SITENAME = "Amit Chaudhary"
+SITENAME = 'Amit Chaudhary'
 DOMAIN = 'http://localhost:8000'
 BIO_TEXT = 'Ideas & Thoughts'
 
@@ -17,8 +17,8 @@ SIDEBAR_LINKS = [
 ICONS_PATH = 'images/icons'
 
 GOOGLE_FONTS = [
-    "Nunito Sans:300,700",
-    "Source Code Pro",
+    'Nunito Sans:300,700',
+    'Source Code Pro',
 ]
 
 SOCIAL_ICONS = [
@@ -113,4 +113,4 @@ SITEMAP = {
 }
 
 # Enable comments
-DISQUS_SITENAME = "amit-chaudharys-blog"
+DISQUS_SITENAME = 'amit-chaudharys-blog'
