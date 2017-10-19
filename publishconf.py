@@ -10,6 +10,7 @@ from pelicanconf import *
 
 # Deployment Settings
 SITEURL = 'https://amitness.com'
+DOMAIN = SITEURL
 FEED_DOMAIN = SITEURL
 RELATIVE_URLS = False
 # USE_LESS = False
