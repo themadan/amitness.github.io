@@ -8,8 +8,8 @@ Hi, I'm Amit Chaudhary and I live in Kathmandu - Nepal.
 
 ### What I do
 
-I'm currently pursuing my undergraduate in Computer Engineering.
+I'm currently working as a software engineer.
 
 ### About this blog
 
-The goal of this blog is to talk about things that I'm working on. I'll discuss my challenges, approaches, successes and failures.
+The goal of this blog is to talk about things that I'm working on.
