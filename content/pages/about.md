@@ -8,7 +8,9 @@ Hi, I'm Amit Chaudhary and I live in Kathmandu - Nepal.
 
 ### What I do
 
-I'm currently working as a software engineer.
+I'm currently working as a software engineer. 
+
+I love working with systems that have many moving parts so naturally I gravitated towards full-stack software development. 
 
 ### About this blog
 
