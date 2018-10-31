@@ -68,6 +68,7 @@ MARKDOWN = {
         'markdown.extensions.admonition': {},
         'markdown.extensions.codehilite': {'linenums': True},
         'markdown.extensions.extra': {},
+        'markdown.extensions.tables':{},
     },
     'output_format': 'html5',
 }
