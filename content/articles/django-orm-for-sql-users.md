@@ -146,11 +146,11 @@ WHERE age != 18;
 
 Django:
 ```python
-Person.objects.filter(age__gt=5)
-Person.objects.filter(age__gte=5)
-Person.objects.filter(age__lt=1)
-Person.objects.filter(age__lte=1)
-Person.objects.exclude(age=1)
+Person.objects.filter(age__gt=18)
+Person.objects.filter(age__gte=18)
+Person.objects.filter(age__lt=18)
+Person.objects.filter(age__lte=18)
+Person.objects.exclude(age=18)
 ```
 
 **BETWEEN Clause**  
