@@ -173,6 +173,7 @@ WHERE name like '%A%';
 WHERE name like binary '%A%';
 WHERE name like 'A%';
 WHERE name like binary 'A%';
+WHERE name like '%A';
 WHERE name like binary '%A';
 ```
 
@@ -180,10 +181,10 @@ Django:
 ```python
 Person.objects.filter(name__icontains='A')
 Person.objects.filter(name__contains='A')
-Person.objects.filter(name__startswith='A')
 Person.objects.filter(name__istartswith='A')
-Person.objects.filter(name__endswith='A')
+Person.objects.filter(name__startswith='A')
 Person.objects.filter(name__iendswith='A')
+Person.objects.filter(name__endswith='A')
 ```
 
 **IN operator**  
