@@ -21,7 +21,7 @@ To implement the above entity, we would model it as a table in SQL.
 CREATE TABLE Person (
     id int,
     name varchar(50),
-    age id int,
+    age int NOT NULL,
     gender varchar(10),
 );
 ```
