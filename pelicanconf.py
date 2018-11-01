@@ -39,6 +39,7 @@ DEFAULT_DATE_FORMAT = '%B %d, %Y'
 DEFAULT_PAGINATION = False
 SUMMARY_MAX_LENGTH = 42
 
+# Theme Location
 THEME = 'themes/pneumatic'
 
 ARTICLE_URL = '{date:%Y}/{date:%m}/{slug}/'
