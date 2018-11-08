@@ -477,6 +477,6 @@ WHERE Book.publisher_id = 1;
 
 Django:
 ```python
-publisher = Publisher.objects.get(id=1)
+publisher = Publisher.objects.prefetch_related('book_set').get(id=1)
 books = publisher.book_set.all()
 ```
