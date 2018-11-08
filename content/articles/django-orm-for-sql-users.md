@@ -241,6 +241,10 @@ Django:
 ```python
 Person.objects.filter(age__isnull=True)
 Person.objects.filter(age__isnull=False)
+
+# Alternate approach
+Person.objects.filter(age=None)
+Person.objects.exclude(age=None)
 ```
 
 ## ORDER BY Keyword  
@@ -442,7 +446,7 @@ WHERE Book.id=1;
 
 Django:
 ```python
-book = Book.objects.get(id=1)
+book = Book.objects.select_related('publisher').get(id=1)
 book.publisher.name
 ```
 
