@@ -87,7 +87,7 @@ FROM Person;
 
 Django:
 ```python
-Person.objects.distinct('name', 'age')
+Person.objects.values('name', 'age').distinct()
 ```
 
 **Fetch specific number of rows**  
