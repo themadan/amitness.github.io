@@ -4,7 +4,7 @@ branches:
   only:
   - source
 python:
-- 2.7
+- 3.5
 install:
 - gem install sass
 - pip install -r requirements.txt
