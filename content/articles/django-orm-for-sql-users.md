@@ -423,6 +423,23 @@ Django:
 Person.objects.values('gender').annotate(count=Count('gender'))
 ```
 
+## HAVING Clause
+**Count of Person by gender if number of person is greater than 1**   
+SQL: 
+```sql
+SELECT gender, COUNT('gender') as count
+FROM Person
+GROUP BY gender
+HAVING count > 1;
+```
+
+Django:
+```python
+Person.objects.annotate(count=Count('gender'))
+.values('gender', 'count')
+.filter(count__gt=1)
+```
+
 ## JOINS
 Consider a foreign key relationship between books and publisher.
 
