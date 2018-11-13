@@ -114,6 +114,3 @@ SITEMAP = {
         'pages': 'monthly',
     }
 }
-
-# Enable comments
-DISQUS_SITENAME = 'amit-chaudharys-blog'

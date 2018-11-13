@@ -22,3 +22,6 @@ DELETE_OUTPUT_DIRECTORY = True
 # Custom settings
 GOOGLE_SITE_VERIFICATION = "8JRd-0wjPb9VeEcjswP5o7DGRJLYALjS0AFQk27tfPE"
 HTTPS = True
+
+# Enable comments
+DISQUS_SITENAME = 'amit-chaudharys-blog'
