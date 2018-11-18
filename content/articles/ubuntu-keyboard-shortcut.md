@@ -4,6 +4,7 @@ Modified: 2016-10-17 08:00
 Category: tips
 Tags: ubuntu, keyboard shortcut, linux
 Slug: ubuntu-keyboard-shortcut
+Authors: Amit Chaudhary
 Summary: In Windows, we can use Alt+F4 keyboard shortcut to shutdown. But Linux doesn’t have such feature out of the box. After switching to Ubuntu, I struggled trying to make a keyboard shortcut for shutting down the computer. 
 
 In Windows, we can use Alt+F4 keyboard shortcut to shutdown. But Linux doesn’t have such feature out of the box. After switching to Ubuntu, I struggled trying to make a keyboard shortcut for shutting down the computer. 

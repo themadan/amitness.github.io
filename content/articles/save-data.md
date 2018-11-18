@@ -4,6 +4,7 @@ Modified: 2016-10-14 08:00
 Category: tips
 Tags: chrome, data usage
 Slug: save-data
+Authors: Amit Chaudhary
 Summary: According to the HTTP Archive, the average webpage size has increased by 50 % per year. When you don’t have unlimited internet, using the Internet without crossing data cap seems an impossible task. But you can browse the web consuming less data.
 Status: published
 

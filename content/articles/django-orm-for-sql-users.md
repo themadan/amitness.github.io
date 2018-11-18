@@ -2,6 +2,8 @@ Title: Django ORM if you already know SQL
 Date: 2018-10-31 22:16
 Modified: 2018-10-31 22:16
 Tags: django, orm
+Category: django
+Authors: Amit Chaudhary
 Slug: django-orm-for-sql-users
 Summary: If you are migrating to Django from another MVC framework, chances are you already know SQL. In this post, I will be illustrating how to use Django ORM by drawing analogies to equivalent SQL statements.
 Status: published
