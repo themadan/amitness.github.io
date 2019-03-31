@@ -86,4 +86,4 @@ Run the script and it will perform all the deployment.
 ./deploy.sh
 ```
 
-This simple script has saved me a lot of time until the CI/CD process in place.
+This simple script has saved me a lot of time until the CI/CD process is in place.
