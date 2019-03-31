@@ -22,7 +22,8 @@ GOOGLE_FONTS = [
 ]
 
 SOCIAL_ICONS = [
-    ('mailto:meamitkc@gmail.com', 'Email me', 'fa-envelope'),
+    ('mailto:meamitkc@gmail.com', 'Email me', 'fa-envelope-o'),
+    ('http://twitter.com/amitness', 'Follow me on Twitter', 'fa-twitter'),
     ('http://github.com/amitness', 'Browse my projects', 'fa-github'),
     ('https://np.linkedin.com/in/amitness', 'View Linkedin Profile', 'fa-linkedin'),
     ('/atom.xml', 'Atom Feed', 'fa-rss'),
