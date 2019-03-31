@@ -4,11 +4,10 @@ Modified: 2019-3-30 22:8
 Category: python
 Tags:
 Slug: refactoring-python-code
-Summary: TODO
+Summary: Python is a batteries-included language with most utilities already present in its standard library. In this article, I will go over real world case studies on how to refactor python code. 
 Status: draft
 
-TODO
-
+Python is a batteries-included language with most utilities already present in its standard library. In this article, I will go over real world case studies on how to refactor python code. 
 ##1. Test for Existence
 Consider a usecase where we need to print first element of a list. We check if list has elements
 and then print the first element.
@@ -124,4 +123,86 @@ Here since we are returning the result of the boolean expression in if statement
 ```python
 def is_voter(age):
     return age >= 18
+```
+
+##8: Loop Index
+Suppose, you want to print an numbered list of colors present in a list.
+```python
+i = 1
+colors = ['Red', 'Blue', 'Green']
+for color in colors:
+    print(i, color)
+    i = i + 1
+```
+Output:
+```shell
+1 Red
+2 Blue
+3 Green
+```
+
+We can refactor the code using builtin enumerate function. The variable used for counting is no longer needed.
+```python
+colors = ['Red', 'Blue', 'Green']
+for i, color in enumerate(colors, start=1):
+    print(i, color)
+```
+
+##9: Easier to Ask for Forgiveness than Permission
+Consider a function that divides two numbers. We need to handle the case when denominator is zero.
+```python
+def divide(x, y):
+    if y == 0:
+        return None
+    else:
+        return x / y
+```
+
+In Python, exceptions are preferred to handle failure conditions. So, we can refactor the above code using a try-catch statements.
+```python
+def divide(x, y):
+    try: 
+        return x / y
+    except ZeroDivisionError: 
+        return None
+```
+
+##10. Loop over dictionary
+Suppose we need to print the keys of a dictionary.
+```python
+d = {'one':1, 'two': 2}
+for key in d.keys():
+    print(key)
+```
+
+By default, a loop over a dictionary iterates over the keys. So we can refactor the above code as:
+```python
+d = {'one':1, 'two': 2}
+for key in d:
+    print(key)
+```
+
+##11. Default value in dictionary
+Consider a case where we need to count frequency of characters.
+```python
+chars = ['A', 'B', 'A', 'C']
+counts = {}
+for char in chars:
+    if char not in counts:
+        counts[char] = 1
+    else:
+        counts[char] += 1
+print(counts)
+
+# {'A': 2, 'B': 1, 'C': 1}
+```
+
+We can use the defaultdict collection to set the default value as 0. So, we don't need to check if key is already present or not now.
+```python
+from collections import defaultdict
+chars = ['A', 'B', 'A', 'C']
+counts = defaultdict(int)
+for char in chars:
+    counts[char] += 1
+print(counts)
 ```
