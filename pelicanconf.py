@@ -7,7 +7,7 @@ DOMAIN = 'http://localhost:8000'
 BIO_TEXT = 'Ideas & Thoughts'
 
 SITE_AUTHOR = 'Amit Chaudhary'
-INDEX_DESCRIPTION = 'A fullstack software developer with core expertise in Python and related technologies.'
+INDEX_DESCRIPTION = 'A T-shaped engineer exploring the multidisciplinary fields of applied data science, one at a time.'
 
 SIDEBAR_LINKS = [
     '<a href="/about/">About</a>',
