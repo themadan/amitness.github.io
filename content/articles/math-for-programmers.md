@@ -189,3 +189,74 @@ X = [[1, 2], [3, 4]]
 f = np.sum
 Y = f(X)
 ```
+
+## Tensors  
+  
+### Transpose
+<pre class="math">
+X^T
+</pre>
+
+This is basically exchanging the rows and columns.
+In Python, this would be equivalent to
+```python
+X = [[1, 2, 3], 
+    [4, 5, 6]]
+np.transpose(X)
+```  
+Output would be a list with exchanged rows and columns.
+```
+[[1, 4], 
+ [2, 5],
+ [3, 6]]
+```
+
+<br>
+### Element wise multiplication
+<pre class="math">
+z = x \odot y
+</pre>
+
+It means multiplying the corresponding elements in two tensors. In Python, this would be equivalent to multiplying the corresponding elements in two lists.
+```python
+x = [[1, 2], 
+    [3, 4]]
+y = [[2, 2], 
+    [2, 2]]
+z = np.multiply(x, y)
+```
+Output is
+```
+[[1, 4]],
+[[6, 8]]
+```
+<br>
+### Dot Product
+<pre class="math">
+XY \newline
+X.Y
+</pre>
+
+It gives the sum of the products of the corresponding entries of the two sequences of numbers.
+```python
+X = [1, 2, 3]
+Y = [4, 5, 7]
+# 1*4 + 2*5 + 3*7
+```
+<br>
+### Hat
+<pre class="math">
+\hat{x}
+</pre>
+
+The hat gives the unit vector. This means dividing each component in a vector by it's length(norm).
+```python
+x = [1, 2, 3]
+length = math.sqrt(sum([e**2 for e in x]))
+x_hat = [e/length for e in x]
+```
+This makes the magnitude of the vector 1 and only keeps the direction.
+```python
+math.sqrt(sum([e**2 for e in x_hat]))
+# 1.0
+```
