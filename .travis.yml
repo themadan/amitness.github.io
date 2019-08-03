@@ -7,6 +7,7 @@ python:
 - 3.5
 install:
 - gem install sass
+- npm i -g katex
 - pip install -r requirements.txt
 - git config --global user.email "meamitkc@gmail.com"
 - git config --global user.name "Amit Chaudhary"
