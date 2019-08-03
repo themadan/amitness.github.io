@@ -260,3 +260,28 @@ This makes the magnitude of the vector 1 and only keeps the direction.
 math.sqrt(sum([e**2 for e in x_hat]))
 # 1.0
 ```
+
+## Exclamation
+<pre class="math">
+x!
+</pre>
+
+This denotes the factorial of a number. It is the product of numbers starting from 1 to that number. In Python, it can be calculated as
+```python
+x = 5
+fact = 1
+for i in range(x, 0, -1):
+    fact = fact * i
+print(fact)
+```
+
+The same thing can also be calculated using built-in function.
+```python
+import math
+math.factorial(x)
+```
+The output is
+```
+# 5*4*3*2*1
+120
+```
