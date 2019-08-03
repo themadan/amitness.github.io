@@ -12,5 +12,6 @@ install:
 - git config --global user.name "Amit Chaudhary"
 - git clone https://github.com/amitness/pneumatic themes/pneumatic
 - git clone https://github.com/getpelican/pelican-plugins
+- git clone https://github.com/sahands/pelican_katex pelican-plugins/pelican_katex
 script:
 - fab publish:"Build site"
