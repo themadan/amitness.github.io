@@ -26,7 +26,7 @@ In this post, I will demonstrate how to use the Fasttext library for language id
 For our purpose of language identification, we can use the pre-trained models provided by fastText. The model was trained on a dataset drawn from [Wikipedia](https://www.wikipedia.org/), [Tatoeba](https://tatoeba.org/eng/), and [SETimes](http://nlp.ffzg.hr/resources/corpora/setimes/). The basic idea is a prepare a training data of (text, language) pairs and then train a classifier on it.
  
 
-![](/images/lang_training_data.png) 
+![Language Training Data Example](/images/lang_training_data.png) 
 
 From the benchmark on their blog, we can see that the pre-trained models are better than [langid.py](https://github.com/saffsd/langid.py), another popular language identification tool. Fasttext has better accuracy and also the inference time is very fast. It supports a wide variety of languages including French, German, English, Spanish, Chinese.
 
