@@ -30,7 +30,7 @@ For our purpose of language identification, we can use the pre-trained models pr
 
 From the benchmark on their blog, we can see that the pre-trained models are better than [langid.py](https://github.com/saffsd/langid.py), another popular language identification tool. Fasttext has better accuracy and also the inference time is very fast. It supports a wide variety of languages including French, German, English, Spanish, Chinese.
 
-![](https://fasttext.cc/img/blog/2017-10-02-blog-post-img1.png)
+![Benchmarks of Fasttext vs langid](https://fasttext.cc/img/blog/2017-10-02-blog-post-img1.png)
 <p align="center" style="font-style: italic;">Source: [Fasttext Blog](https://fasttext.cc/blog/2017/10/02/blog-post.html)</p>
 
 ## Steps
