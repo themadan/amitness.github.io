@@ -44,10 +44,10 @@ print(x[i][j]) # 20
 
 
 <pre class="math">
-\sum_{i=0}^{N} x_i
+\sum_{i=1}^{N} x_i
 </pre>
 
-This symbol finds the sum of all elements in a vector for a given range. In Python, it is equivalent to looping over a vector from index 0 to index n. Notice how we're using the previously explained <tt class="math">x_i</tt> symbol to get the value at index.
+This symbol finds the sum of all elements in a vector for a given range. Both lower and upper limits are inclusive. In Python, it is equivalent to looping over a vector from index 0 to index N-1. Notice how we're using the previously explained <tt class="math">x_i</tt> symbol to get the value at index.
 
 ```python
 x = [1, 2, 3, 4, 5]
@@ -66,7 +66,7 @@ result = sum(x)
 ## Average
 
 <pre class="math">
-\frac{1}{N}\sum_{i=0}^{N} x_i
+\frac{1}{N}\sum_{i=1}^{N} x_i
 </pre>
 
 Here we reuse the sigma notation and divide by the number of elements to get an average.
@@ -90,10 +90,10 @@ result = sum(x) / len(x)
 
 
 <pre class="math">
-\prod_{i=0}^{N} x_i
+\prod_{i=1}^{N} x_i
 </pre>
 
-This symbol finds the product of all elements in a vector for a given range. In Python, it is equivalent to looping over a vector from index 0 to index n and multiplying them.
+This symbol finds the product of all elements in a vector for a given range. In Python, it is equivalent to looping over a vector from index 0 to index N-1 and multiplying them.
 
 ```python
 x = [1, 2, 3, 4, 5]
