@@ -11,12 +11,13 @@ I'm  a T-shaped engineer exploring the multidisciplinary fields of applied data 
 
 ### What I do
 
+Currently, I work as a Machine Learning Engineer at Fusemachines, where I help businesses impart intelligence into their products.
+
 I'm trained in data science and machine learning through fellowships from Microsoft and Fusemachines and a Micromasters from Columbia University. I've been applying the data skills to highlight evidence-based issues for a non-profit organization "Code For Nepal".
 
-As a software engineer at Insight Workshop, I engineer products for varying business domains all the way from the early prototypes to delivery to the user at scale. The full-stack culture at the company has provided me with excellent software engineering skills.
+Previously, I've worked as a software engineer to build products for varying business domains all the way from the early prototypes to delivery to the user at scale.
 
-I'm AWS certified with proficiency designing architectures in the cloud.
-
+Besides my core skills in data, I'm also AWS certified with proficiency architecting and developing solutions in the cloud. 
 
 ### About this blog
 
