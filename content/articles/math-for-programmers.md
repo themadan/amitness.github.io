@@ -185,7 +185,7 @@ f: R^d \rightarrow R
 
 Let's assume d = 2. In Python, an example can be a function that takes 2-D array and returns it's sum. It will be mapping a <tt class="math">R^d</tt> to <tt class="math">R</tt>
 ```python
-X = [[1, 2], [3, 4]]
+X = [1, 2]
 f = np.sum
 Y = f(X)
 ```
