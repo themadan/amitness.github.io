@@ -28,10 +28,9 @@ For our purpose of language identification, we can use the pre-trained models pr
 
 ![Language Training Data Example](/images/lang_training_data.png) 
 
-From the benchmark on their blog, we can see that the pre-trained models are better than [langid.py](https://github.com/saffsd/langid.py), another popular language identification tool. Fasttext has better accuracy and also the inference time is very fast. It supports a wide variety of languages including French, German, English, Spanish, Chinese.
+The benchmark shows that the pre-trained models are better than [langid.py](https://github.com/saffsd/langid.py), another popular language identification tool. Fasttext has better accuracy and also the inference time is very fast. It supports a wide variety of languages including French, German, English, Spanish, Chinese.
 
-![Benchmarks of Fasttext vs langid](https://fasttext.cc/img/blog/2017-10-02-blog-post-img1.png)
-<p align="center" style="font-style: italic;">Source: [Fasttext Blog](https://fasttext.cc/blog/2017/10/02/blog-post.html)</p>
+![Benchmarks of Fasttext vs langid](/images/fasttext_benchmark.png)
 
 ## Steps
 - Install the `Fasttext` library using pip.
@@ -58,7 +57,7 @@ model = fasttext.load_model(PRETRAINED_MODEL_PATH)
 
 - Let's take an example sentence in French which means 'I eat food'. To detect it's language, just pass a list of sentences to the predict function. The sentences should be in the UTF-8 format.
 
-![YouTube HTML5 Player](/images/french_to_english_translation.png) 
+![French to English Translation Training Data](/images/french_to_english_translation.png) 
 
 
 ```python
