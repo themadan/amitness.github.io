@@ -69,7 +69,7 @@ print(predictions)
 ```
 - The model returns back two tuples back. One of them is an array of language labels and the other is the confidence for each sentence. Here 'fr' is the ISO 639 code for French. The model is 96.56% confident that the language is French.
 
-- Fasttext can detect 170 languages and returns one among these ISO codes. You can refer to the page on [ISO 639](https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes) codes to find language for each symbol.
+- Fasttext returns the ISO code for the most probable one among the 170 languages. You can refer to the page on [ISO 639](https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes) codes to find language for each symbol.
 ```
 af als am an ar arz as ast av az azb ba bar bcl be bg bh bn bo bpy br bs bxr ca cbk ce ceb ckb co cs cv cy da de diq dsb dty dv el eml en eo es et eu fa fi fr frr fy ga gd gl gn gom gu gv he hi hif hr hsb ht hu hy ia id ie ilo io is it ja jbo jv ka kk km kn ko krc ku kv kw ky la lb lez li lmo lo lrc lt lv mai mg mhr min mk ml mn mr mrj ms mt mwl my myv mzn nah nap nds ne new nl nn no oc or os pa pam pfl pl pms pnb ps pt qu rm ro ru rue sa sah sc scn sco sd sh si sk sl so sq sr su sv sw ta te tg th tk tl tr tt tyv ug uk ur uz vec vep vi vls vo wa war wuu xal xmf yi yo yue zh
 ```
