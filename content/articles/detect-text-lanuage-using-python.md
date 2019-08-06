@@ -23,7 +23,7 @@ In this post, I will demonstrate how to use the Fasttext library for language id
 [Fasttext](https://fasttext.cc/) is an open-source library in Python for word embeddings and text classification. It is built for production use rather than research and hence is optimized for performance and size. It extends the [Word2Vec](https://en.wikipedia.org/wiki/Word2vec) model with ideas such as using [subword information](https://arxiv.org/abs/1607.04606) and [model compression](https://arxiv.org/abs/1612.03651).
 
 
-For our purpose of language identification, we can use the pre-trained models provided by fastText. The model was trained on a dataset drawn from [Wikipedia](https://www.wikipedia.org/), [Tatoeba](https://tatoeba.org/eng/), and [SETimes](http://nlp.ffzg.hr/resources/corpora/setimes/). The basic idea is a prepare a training data of (text, language) pairs and then train a classifier on it.
+For our purpose of language identification, we can use the pre-trained models provided by fastText. The model was trained on a dataset drawn from [Wikipedia](https://www.wikipedia.org/), [Tatoeba](https://tatoeba.org/eng/), and [SETimes](http://nlp.ffzg.hr/resources/corpora/setimes/). The basic idea is to prepare a training data of (text, language) pairs and then train a classifier on it.
  
 
 ![Language Training Data Example](/images/lang_training_data.png) 
