@@ -29,4 +29,5 @@ DISQUS_SITENAME = 'amit-chaudharys-blog'
 # Twitter Open Graph Tags
 TWITTER_USERNAME = 'amitness'
 
-ENABLE_AMAZON_ADS = True
+# Setting for Amazon Affiliate Ads
+ENABLE_AMAZON_ADS = False
