@@ -55,7 +55,7 @@ MONTH_ARCHIVE_SAVE_AS = '{date:%Y}/{date:%m}/index.html'
 
 # Disable authors, categories, tags, and category pages
 DIRECT_TEMPLATES = ['index', 'archives']
-CATEGORY_SAVE_AS = 'category/{slug}.html'
+CATEGORY_SAVE_AS = ''
 TAG_SAVE_AS = ''
 
 # Disable Atom feed generation
