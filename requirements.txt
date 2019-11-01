@@ -7,7 +7,7 @@ cffi==1.10.0
 cryptography==1.8.1
 cssmin==0.2.0
 docutils==0.13.1
-ecdsa==0.13
+ecdsa==0.13.3
 enum34==1.1.6
 Fabric==1.13.2
 Fabric3==1.14.post1
