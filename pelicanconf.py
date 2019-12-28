@@ -2,17 +2,14 @@
 # -*- coding: utf-8 -*-
 
 # Theme-specific settings
+import bulrush
+
 SITENAME = 'Amit Chaudhary'
 DOMAIN = 'http://localhost:8000'
 BIO_TEXT = 'Ideas & Thoughts'
 
 SITE_AUTHOR = 'Amit Chaudhary'
 INDEX_DESCRIPTION = 'A T-shaped engineer exploring the multidisciplinary fields of applied data science, one at a time.'
-
-SIDEBAR_LINKS = [
-    '<a href="/about/">About</a>',
-    '<a href="/contact/">Contact</a>',
-]
 
 ICONS_PATH = 'images/icons'
 
@@ -21,19 +18,10 @@ GOOGLE_FONTS = [
     'Source Code Pro',
 ]
 
-SOCIAL_ICONS = [
-    ('mailto:meamitkc@gmail.com', 'Email me', 'fa-envelope-o'),
-    ('http://twitter.com/amitness', 'Follow me on Twitter', 'fa-twitter'),
-    ('http://github.com/amitness', 'Browse my projects', 'fa-github'),
-    ('https://np.linkedin.com/in/amitness', 'View Linkedin Profile', 'fa-linkedin'),
-    ('/atom.xml', 'Atom Feed', 'fa-rss'),
-]
-
-THEME_COLOR = '#FF8000'
 
 # Pelican settings
 RELATIVE_URLS = True
-SITEURL ='http://localhost:8000'
+SITEURL = 'http://localhost:8000'
 TIMEZONE = 'Asia/Kathmandu'
 DEFAULT_DATE = 'fs'
 DEFAULT_DATE_FORMAT = '%B %d, %Y'
@@ -41,7 +29,30 @@ DEFAULT_PAGINATION = False
 SUMMARY_MAX_LENGTH = 42
 
 # Theme Location
-THEME = 'themes/pneumatic'
+THEME = 'themes/bulrush/bulrush'
+JINJA_ENVIRONMENT = bulrush.ENVIRONMENT
+JINJA_FILTERS = bulrush.FILTERS
+
+# Social widget
+SOCIAL = (
+    ('GitHub', 'https://github.com/amitness'),
+    ('Twitter', 'https://twitter.com/amitness'),
+    ('Linkedin', 'https://np.linkedin.com/in/amitness'),
+    ('Email', 'mailto:meamitkc@gmail.com'),
+    ('RSS', '/atom.xml')
+)
+
+NAVBAR_LABEL = 'amitness'
+
+DISPLAY_CATEGORIES_ON_MENU = False
+
+MENUITEMS = (
+    ('contact', '/contact/'),
+    ('about', '/about/'),
+)
+
+
+DEFAULT_PAGINATION = 4
 
 ARTICLE_URL = '{date:%Y}/{date:%m}/{slug}/'
 ARTICLE_SAVE_AS = ARTICLE_URL + 'index.html'
@@ -68,23 +79,13 @@ TRANSLATION_FEED_ATOM = None
 
 TYPOGRIFY = True
 
-MARKDOWN = {
-    'extension_configs': {
-        'markdown.extensions.admonition': {},
-        'markdown.extensions.codehilite': {'linenums': True},
-        'markdown.extensions.extra': {},
-        'markdown.extensions.tables':{},
-    },
-    'output_format': 'html5',
-}
-
 CACHE_CONTENT = False
 # DELETE_OUTPUT_DIRECTORY = True
 # OUTPUT_PATH = 'develop'
 PATH = 'content'
 
-templates = ['404.html']
-TEMPLATE_PAGES = {page: page for page in templates}
+#templates = ['404.html']
+#TEMPLATE_PAGES = {page: page for page in templates}
 
 STATIC_PATHS = ['images', 'extra']
 IGNORE_FILES = ['.DS_Store', 'pneumatic.scss', 'pygments.css', 'icomoon.css']
@@ -94,13 +95,13 @@ EXTRA_PATH_METADATA = {'extra/%s' % file: {'path': file} for file in extras}
 
 PLUGIN_PATHS = ['./pelican-plugins']
 PLUGINS = ['assets', 'neighbors', 'pelican_katex', 'sitemap', 'share_post']
-ASSET_SOURCE_PATHS = ['static']
-ASSET_CONFIG = [
-    ('cache', False),
-    ('manifest', False),
-    ('url_expire', False),
-    ('versions', False),
-]
+# ASSET_SOURCE_PATHS = ['static']
+# ASSET_CONFIG = [
+#     ('cache', False),
+#     ('manifest', False),
+#     ('url_expire', False),
+#     ('versions', False),
+# ]
 
 
 # Sitemap Settings

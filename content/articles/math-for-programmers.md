@@ -5,6 +5,7 @@ Category: math
 Slug: math-for-programmers
 Summary: Learn the meaning behind mathematical symbols used in Machine Learning using your knowledge of Python.
 Status: published
+Authors: Amit Chaudhary
 
 
 When working with Machine Learning projects, you will come across a wide variety of equations that you need to implement in code. Mathematical notations capture a concept so eloquently but unfamiliarity with them makes them obscure.
