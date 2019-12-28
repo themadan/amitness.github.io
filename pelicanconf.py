@@ -39,7 +39,7 @@ SOCIAL = (
     ('Twitter', 'https://twitter.com/amitness'),
     ('Linkedin', 'https://np.linkedin.com/in/amitness'),
     ('Email', 'mailto:meamitkc@gmail.com'),
-    ('RSS', '/atom.xml')
+    ('Feed', '/atom.xml')
 )
 
 NAVBAR_LABEL = 'amitness'
@@ -83,9 +83,10 @@ CACHE_CONTENT = False
 # DELETE_OUTPUT_DIRECTORY = True
 # OUTPUT_PATH = 'develop'
 PATH = 'content'
+PAGE_EXCLUDES = ['404.html']
 
-#templates = ['404.html']
-#TEMPLATE_PAGES = {page: page for page in templates}
+# templates = ['404.html']
+# TEMPLATE_PAGES = {page: page for page in templates}
 
 STATIC_PATHS = ['images', 'extra']
 IGNORE_FILES = ['.DS_Store', 'pneumatic.scss', 'pygments.css', 'icomoon.css']
