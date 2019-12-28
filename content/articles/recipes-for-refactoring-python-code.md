@@ -6,6 +6,7 @@ Tags:
 Slug: refactoring-python-code
 Summary: Python is a batteries-included language with most utilities already present in its standard library. In this article, I will go over real world case studies on how to refactor python code. 
 Status: draft
+Authors: Amit Chaudhary
 
 Python is a batteries-included language with most utilities already present in its standard library. In this article, I will go over real world case studies on how to refactor python code. 
 ##1. Test for Existence
