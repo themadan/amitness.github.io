@@ -1,0 +1,113 @@
+Title: An Illustrated Guide to Factorization Machines
+Date: 2019-12-29 04:47
+Modified: 2019-12-29 04:47
+Category: illustration
+Slug: factorization-machines-visual-guide
+Summary: An visual introduction to factorization machines
+Status: draft
+Authors: Amit Chaudhary
+
+# Need for Factorization Machines
+Assume we need to build a recommendation system for a TV-series streaming service. You are provided a historical dataset of ratings by users for different series.  
+
+![](https://upload.wikimedia.org/wikipedia/en/thumb/3/33/Silicon_valley_title.png/250px-Silicon_valley_title.png)  
+
+|User|Game of Thrones|Silicon Valley|
+|---|---|---|
+|A	|2	|5|
+|B	|4	|2|
+|C| |5|
+
+We start with simple linear regression model to predict rating using user and series as features. 
+To use categorical data like user and series in regression, we perform one hot encoding on it.
+
+|A|B|C|Game Of Thrones|Silicon Valley| |Rating|
+|---|---|---|---|---|---|---|
+|**1**|0|0|**1**|0| |2|
+|**1**|0|0|0|**1**| |5|
+|0|**1**|0|**1**|0| |4|
+|0|**1**|0|0|**1**| |2|
+|0|0|**1**|0|**1**| |5|
+
+So, the rating y(x) is predicted by the linear combination of weight for user and the series.
+<pre class="math">
+rating = y(x) = w_0 + \sum_{i=1}^{n} w_i x_i
+</pre>
+
+For user "A", their rating of 5 for "Silicon Valley" can be predicted as
+
+|*A*|B|C|Game Of Thrones|*Silicon Valley*|
+|---|---|---|---|---|
+|**1**|0|0|0|**1**|
+
+
+<pre class="math">
+w_0 + w_{A}*1 +w_{B}*0 + w_{C}*0 + w_{game of thrones}*0 + w_{silicon valley}*1  
+</pre>
+<pre class="math">
+y(x) = w_0 + w_{A} * 1 + w_{silicon valley}*1
+</pre>
+<pre class="math">
+y(x) = w_0 + w_{A} + w_{silicon valley}
+</pre>
+
+We can see this takes into account only the user and series individually but doesn't consider their interaction. So, model predictions will not be very good.
+
+To fix this, we can switch to polynomial regression. For that, we add interactions to the linear regression model.
+<pre class="math">
+rating = y(x) = w_0 + \sum_{i=1}^{n} w_i x_i + \sum_{i=1}^{n} \sum_{j=i+1}^{n} w_{i,j} x_i x_j
+</pre>
+
+So, for user A rating 'Silicon Valley', the interaction features would be:  
+
+|*A*|B|C|Game Of Thrones|*Silicon Valley*|
+|---|---|---|---|---|
+|**1**|0|0|0|**1**|
+
+- A * B = 1 * 0 = 0
+- A * C = 1 * 0 = 0
+- A * Game of Thrones = 1 * 0 = 0
+- A * Silicon Valley = 1 * 1 = 1
+- B * C = 0 * 0 = 0
+- B * Game of Thrones = 0 * 0 = 0
+- B * Silicon Valley = 0 * 1 = 0
+- C * Game of Thrones = 0 * 0 = 0
+- C * Silicon Valley = 0 * 0 = 0
+- Game of Thrones * Silicon Valley = 0 * 1 = 0
+
+All of the interactions will result to zero on multiplication and we will be left with:  
+<pre class="math">
+A * Silicon\ valley = 1*1 = 1
+</pre>
+
+So, our model will predict the rating based on user, tv-series and it's interaction.
+<pre class="math">
+y(x) = w_0 + w_{A} + w_{silicon valley} + w_{A, silicon valley}
+</pre>
+which can be generalized for user U and item i as:  
+
+<pre class="math">
+y(x) = w_0 + w_{u} + w_{i} + w_{u,i}
+</pre>
+
+
+
+## Problem 1: Explosion in dimensions
+As you saw above, using even a polynomial regression drastically increases the number of weights we need to learn for the model. The example we took was just of 3 users and two tv-series. If we had 1000 users and 1000 series, the number of interaction weights to learn would be:  
+
+
+| |Series 1|Series 2|Series ...|Series 1000|
+|---|---|---|---|---|
+|**User 1**|...|...|...|...|
+|User 2|...|...|...|...|
+|User ...|...|...|...|...|
+|**User 1000**|...|...|...|...|
+  
+Interactions = Users * Series = 1000 * 1000 = 1 million
+
+This causes a explosion in the number of features.
+
+## Problem 2: Sparsity
+A user rates only a few series and so most of the user-series interaction is not present in training data. Without the training data, polynomial regression can't infer the weights for unseen interaction.
+
+## Factorization Machines
