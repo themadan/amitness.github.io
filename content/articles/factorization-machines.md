@@ -115,8 +115,38 @@ This causes a explosion in the number of features.
 ## Problem 2: Sparsity
 A user rates only a few series and so most of the user-series interaction is not present in training data. Without having seen the training data, polynomial regression can't infer the weights for unseen interaction.
 
+
 # Proposed Solution
-Author of the paper **Steffen Rendle** proposed a novel idea of combining the power of polynomial regression with matrix factorization.
+Author of the paper **Steffen Rendle** proposed a novel idea of extending polynomial regression with the ideas inspired by matrix factorization to solve the problems stated above.
+
+Matrix factorization models are already popular in field of recommendation systems. Let's say we have a user-series ratings matrix as show below.
+
+|User|Game of Thrones|Silicon Valley|Flash|
+|---|---|---|---|
+|A	|2	|5|4|
+|B	|4	|2||
+|C| |5|3|
+  
+We can break this matrix into two smaller matrix.broken into  
+ 
+|User|Feature 1|Feature 2|
+|---|---|---|
+|A	|...|...|
+|B |...|...|
+|C|... |...|
+
+
+|Series|Game of Thrones|Silicon Valley|Flash|
+|---|---|---|---|
+|Feature 1	|...|...|...|
+|Feature 2|...|...|...|
+
+From the two matrices, we can determine the ranking using the dot product for a specific user and specific series. 
+Even when we don't have the user-series interaction in the training data, we can infer the rating a user would give for a new series by multiplying the corresponding feature vectors for user and series.
+
+Though factorization models solve the problems of polynomial regression, it is specific to only 2 dimensions user and series. What if we want to introduce extra features that can be helpful in the recommendation like time, user attributes, series attributes? We can't include those in the two dimensional matrix allowing factorization. 
+
+Factorization machines solve this problem by modeling the problem like a polynomial regression but learning latent factors for the interactions instead of the weights. So, the weight
 
 ### References
 - [Factorization Machines](https://cseweb.ucsd.edu/classes/fa17/cse291-b/reading/Rendle2010FM.pdf) [pdf]
