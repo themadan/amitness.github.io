@@ -12,13 +12,16 @@ In this article, I will go over the most frequent tasks related to file paths an
 ## Joining paths
 ```python
 import os
-os.path.join('/home/ubuntu/', 'data.csv')
+base_path = '/home/ubuntu/'
+filename = 'data.csv'
+os.path.join(base_path, filename)
 ```
 In pathlib, we can use the division operator to separate the paths elegantly.
 ```python
 from pathlib import Path
-
-Path('/home/ubuntu/') / 'data.csv'
+base_path = '/home/ubuntu/'
+filename = 'data.csv'
+Path(base_path) / filename
 ```
 
 ## Get absolute path
