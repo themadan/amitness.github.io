@@ -10,7 +10,7 @@ Authors: Amit Chaudhary
 
 Python is a batteries-included language with most utilities already present in its standard library. In this article, I will go over real world case studies on how to refactor python code. 
 ##1. Test for Existence
-Consider a usecase where we need to print first element of a list. We check if list has elements
+Consider a use-case where we need to print first element of a list. We check if list has elements
 and then print the first element.
 ```python
 a = [1, 2, 3]
@@ -26,7 +26,7 @@ False
 True
 ```
 
-So, we can exploit this feature to make the previous code succint without checking the length.
+So, we can exploit this feature to make the previous code succinct without checking the length.
 ```python
 a = [1, 2, 3]
 if a:
