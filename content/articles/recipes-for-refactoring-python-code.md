@@ -1,6 +1,6 @@
-Title: Recipes for Refactoring Python Code
-Date: 2019-3-30 22:8
-Modified: 2019-3-30 22:8
+Title: Refactoring Patterns for Python Code
+Date: 2020-01-01 22:8
+Modified: 2020-01-01 22:8
 Category: python
 Tags:
 Slug: refactoring-python-code
@@ -79,7 +79,7 @@ Here, instead of if / else, we can use the `or` operator to simplify the express
 count = get_count() or 10
 ```
 
-##5: Redundant Lambda
+##5: You don't need lambda
 We need to convert a list of numbers from string to integer. We use a lambda function to take each element and use the inbuilt int(...) function to convert that to integer.
 
 ```python
