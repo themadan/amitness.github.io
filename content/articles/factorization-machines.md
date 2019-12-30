@@ -2,12 +2,11 @@ Title: An Illustrated Guide to Factorization Machines
 Date: 2019-12-29 04:47
 Modified: 2019-12-29 04:47
 Category: illustration
-Slug: factorization-machines-visual-guide
-Summary: An visual introduction to factorization machines
+Slug: factorization-machines-illustrated
+Summary: Learn working mechanism of Factorization Machines with illustrated examples.
 Status: draft
 Authors: Amit Chaudhary
 
-# Need for Factorization Machines
 Assume we need to build a recommendation system for a TV-series streaming service. You are provided a historical dataset of ratings by users for different series.  
 
 ![](https://upload.wikimedia.org/wikipedia/en/thumb/3/33/Silicon_valley_title.png/250px-Silicon_valley_title.png)  
@@ -18,6 +17,7 @@ Assume we need to build a recommendation system for a TV-series streaming servic
 |B	|4	|2|
 |C| |5|
 
+# Problem with existing models
 We start with simple linear regression model to predict rating using user and series as features. 
 To use categorical data like user and series in regression, we perform one hot encoding on it.
 
@@ -34,7 +34,7 @@ So, the rating y(x) is predicted by the linear combination of weight for user an
 rating = y(x) = w_0 + \sum_{i=1}^{n} w_i x_i
 </pre>
 
-For user "A", their rating of 5 for "Silicon Valley" can be predicted as
+We can predict the rating of 5 given by user "A" for "Silicon Valley" as:
 
 |*A*|B|C|Game Of Thrones|*Silicon Valley*|
 |---|---|---|---|---|
@@ -53,6 +53,7 @@ y(x) = w_0 + w_{A} + w_{silicon valley}
 
 We can see this takes into account only the user and series individually but doesn't consider their interaction. So, model predictions will not be very good.
 
+## Polynomial Regression
 To fix this, we can switch to polynomial regression. For that, we add interactions to the linear regression model.
 <pre class="math">
 rating = y(x) = w_0 + \sum_{i=1}^{n} w_i x_i + \sum_{i=1}^{n} \sum_{j=i+1}^{n} w_{i,j} x_i x_j
@@ -78,6 +79,10 @@ So, for user A rating 'Silicon Valley', the interaction features would be:
 All of the interactions will result to zero on multiplication and we will be left with:  
 <pre class="math">
 A * Silicon\ valley = 1*1 = 1
+</pre>
+
+<pre class="math">
+\sum_{i=1}^{n} \sum_{j=i+1}^{n} w_{i,j} x_i x_j = w_{A, silicon valley} * A * silicon valley = w_{A, silicon valley}
 </pre>
 
 So, our model will predict the rating based on user, tv-series and it's interaction.
@@ -108,6 +113,10 @@ Interactions = Users * Series = 1000 * 1000 = 1 million
 This causes a explosion in the number of features.
 
 ## Problem 2: Sparsity
-A user rates only a few series and so most of the user-series interaction is not present in training data. Without the training data, polynomial regression can't infer the weights for unseen interaction.
+A user rates only a few series and so most of the user-series interaction is not present in training data. Without having seen the training data, polynomial regression can't infer the weights for unseen interaction.
 
-## Factorization Machines
+# Proposed Solution
+Author of the paper **Steffen Rendle** proposed a novel idea of combining the power of polynomial regression with matrix factorization.
+
+### References
+- [Factorization Machines](https://cseweb.ucsd.edu/classes/fa17/cse291-b/reading/Rendle2010FM.pdf) [pdf]
