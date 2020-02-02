@@ -29,8 +29,13 @@ The dataset consists of page titles and labels. The label is 1 if the title is c
 
 Let's split the data into 70% training data and 30% validation data.
 ```python
-train_df = df.sample(frac=0.7, random_state=42)
-test_df = df[~df.index.isin(train_df.index)]
+from sklearn.model_selection import train_test_split
+
+x_train, x_test, y_train, y_test = train_test_split(df['title'], 
+                                                    df['label'], 
+                                                    test_size=0.3, 
+                                                    stratify=df['label'], 
+                                                    random_state=42)
 ```
 
 ## Model Architecture
@@ -122,13 +127,13 @@ model.compile(optimizer='adam',
 
 Now, let's train the model for 
 ```python
-model.fit(train_df['title'], 
-          train_df['label'], 
+model.fit(x_train, 
+          y_train, 
           epochs=2, 
-          validation_data=(test_df['title'], test_df['label']))
+          validation_data=(x_test, y_test))
 ```
 
-We reach a training accuracy of 99.65% and validation accuracy of 98.49% with only 2 epochs.  
+We reach a training accuracy of 99.62% and validation accuracy of 98.46% with only 2 epochs.  
 
 ## Inference
 Let's test the model on a few examples.
