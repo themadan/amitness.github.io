@@ -1,0 +1,149 @@
+Title: Transfer Learning in NLP with Tensorflow Hub and Keras
+Date: 2020-02-02 19:00
+Modified: 2020-02-02 19:00
+Category: nlp, tensorflow
+Slug: tensorflow-hub-for-transfer-learning
+Summary: Learn how to integrate and finetune tensorflow-hub modules in Tensorflow 2.0
+Status: published
+Authors: Amit Chaudhary
+
+Tensorflow 2.0 introduced Keras as the default high-level API to build models. Combined with pretrained models from Tensorflow Hub, it provides a dead-simple way for transfer learning in NLP to create good models out of the box.   
+
+![](/images/clickbait-or-not-illustration.png)  
+To illustrate the process, let's take an example of classifying if the title of an article is clickbait or not.
+
+
+## Data Preparation
+
+We will use the dataset from the paper ['Stop Clickbait: Detecting and Preventing Clickbaits in Online News Media'](https://people.mpi-sws.org/~achakrab/papers/chakraborty_clickbait_asonam16.pdf) available [here](https://github.com/bhargaviparanjape/clickbait).
+
+
+Since the goal of this article is to illustrate transfer learning, we will directly load an already pre-processed dataset into a pandas dataframe.
+```python
+import pandas as pd
+df = pd.read_csv('http://bit.ly/clickbait-data')
+``` 
+
+The dataset consists of page titles and labels. The label is 1 if the title is clickbait.
+![](/images/clickbait-pandas-dataframe.png)
+
+Let's split the data into 70% training data and 30% validation data.
+```python
+train_df = df.sample(frac=0.7, random_state=42)
+test_df = df[~df.index.isin(train_df.index)]
+```
+
+## Model Architecture
+Now, we install tensorflow and tensorflow-hub using pip.
+```bash
+pip install tensorflow-hub
+pip install tensorflow==2.1.0
+```
+
+To use text data as features for models, we need to convert it into a numeric form. Tensorflow Hub provides various [modules](https://tfhub.dev/s?module-type=text-embedding&q=tf2) for converting the sentences into embeddings such as BERT, NNLM and Wikiwords.
+
+Universal Sentence Encoder is one of the popular module for generating sentence embeddings. It gives back a 512 fixed-size vector for the text.
+Below is an example of how we can use tensorflow hub to capture embeddings for the sentence "Hello World".
+
+![](/images/use-on-hello-world.png)
+
+```python
+import tensorflow_hub as hub
+
+encoder = hub.load('https://tfhub.dev/google/universal-sentence-encoder/4')
+encoder(['Hello World'])
+```
+
+![](/images/use-output.png)
+
+In Tensorflow 2.0, using these embeddings in our models is a piece of cake thanks to the new [hub.KerasLayer](https://www.tensorflow.org/hub/api_docs/python/hub/KerasLayer) module. Let's design a tf.keras model for the binary classification task of clickbait detection.
+
+First import the required libraries.
+```python
+import tensorflow as tf
+import tensorflow_hub as hub
+```
+
+Then, we create a sequential model that will encapsulate our layers.
+```python
+model = tf.keras.models.Sequential()
+```
+
+The first layer will be a hub.KerasLayer from where we can loading models available at [tfhub.dev](https://tfhub.dev/). We will be loading [Universal Sentence Encoder](https://tfhub.dev/google/universal-sentence-encoder/4).
+```python
+model.add(hub.KerasLayer('https://tfhub.dev/google/universal-sentence-encoder/4', 
+                        input_shape=[], 
+                        dtype=tf.string, 
+                        trainable=True))
+``` 
+
+Here are what the different parameters used mean:
+
+- `/4`: It denotes the variant of Universal Sentence Encoder on hub. We're using the `Deep Averaging Network (DAN)` variant. We also have [Transformer architecture](https://tfhub.dev/google/universal-sentence-encoder-large/5) and other [variants](https://tfhub.dev/google/collections/universal-sentence-encoder/1). 
+- ```input_shape=[]```: Since our data has no features but the text itself, so there feature dimension is empty. 
+- ```dtype=tf.string```: Since we'll be passing raw text itself to the model
+- ```trainable=True```: Denotes whether we want to finetune USE or not. We set it to True, the embeddings present in USE are finetuned based on our downstream task.
+ 
+Next, we add a Dense layer with single node to output probability of clickbait between 0 and 1.
+```python
+model.add(tf.keras.layers.Dense(1, activation='sigmoid'))
+```
+
+In summary, we have a model that takes text data, projects it into 512-dimension embedding and passed that through a feedforward neural network with sigmoid activation to give a clickbait probability.
+
+![](/images/clickbait-keras-model.png)
+
+Alternatively, we can implement the exact above architecture using the tf.keras functional API as well.
+```python
+x = Input(shape=[], dtype=tf.string)
+y = hub.KerasLayer('https://tfhub.dev/google/universal-sentence-encoder/4', 
+                    trainable=True)(x)
+z = Dense(1, activation='sigmoid')(y)
+model = Model(x, z)
+```
+
+The output of the model summary is
+```python
+model.summary()
+```
+
+![](/images/clickbait-model-summary.png)
+
+The number of trainable parameters is `256,798,337` because we're finetuning Universal Sentence Encoder.
+
+
+## Training the model
+Since we're performing a binary classification task, we use a binary cross entropy loss along with ADAM optimizer and accuracy as the metric.
+```python
+model.compile(optimizer='adam', 
+              loss='binary_crossentropy', 
+              metrics=['accuracy'])
+```
+
+Now, let's train the model for 
+```python
+model.fit(train_df['title'], 
+          train_df['label'], 
+          epochs=2, 
+          validation_data=(test_df['title'], test_df['label']))
+```
+
+We reach a training accuracy of 99.65% and validation accuracy of 98.49% with only 2 epochs.  
+
+## Inference
+Let's test the model on a few examples.
+```python
+# Clickbait
+>> model.predict(["21 Pictures That Will Make You Feel Like You're 99 Years Old"])
+array([[0.9997924]], dtype=float32)
+
+# Not Clickbait
+>> model.predict(['Google announces TensorFlow 2.0'])
+array([[0.00022611]], dtype=float32)
+```
+
+## Conclusion
+Thus, with a combination of Tensorflow Hub and tf.keras, we can leverage transfer learning easily and build high-performance models for any of our downstream tasks.
+
+## Data Credits
+```Abhijnan Chakraborty, Bhargavi Paranjape, Sourya Kakarla, and Niloy Ganguly. "Stop Clickbait: Detecting and Preventing Clickbaits in Online News Media”. In Proceedings of the 2016 IEEE/ACM International Conference on Advances in Social Networks Analysis and Mining (ASONAM), San Fransisco, US, August 2016```
