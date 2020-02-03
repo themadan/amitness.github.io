@@ -12,7 +12,7 @@ The release of BERT model by google is considered as the "imagenet moment" for N
 Let's recap BERT for a while.
 
 
-# Recap of BERT
+# Quick Recap:  BERT
 Consider a sentence given below. As humans, when we encounter the word "**apple**", we could: 
 
 - Associate the word "apple" to our mental representation of the fruit "apple"  
@@ -34,19 +34,19 @@ BERT introduced a **masked language model** objective, in which we randomly mask
 
 ### 2. Next Sentence Prediction
 Idea here is to detect whether two sentences are coherent when placed one after another or not.
-![](/images/bert-nsp.png)
+![](/images/bert-nsp-1.png)
 
 For this, BERT takes consecutive sentences from training data as a positive example. For negative example, a sentence is taken and a random sentence from another document is placed next to it.
 
 ### 3. Transformer Architecture
-To solve the above two tasks, BERT uses stacked layers of transformer blocks. 
-Jay Alammar has an [excellent post](http://jalammar.github.io/illustrated-bert/) that illustrates the internals of BERT.
+To solve the above two tasks, BERT uses stacked layers of transformer blocks. We get vectors of size 768 for each word when passing through the layers which captures the meaning of the word.
+![](/images/bert-blocks.png)
+Jay Alammar has an [excellent post](http://jalammar.github.io/illustrated-bert/) that illustrates the internals of BERT in more depth.
+
+## Why ALBERT?
 
 ## Problems with BERT
-
-## Background
-- shift from word/context embeddings to full-network pretraining followed by task specific fine-tuning (BERT, ULMFIT)
-- scaling up representation learning
+1. BERT has a large model size.
 
 ## Problem
 - large model size ++ in pretraining 
