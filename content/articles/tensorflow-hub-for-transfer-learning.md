@@ -100,11 +100,11 @@ In summary, we have a model that takes text data, projects it into 512-dimension
 
 Alternatively, we can implement the exact above architecture using the tf.keras functional API as well.
 ```python
-x = Input(shape=[], dtype=tf.string)
+x = tf.keras.layers.Input(shape=[], dtype=tf.string)
 y = hub.KerasLayer('https://tfhub.dev/google/universal-sentence-encoder/4', 
                     trainable=True)(x)
-z = Dense(1, activation='sigmoid')(y)
-model = Model(x, z)
+z = tf.keras.layers.Dense(1, activation='sigmoid')(y)
+model = tf.keras.models.Model(x, z)
 ```
 
 The output of the model summary is
