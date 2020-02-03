@@ -9,7 +9,7 @@ Authors: Amit Chaudhary
 
 Tensorflow 2.0 introduced Keras as the default high-level API to build models. Combined with pretrained models from Tensorflow Hub, it provides a dead-simple way for transfer learning in NLP to create good models out of the box.   
 
-![](/images/clickbait-or-not-illustration.png)  
+![Clickbait Title Illustration](/images/clickbait-or-not-illustration.png)  
 To illustrate the process, let's take an example of classifying if the title of an article is clickbait or not.
 
 
@@ -25,7 +25,7 @@ df = pd.read_csv('http://bit.ly/clickbait-data')
 ``` 
 
 The dataset consists of page titles and labels. The label is 1 if the title is clickbait.
-![](/images/clickbait-pandas-dataframe.png)
+![Rows of training data for clickbait detection](/images/clickbait-pandas-dataframe.png)
 
 Let's split the data into 70% training data and 30% validation data.
 ```python
@@ -50,7 +50,7 @@ To use text data as features for models, we need to convert it into a numeric fo
 Universal Sentence Encoder is one of the popular module for generating sentence embeddings. It gives back a 512 fixed-size vector for the text.
 Below is an example of how we can use tensorflow hub to capture embeddings for the sentence "Hello World".
 
-![](/images/use-on-hello-world.png)
+![Universal Sentence Encoder applied on Hello World](/images/use-on-hello-world.png)
 
 ```python
 import tensorflow_hub as hub
@@ -59,7 +59,7 @@ encoder = hub.load('https://tfhub.dev/google/universal-sentence-encoder/4')
 encoder(['Hello World'])
 ```
 
-![](/images/use-output.png)
+![Universal Sentence Encodings Output](/images/use-output.png)
 
 In Tensorflow 2.0, using these embeddings in our models is a piece of cake thanks to the new [hub.KerasLayer](https://www.tensorflow.org/hub/api_docs/python/hub/KerasLayer) module. Let's design a tf.keras model for the binary classification task of clickbait detection.
 
@@ -96,7 +96,7 @@ model.add(tf.keras.layers.Dense(1, activation='sigmoid'))
 
 In summary, we have a model that takes text data, projects it into 512-dimension embedding and passed that through a feedforward neural network with sigmoid activation to give a clickbait probability.
 
-![](/images/clickbait-keras-model.png)
+![Keras Model Architecture for Clickbait Detection](/images/clickbait-keras-model.png)
 
 Alternatively, we can implement the exact above architecture using the tf.keras functional API as well.
 ```python
@@ -112,7 +112,7 @@ The output of the model summary is
 model.summary()
 ```
 
-![](/images/clickbait-model-summary.png)
+![Model summary from Keras model](/images/clickbait-model-summary.png)
 
 The number of trainable parameters is `256,798,337` because we're finetuning Universal Sentence Encoder.
 
