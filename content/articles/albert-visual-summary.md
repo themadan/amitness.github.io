@@ -31,6 +31,9 @@ Language modeling basically involves predicting the word given its context to le
 
 BERT introduced a **masked language model** objective, in which we randomly mask words in document and try to predict them based on context.
 ![](/images/bert-masked-language-model.png){.img-center}  
+<p class="has-text-centered">
+Credits: [Marvel Studios on Giphy](https://giphy.com/stickers/marvelstudios-oh-thanos-snapped-TfjfIgE9YUgdyz8V1J)
+</p>
 
 ### 2. Next Sentence Prediction
 Idea here is to detect whether two sentences are coherent when placed one after another or not.
@@ -44,11 +47,16 @@ To solve the above two tasks, BERT uses stacked layers of transformer blocks. We
 Jay Alammar has an [excellent post](http://jalammar.github.io/illustrated-bert/) that illustrates the internals of BERT in more depth.
 
 ## Problems with BERT
-Even though BERT gave state of art results on many NLP leaderboards, there were issues when deploying it for real world applications.
+Even though BERT gave state of art results on many NLP leaderboards, there were issues when deploying it for real world products.
 
 1. **Memory Limitation:**  
-![](/images/bert-heavy-on-gpu.png){.img-center}  
-BERT Large has billions of parameters due to a large hidden size, 24 hidden layers and more attention heads. Due to memory limitations of currently available GPU/TPUs, we can't keep doubling the size of models and expect it to work. Also, in the real world applications, model size and inference speed are key components of selecting a model.
+    ![](/images/bert-heavy-on-gpu.png){.img-center}  
+    BERT Large has billions of parameters contributed by its large 24 hidden layers, large units and attention heads in each layer. This makes it difficult to take large BERT models as it is and use for real-world application where restricted compute requirements play a major role.
+    Due to memory limitations of currently available GPU/TPUs, we can't keep doubling the size of models and expect it to work.  
+    
+    One way to train solve the limited memory issue would be to use distributed training, but the large number of parameters of the model causes communication overhead leading to longer training time.
+    
+2. **Model Degradation**
 
 
 ## Problem
