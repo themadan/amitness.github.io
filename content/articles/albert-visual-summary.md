@@ -4,7 +4,7 @@ Modified: 2020-02-02 20:00
 Category: nlp
 Slug: albert-visual-summary
 Summary: Learn how to integrate and finetune tensorflow-hub modules in Tensorflow 2.0
-Status: draft
+Status: published
 Authors: Amit Chaudhary
 
 The release of BERT model by google is considered as the "imagenet moment" for NLP and start of a new era for NLP.
@@ -20,33 +20,36 @@ Consider a sentence given below. As humans, when we encounter the word "**apple*
 - Understand the big picture that "*he ate an apple*"  
 - Distinguish between characters "a", word and sentences
 
-![](/images/nlp-representation-learning.png)  
+![](/images/nlp-representation-learning.png){.img-center}    
 
 The basic premise of latest developments in NLP is to give machines the ability to do so.
 
 In 2018, Google release BERT model that tried to solve this task based on a few key ideas:
 ### 1. Masked Language Modeling
 Language modeling basically involves predicting the word given its context to learn representation. Tradionally, this involved predicting the next word in sentence given previous words.
-![](/images/nlp-language-model-1.png)
+![](/images/nlp-language-model-1.png){.img-center}  
 
 BERT introduced a **masked language model** objective, in which we randomly mask words in document and try to predict them based on context.
-![](/images/bert-masked-language-model.png)
+![](/images/bert-masked-language-model.png){.img-center}  
 
 ### 2. Next Sentence Prediction
 Idea here is to detect whether two sentences are coherent when placed one after another or not.
-![](/images/bert-nsp-1.png)
+![](/images/bert-nsp-1.png){.img-center}  
 
 For this, BERT takes consecutive sentences from training data as a positive example. For negative example, a sentence is taken and a random sentence from another document is placed next to it.
 
 ### 3. Transformer Architecture
-To solve the above two tasks, BERT uses stacked layers of transformer blocks. We get vectors of size 768 for each word when passing through the layers which captures the meaning of the word.
+To solve the above two tasks, BERT uses stacked layers of transformer blocks. We get vectors of size 768 for each word when passing through the layers to capture the meaning of the word.
 ![](/images/bert-blocks.png)
 Jay Alammar has an [excellent post](http://jalammar.github.io/illustrated-bert/) that illustrates the internals of BERT in more depth.
 
-## Why ALBERT?
-
 ## Problems with BERT
-1. BERT has a large model size.
+Even though BERT gave state of art results on many NLP leaderboards, there were issues when deploying it for real world applications.
+
+1. **Memory Limitation:**  
+![](/images/bert-heavy-on-gpu.png){.img-center}  
+BERT Large has billions of parameters due to a large hidden size, 24 hidden layers and more attention heads. Due to memory limitations of currently available GPU/TPUs, we can't keep doubling the size of models and expect it to work. Also, in the real world applications, model size and inference speed are key components of selecting a model.
+
 
 ## Problem
 - large model size ++ in pretraining 
