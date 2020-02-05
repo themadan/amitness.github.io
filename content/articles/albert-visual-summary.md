@@ -4,7 +4,7 @@ Modified: 2020-02-02 20:00
 Category: nlp
 Slug: albert-visual-summary
 Summary: Learn how to integrate and finetune tensorflow-hub modules in Tensorflow 2.0
-Status: published
+Status: draft
 Authors: Amit Chaudhary
 
 The release of BERT model by google is considered as the "imagenet moment" for NLP and start of a new era for NLP.
