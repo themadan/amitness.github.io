@@ -37,7 +37,7 @@ Credits: [Marvel Studios on Giphy](https://giphy.com/stickers/marvelstudios-oh-t
 
 ### 2. Next Sentence Prediction
 Idea here is to detect whether two sentences are coherent when placed one after another or not.
-![](/images/bert-nsp-1.png){.img-center}  
+![](/images/bert-nsp.png){.img-center}  
 
 For this, BERT takes consecutive sentences from training data as a positive example. For negative example, a sentence is taken and a random sentence from another document is placed next to it.
 
@@ -83,7 +83,7 @@ ALBERT solves the problems with BERT with a few interesting ideas:
     
     We project the One Hot Encoding vector into the lower dimension embedding space of E and then this embedding space into the hidden space.
     
-    Thus, the complexity decreases from O(V*E) into O(V*E) + O(E*H)
+    Thus, the complexity decreases from O(V\*E) to O(V\*E) + O(E\*H)
     
 2. **Cross-layer parameter sharing**  
     The next thing is the depth of the BERT model. The BERT large model has 24 layers compared to it's 12-layer base model. As the depth of layers increases, the number of parameters also grows exponentially.
@@ -91,7 +91,7 @@ ALBERT solves the problems with BERT with a few interesting ideas:
     
     ![](/images/albert-parameter-sharing.png)
 
-3. **Self-supervised loss for sentence-order prediction (SOP)**  
+3. **Sentence-Order prediction (SOP)**  
     BERT introduced a binary classification loss called "Next Sentence Prediction". As explained above, here we took two segments that appear consecutively from training corpus and also a random pair of segment from different document as negative examples. This was specifically created to improve performance on Natural Language Inference where we reason about sentence pair.
     
     Paper like ROBERTA and XLNET have shed light on the ineffectiveness of NSP and found it's impact on the downstream tasks unreliable. On eliminating it, the performance across several tasks have improved.
@@ -99,7 +99,10 @@ ALBERT solves the problems with BERT with a few interesting ideas:
     ALBERT proposes a conjecture that NSP is not a difficult task compared to masked language modeling. It mixes topic prediction and coherence prediction. Topic prediction is easy to learn compared to coherence prediction. Also, topic prediction overlaps with what is learned through the masked language model loss.
     
     So, it proposes an alternative task called Sentence Order Prediction loss. It avoids the topic prediction task and only models inter-sentence coherence.
+    
     In this we take two consecutive segments from same document as positive example and same segment with order swapped as a negative example.
+    ![](/images/sentence-order-prediction.png)
+    
     
     The forces the model to learn finer-grained distinction about discourse-level coherence properties.
     
