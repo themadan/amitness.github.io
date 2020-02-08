@@ -4,75 +4,84 @@ Modified: 2020-02-02 20:00
 Category: nlp
 Slug: albert-visual-summary
 Summary: Learn how to integrate and finetune tensorflow-hub modules in Tensorflow 2.0
-Status: draft
+Status: published
 Authors: Amit Chaudhary
 
-The release of BERT model by google is considered as the "imagenet moment" for NLP and start of a new era for NLP.
-
-Let's recap BERT for a while.
-
-
-# Quick Recap:  BERT
 Consider a sentence given below. As humans, when we encounter the word "**apple**", we could: 
 
 - Associate the word "apple" to our mental representation of the fruit "apple"  
 - Associate "apple" to the fruit rather than the company based on the context  
 - Understand the big picture that "*he ate an apple*"  
-- Distinguish between characters "a", word and sentences
+- Understand it at character-level, word-level and sentence-level  
 
 ![](/images/nlp-representation-learning.png){.img-center}    
 
-The basic premise of latest developments in NLP is to give machines the ability to learn such representations.
+The basic premise of latest developments in NLP is to give machines the ability to learn such representations. 
 
-In 2018, Google release BERT that attempted to solve this task based on a few novel ideas:
+In 2018, Google released BERT that attempted to learn representations based on a few novel ideas:
+
+## Recap:  BERT
 ### 1. Masked Language Modeling
-Language modeling basically involves predicting the word given its context to learn representation. Tradionally, this involved predicting the next word in sentence given previous words.
+Language modeling basically involves predicting the word given its context as a way to learn representation. Tradionally, this involved predicting the next word in sentence given previous words.
 ![](/images/nlp-language-model-1.png){.img-center}  
 
-BERT introduced a **masked language model** objective, in which we randomly mask words in document and try to predict them based on context.
+BERT instead used a **masked language model** objective, in which we randomly mask words in document and try to predict them based on surrounding context.
 ![](/images/bert-masked-language-model.png){.img-center}  
 <p class="has-text-centered">
 Credits: [Marvel Studios on Giphy](https://giphy.com/stickers/marvelstudios-oh-thanos-snapped-TfjfIgE9YUgdyz8V1J)
 </p>
 
 ### 2. Next Sentence Prediction
-Idea here is to detect whether two sentences are coherent when placed one after another or not.
+The idea with "Next Sentence Prediction" is to detect whether two sentences are coherent when placed one after another or not.
 ![](/images/bert-nsp.png){.img-center}  
 
-For this, BERT takes consecutive sentences from training data as a positive example. For negative example, a sentence is taken and a random sentence from another document is placed next to it.
+For this, consecutive sentences from the training data are used as a positive example. For negative example, some sentence is taken and a random sentence from another document is placed next to it. BERT model is trained on this task to identify if two sentences can occur next to each other.
 
 ### 3. Transformer Architecture
-To solve the above two tasks, BERT uses stacked layers of transformer blocks. We get vectors of size 768 for each word when passing through the layers to capture the meaning of the word.
+To solve the above two tasks, BERT uses stacked layers of transformer blocks as encoders. Word vectors are passed through the layers to capture the meaning and yeild a vector of size 768 for the base model.  
+
 ![](/images/bert-blocks.png)
-Jay Alammar has an [excellent post](http://jalammar.github.io/illustrated-bert/) that illustrates the internals of BERT in more depth.
+Jay Alammar has an [excellent post](http://jalammar.github.io/illustrated-bert/) that illustrates the internals of transformers in more depth.
 
 ## Problems with BERT
-Even though BERT gave state of art results on many NLP leaderboards, there are issues with it that are highlighted by the ALBERT paper:
-
+BERT, when released, yielded state of art results on many NLP tasks on leaderboards. But, the model was very large in size which resulted in some issues. The "ALBERT" paper highlights these issues in two categories:  
+  
 1. **Memory Limitation and Communication Overhead:**  
-    ![](/images/bert-heavy-on-gpu.png){.img-center}  
-    BERT Large has billions of parameters contributed by its large 24 hidden layers, large units and attention heads in each layer. This makes it difficult to take large BERT models as it is and use for real-world application where restricted compute requirements play a major role.
-    Due to memory limitations of currently available GPU/TPUs, we can't keep doubling the size of models and expect it to work.  
+    Consider a simple neural network with one input node, two hidden nodes and a output node. Even such a simple neural network will have 7 parameters to learn due to weights and bias per node.  
+    ![](/images/small-network-parameters.png){.img-center}  
     
-    One way to train solve the limited memory issue would be to use distributed training. But, for such configuration, the training time is slowed due to the large number of parameters of the model which adds communication overhead.
+    BERT-large, being a complex model, has 340 million parameters because of to its 24 hidden layers and lots of nodes in feed-forward network and attention heads. If you wanted to build upon the work on BERT and brings improvements to it, you would require large compute requirements to train from scratch and iterate on it.
+    ![](/images/bert-heavy-on-gpu.png){.img-center}  
+    These compute requirements mainly involve GPUs and TPUs, but such devices have a memory limitation. So, there is a limit to the size of models.
+    
+    One popular approach to this problem in distributed training. Let's take example of data parallelism on BERT-large, where training data is divided into two machines. The model is trained on two machines on chunks of data. As shown in the figure, you can notice how the large number of parameters to transfer during synchronization of gradients can slow down the training process. The same bottleneck applies for the model parallelism as well where we store different parts of the model(parameters) on different machines.
+    ![](/images/bert-communication-overhead.png){.img-center} 
+    <p class="has-text-centered">
+        Figure: Communication overhead in distributed training
+    </p>
     
 2. **Model Degradation**  
-    Recent trend in the NLP community is that models size are getting larger and larger while leading to state-of-the-art performance on the various datasets.   
+    Recent trend in the NLP research community is using larger and larger models to get state-of-the-art performance on leaderboards. ALBERT shows that that this can have diminishing returns.  
       
-    In the ALBERT paper, the author performed an interesting experiment. If larger models lead to better performance, why not double the hidden layer units of the largest available BERT model, the BERT-large with 1024 units to BERT-xlarge with 2048 units. Contrary to expectation, the larger model actually performs worse than the BERT-large model on both Language Model accuracy as well as performance on the RACE dataset.
+    In the paper, the authors performed an interesting experiment. 
+    > If larger models lead to better performance, why not double the hidden layer units of the largest available BERT model(BERT-large) from 1024 units to 2048 units? 
+    
+    They call it "BERT-xlarge". Surprisingly, the larger model actually performs worse than the BERT-large model on both Language Modeling task as well as when tested on a reading comprehension test (RACE).
     ![](/images/bert-doubled-performance-race.png)
     
-    From the plots given in the original paper, we can see how the performance degrades. BERT-xlarge is performing worse than BERT-large even though it is larger in size. This shows how increasing the size of model doesn't always lead to better performance.
+    From the plots given in the original paper, we can see how the performance degrades. BERT-xlarge is performing worse than BERT-large even though it is larger in size and has more parameters.
     ![](/images/bert-xlarge-vs-bert-large.png)
     <p class="has-text-centered">
         Credits: ALBERT paper
     </p>
 
-## Solutions from ALBERT
-ALBERT solves the problems with BERT with a few interesting ideas:  
+## From BERT to ALBERT
+ALBERT attacks these problems by building upon on BERT with a few novel ideas:  
 
 1. **Factorized embedding parametrization**   
-    In BERT, the word piece embeddings size is linked to the hidden layer size of the transformer blocks. In BERT, the authors have used a vocabulary size of 30000 to learnt word-piece embeddings from the One Hot Encoding Representations. This embeddings are directly projected to the hidden space of the hidden layer.
+    In BERT, the embeddings used (word piece embeddings) size was linked to the hidden layer sizes of the transformer blocks. Word piece embeddings learnt from the one hot encoding representations of a vocabulary of size 30,000 was used. These are projected directly to the hidden space of the hidden layer.
+
+    Let's say we have a vocabulary of size 30K, word-piece embedding of 768 dimensions and hidden layer of size H. If we want to add another 30K words 
 
     So, consider a vocabulary of size V, word-piece embeddings denoted by E and hidden layer size H. If we want to increase the vocabulary, we need to increase the hidden layer size of the blocks as well. And, conversely, if we increase hidden layer size, we new to add a new dimensions to each embedding which is already sparse. 
     
@@ -86,51 +95,58 @@ ALBERT solves the problems with BERT with a few interesting ideas:
     Thus, the complexity decreases from O(V\*E) to O(V\*E) + O(E\*H)
     
 2. **Cross-layer parameter sharing**  
-    The next thing is the depth of the BERT model. The BERT large model has 24 layers compared to it's 12-layer base model. As the depth of layers increases, the number of parameters also grows exponentially.
-    To prevent this problem, ALBERT uses the concept of cross-layer parameter sharing. We can either share the FFN layer only, the attention parameters only or share all the parameters between the layers.
+    BERT large model had 24 layers while it's base version had 12-layers. As we add more layers, we increase the number of parameters exponentially.  
+    ![](/images/bert-parameters.png)
+
+    To solve this problem, ALBERT uses the concept of cross-layer parameter sharing. To illustrate, let's see the example of 12-layer BERT-base model. Instead of learning unique parameters for each of the 12 layers, we only learn parameters for the first block, and reuse the block in the remaining 11 layers.
     
     ![](/images/albert-parameter-sharing.png)
 
-3. **Sentence-Order prediction (SOP)**  
-    BERT introduced a binary classification loss called "Next Sentence Prediction". As explained above, here we took two segments that appear consecutively from training corpus and also a random pair of segment from different document as negative examples. This was specifically created to improve performance on Natural Language Inference where we reason about sentence pair.
+    We can share parameter for either feed-forward layer only, the attention parameters only or share the parameters of the whole block itself. The paper shares the parameters for whole block.
+
+    Compared to the 110 million paramters of BERT-base, the ALBERT model only has 31 million parameters while using the same number of layers and 768 hidden units. The effect on accuracy is minimal for embedding size of 128. Major drop in accuracy is due to feed-forward network parameter sharing. Effect of sharing attention parameters is minimal.
+    ![](/images/albert-parameter-sharing-results.png)
+    <p class="has-text-centered">
+        Figure: Effect of cross-layer parameter strategy on performance
+    </p>
+
+3. **Sentence-Order Prediction (SOP)** 
+
+    BERT introduced a binary classification loss called "**Next Sentence Prediction**". This was specifically created to improve performance on downstream tasks that use sentence pairs like "Natural Language Inference". The basic process is:  
+
+    - Take two segments that appear consecutively from training corpus  
+    - Create a random pair of segment from different document as negative examples
+    ![](/images/nsp-training-data-generation.png)
+ 
     
     Paper like ROBERTA and XLNET have shed light on the ineffectiveness of NSP and found it's impact on the downstream tasks unreliable. On eliminating it, the performance across several tasks have improved.
     
-    ALBERT proposes a conjecture that NSP is not a difficult task compared to masked language modeling. It mixes topic prediction and coherence prediction. Topic prediction is easy to learn compared to coherence prediction. Also, topic prediction overlaps with what is learned through the masked language model loss.
-    
-    So, it proposes an alternative task called Sentence Order Prediction loss. It avoids the topic prediction task and only models inter-sentence coherence.
-    
-    In this we take two consecutive segments from same document as positive example and same segment with order swapped as a negative example.
+    So, ALBERT proposes an alternative task called **"Sentence Order Prediction"**. The key idea is:  
+
+    - Take two consecutive segments from same document as positive class  
+    - Swap the order of the same segment and use that as negative example  
     ![](/images/sentence-order-prediction.png)
-    
-    
+
     The forces the model to learn finer-grained distinction about discourse-level coherence properties.
-    
-    Results shows that it improves performance on downstream multi-sentence encoding tasks (SQUAD 1.1, 2.0, MNLI, SST-2, RACE).
-    
-    [TODO: Add figure from section 4.6]
-    
-    NSP cannot solve SOP task, only slightly better than random baseline of 52%, but SOP can solve the NSP task
-    
-    Also, it is convicing evidence that SOP leads to better learning representation.
-    
-    - model inter-sentence coherence
-    - like fasttext and infersent
 
-## Objective Results
-- vs BERT-large: 18x fewer parameters
-- trained 1.7x faster
-- regularization and generalization
-- empirical evidence:
-    - scale much better
-    - SOTA on GLUE, RACE and SQUAD
-    - RACE -> 44.1%(2017), 83.2% -> 89.4% (45.3% imporvement)
-- RACE accuracy: 89.4%, GLUE benchmark: 89.4, F1 score SQUAD 2.0: 92.2
+    
+    ALBERT conjectures that NSP was ineffective because it's not a difficult task when compared to masked language modeling. In a single task, it mixes both topic prediction and coherence prediction. The topic prediction part is easy to learn because it overlaps with the masked language model loss. Thus, NSP will give higher scores even when it hasn't learned coherence prediction.
 
-## Existing solutions: (incorporate above in description)
-- Megatron-LM: model parallelism to solve memory limitation: https://arxiv.org/abs/1909.08053
-- problem: 
+    SOP improves performance on downstream multi-sentence encoding tasks (SQUAD 1.1, 2.0, MNLI, SST-2, RACE).
+    ![](/images/sop-results-albert.png)
 
+    Here we can see how model trained on NSP is only giving scores slightly better than random baseline on SOP task, but model trained on SOP can solve the NSP task quite effectively. This provides evidence that SOP leads to better learning representation.
+    
+## Results
+- 18x fewer parameters than BERT-large
+- Trained 1.7x faster
+- Got SOTA results on GLUE, RACE and SQUAD during its release
+    - RACE: 89.4% [45.3% improvement]
+    - GLUE Benchmark: 89.4
+    - SQUAD 2.0 F1-score: 92.2
+
+## Conclusion
+ALBERT marks an important step towards building language models that not only get SOTA on the leaderboards but are also feasible for actual applications.
 
 ## References
 - [ALBERT: A Lite BERT for Self-supervised Learning of Language Representations](https://arxiv.org/pdf/1909.11942.pdf)
