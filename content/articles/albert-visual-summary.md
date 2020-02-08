@@ -1,6 +1,6 @@
 Title: Visual Paper Summary: ALBERT (A Lite BERT)
-Date: 2020-02-02 20:00
-Modified: 2020-02-02 20:00
+Date: 2020-02-08 22:00
+Modified: 2020-02-08 22:00
 Category: nlp
 Slug: albert-visual-summary
 Summary: Learn how to integrate and finetune tensorflow-hub modules in Tensorflow 2.0
@@ -146,7 +146,7 @@ ALBERT attacks these problems by building upon on BERT with a few novel ideas:
     - SQUAD 2.0 F1-score: 92.2
 
 ## Conclusion
-ALBERT marks an important step towards building language models that not only get SOTA on the leaderboards but are also feasible for actual applications.
+ALBERT marks an important step towards building language models that not only get SOTA on the leaderboards but are also feasible for real-world applications.
 
 ## References
 - [ALBERT: A Lite BERT for Self-supervised Learning of Language Representations](https://arxiv.org/pdf/1909.11942.pdf)
