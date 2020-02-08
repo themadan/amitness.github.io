@@ -3,8 +3,7 @@ Date: 2020-02-08 22:00
 Modified: 2020-02-08 22:00
 Category: nlp
 Slug: albert-visual-summary
-Summary: Learn how to integrate and finetune tensorflow-hub modules in Tensorflow 2.0
-Status: published
+Summary: An illustrated summary of ALBERT paper.
 Authors: Amit Chaudhary
 
 Consider a sentence given below. As humans, when we encounter the word "**apple**", we could: 
