@@ -77,24 +77,8 @@ BERT, when released, yielded state of art results on many NLP tasks on leaderboa
 
 ## From BERT to ALBERT
 ALBERT attacks these problems by building upon on BERT with a few novel ideas:  
-
-1. **Factorized embedding parametrization**   
-    In BERT, the embeddings used (word piece embeddings) size was linked to the hidden layer sizes of the transformer blocks. Word piece embeddings learnt from the one hot encoding representations of a vocabulary of size 30,000 was used. These are projected directly to the hidden space of the hidden layer.
-
-    Let's say we have a vocabulary of size 30K, word-piece embedding of 768 dimensions and hidden layer of size H. If we want to add another 30K words 
-
-    So, consider a vocabulary of size V, word-piece embeddings denoted by E and hidden layer size H. If we want to increase the vocabulary, we need to increase the hidden layer size of the blocks as well. And, conversely, if we increase hidden layer size, we new to add a new dimensions to each embedding which is already sparse. 
     
-    So, the complexity is O(V*E). This problem is prevalent with even later improvements to BERT in XLNET and ROBERTA as well.
-    
-    ALBERT solves this problem by factorizing the large vocabulary embedding matrix into two smaller matrices. This separates the size of the hidden layers from the size of the vocabulary embeddings. And this allows us to grow the hidden size without significantly increasing the parameter size 
-    of the vocabulary embeddings.
-    
-    We project the One Hot Encoding vector into the lower dimension embedding space of E and then this embedding space into the hidden space.
-    
-    Thus, the complexity decreases from O(V\*E) to O(V\*E) + O(E\*H)
-    
-2. **Cross-layer parameter sharing**  
+1. **Cross-layer parameter sharing**  
     BERT large model had 24 layers while it's base version had 12-layers. As we add more layers, we increase the number of parameters exponentially.  
     ![](/images/bert-parameters.png)
 
@@ -110,7 +94,7 @@ ALBERT attacks these problems by building upon on BERT with a few novel ideas:
         Figure: Effect of cross-layer parameter strategy on performance
     </p>
 
-3. **Sentence-Order Prediction (SOP)** 
+2. **Sentence-Order Prediction (SOP)** 
 
     BERT introduced a binary classification loss called "**Next Sentence Prediction**". This was specifically created to improve performance on downstream tasks that use sentence pairs like "Natural Language Inference". The basic process is:  
 
@@ -119,7 +103,7 @@ ALBERT attacks these problems by building upon on BERT with a few novel ideas:
     ![](/images/nsp-training-data-generation.png)
  
     
-    Paper like ROBERTA and XLNET have shed light on the ineffectiveness of NSP and found it's impact on the downstream tasks unreliable. On eliminating it, the performance across several tasks have improved.
+    Papers like [ROBERTA](https://arxiv.org/abs/1907.11692) and [XLNET](https://arxiv.org/abs/1906.08237) have shed light on the ineffectiveness of NSP and found it's impact on the downstream tasks unreliable. On eliminating the NSP task, the performance across several tasks improved.
     
     So, ALBERT proposes an alternative task called **"Sentence Order Prediction"**. The key idea is:  
 
@@ -136,7 +120,16 @@ ALBERT attacks these problems by building upon on BERT with a few novel ideas:
     ![](/images/sop-results-albert.png)
 
     Here we can see how model trained on NSP is only giving scores slightly better than random baseline on SOP task, but model trained on SOP can solve the NSP task quite effectively. This provides evidence that SOP leads to better learning representation.
+
+3. **Factorized embedding parameterization**   
+    In BERT, the embeddings used (word piece embeddings) size was linked to the hidden layer sizes of the transformer blocks. Word piece embeddings learnt from the one hot encoding representations of a vocabulary of size 30,000 was used. These are projected directly to the hidden space of the hidden layer.
+
+    Let's say we have a vocabulary of size 30K, word-piece embedding of 768 dimensions and hidden layer of size H. If we increase hidden units in the block, then we need to add a new dimension to each embedding as well. This problem is prevalent in XLNET and ROBERTA as well.
     
+    ALBERT solves this problem by factorizing the large vocabulary embedding matrix into two smaller matrices. This separates the size of the hidden layers from the size of the vocabulary embeddings. And this allows us to grow the hidden size without significantly increasing the parameter size of the vocabulary embeddings.
+    
+    We project the One Hot Encoding vector into the lower dimension embedding space of E and then this embedding space into the hidden space. Thus, the complexity decreases from O(V\*E) to O(V\*E) + O(E\*H)
+
 ## Results
 - 18x fewer parameters than BERT-large
 - Trained 1.7x faster
