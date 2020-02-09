@@ -121,13 +121,16 @@ ALBERT attacks these problems by building upon on BERT with a few novel ideas:
     Here we can see how model trained on NSP is only giving scores slightly better than random baseline on SOP task, but model trained on SOP can solve the NSP task quite effectively. This provides evidence that SOP leads to better learning representation.
 
 3. **Factorized embedding parameterization**   
-    In BERT, the embeddings used (word piece embeddings) size was linked to the hidden layer sizes of the transformer blocks. Word piece embeddings learnt from the one hot encoding representations of a vocabulary of size 30,000 was used. These are projected directly to the hidden space of the hidden layer.
+    In BERT, the embeddings used (word piece embeddings) size was linked to the hidden layer sizes of the transformer blocks. Word piece embeddings learnt from the one hot encoding representations of a vocabulary of size 30,000 was used. These are projected directly to the hidden space of the hidden layer.  
 
-    Let's say we have a vocabulary of size 30K, word-piece embedding of 768 dimensions and hidden layer of size H. If we increase hidden units in the block, then we need to add a new dimension to each embedding as well. This problem is prevalent in XLNET and ROBERTA as well.
+    Let's say we have a vocabulary of size 30K, word-piece embedding of dimension E=768 and hidden layer of size H=768. If we increase hidden units in the block, then we need to add a new dimension to each embedding as well. This problem is prevalent in XLNET and ROBERTA as well.
+    ![](/images/bert-embedding.png){.img-center}
     
-    ALBERT solves this problem by factorizing the large vocabulary embedding matrix into two smaller matrices. This separates the size of the hidden layers from the size of the vocabulary embeddings. And this allows us to grow the hidden size without significantly increasing the parameter size of the vocabulary embeddings.
-    
-    We project the One Hot Encoding vector into the lower dimension embedding space of E and then this embedding space into the hidden space. Thus, the complexity decreases from O(V\*E) to O(V\*E) + O(E\*H)
+
+    ALBERT solves this problem by factorizing the large vocabulary embedding matrix into two smaller matrices. This separates the size of the hidden layers from the size of the vocabulary embeddings. This allows us to grow the hidden size without significantly increasing the parameter size of the vocabulary embeddings.
+    ![](/images/embedding-decompose-albert.png){.img-center}
+
+    We project the One Hot Encoding vector into the lower dimension embedding space of E=100 and then this embedding space into the hidden space H=768.
 
 ## Results
 - 18x fewer parameters than BERT-large
