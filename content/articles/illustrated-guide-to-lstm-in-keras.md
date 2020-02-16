@@ -1,4 +1,4 @@
-Title: Illustrated Guide to Applying LSTM in Keras
+Title: Illustrated Guide on Using LSTM in Keras
 Date: 2020-02-10 03:00
 Modified: 2020-02-10 03:00
 Category: nlp
@@ -52,8 +52,14 @@ To understand what each parameter means, refer to the figure below and how each 
     - So, in the figure, we see how a hidden state of size 4 is passed between the RNN blocks
     - For the first block, since there is no previous output, so previous hidden state is set to **[0, 0, 0, 0]**
 
+## Stacking Layers
+```python
+model = Sequential()
+model.add(SimpleRNN(4, input_shape=(3, 2), return_sequences=True))
+model.add(SimpleRNN(4))
+```
 
 ## Conclusion
 
 ## References
-- [Keras Documentation](https://keras.io/)
+- [Recurrent Layers - Keras Documentation](https://keras.io/layers/recurrent/)
