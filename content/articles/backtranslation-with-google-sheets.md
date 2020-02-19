@@ -2,7 +2,7 @@ Title: Back translation for Text Augmentation with Google Sheets
 Date: 2020-02-19 16:13
 Modified: 2020-02-19 16:13
 Category: nlp
-Slug: back-translation-for-text-augmentation
+Slug: back-translation-in-google-sheets
 Summary: Learn how to augment existing labelled text data for free using google sheets.
 Authors: Amit Chaudhary
 Status: published
