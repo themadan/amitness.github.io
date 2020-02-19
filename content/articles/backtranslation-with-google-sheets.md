@@ -1,4 +1,4 @@
-Title: Back translation for Text Augmentation with Google Sheets
+Title: Back Translation for Text Augmentation with Google Sheets
 Date: 2020-02-19 16:13
 Modified: 2020-02-19 16:13
 Category: nlp
