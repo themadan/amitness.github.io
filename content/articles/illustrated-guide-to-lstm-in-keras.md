@@ -14,7 +14,7 @@ However, when it came to implementation using frameworks like Keras, there were 
 
 Having learnt these things the hard way, I've built a mental model now to easily design architectures and leverage LSTMs on various problems. This post is an attempt to make these mental model concrete and allow others to leverage it. The mental model rests on this core idea of being able to visualize at a high level how the inputs and outputs from these units pass.
 
-I will be explaning the mental model through the lens of Natural Language Processing to make the examples intuitive.
+I will be explaining the mental model through the lens of Natural Language Processing to make the examples intuitive.
 
 ## The Higher Purpose
 Let's say we have some text and you want to apply machine learning on it. We know models only understand numeric data, so we need some way to convert it into numeric form. We have word vector techniques to get the numeric form (embeddings) for the words.
@@ -58,6 +58,8 @@ model = Sequential()
 model.add(SimpleRNN(4, input_shape=(3, 2), return_sequences=True))
 model.add(SimpleRNN(4))
 ```
+
+![](/images/rnn-stacked.png){.img-center}
 
 ## Conclusion
 
