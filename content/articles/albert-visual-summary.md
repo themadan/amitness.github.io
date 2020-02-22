@@ -5,6 +5,7 @@ Category: nlp
 Slug: albert-visual-summary
 Summary: An illustrated summary of ALBERT paper.
 Authors: Amit Chaudhary
+Status: published
 
 Consider a sentence given below. As humans, when we encounter the word "**apple**", we could: 
 
