@@ -5,6 +5,7 @@ Modified: 2015-07-18 08:00
 **Who I am**  
 
 Hi, I'm Amit Chaudhary and I live in Kathmandu - Nepal.  
+  
 I'm  a T-shaped engineer exploring the multidisciplinary fields of applied data science, one at a time.
 
 <br>
