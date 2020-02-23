@@ -4,7 +4,7 @@ Modified: 2020-02-22 03:00
 Category: research
 Slug: illustrated-self-supervised-learning
 Summary: ...
-Status: draft
+Status: published
 Authors: Amit Chaudhary
 
 # Image  
@@ -31,7 +31,7 @@ Formulation:
 GAN based models such as [SRGAN](https://arxiv.org/abs/1609.04802) are popular for this task. A generator takes a low-resolution image and outputs a high-resolution image using fully convolutional network. The actual and generated images are compared using both mean-squared-error and content loss to imitate human like quality comparison. A binary-classification discriminator takes an image and classifies whether it's an actual high resolution image(1) or a fake generated superresolution image(0). This interplay between the two models leads to generator learning to produce images wth fine details. 
 ![](/images/ss-srgan-architecture.png)
 
-Semantic features are learnt by this task and the features from the discriminator can be used for downstream tasks.
+Both generator and discriminator learn semantic features which can be used for downstream tasks.
 
 **Papers**:  
 [Photo-Realistic Single Image Super-Resolution Using a Generative Adversarial Network](https://arxiv.org/abs/1609.04802)
@@ -44,13 +44,13 @@ Formulation:
 ![](/images/ss-image-inpainting-data-gen.png){.img-center}  
 
 
-GAN based models such as [SRGAN](https://arxiv.org/abs/1609.04802) are popular for this task. A generator takes a low-resolution image and outputs a high-resolution image using fully convolutional network. The actual and generated images are compared using both mean-squared-error and content loss to imitate human like quality comparison. A binary-classification discriminator takes an image and classifies whether it's an actual high resolution image(1) or a fake generated superresolution image(0). This interplay between the two models leads to generator learning to produce images wth fine details. 
-![](/images/ss-srgan-architecture.png)
+Similar to superresolution, we can leverage a GAN-based architecture where the Generator can learn to reconstruct the image while discriminator separates real and generated images.
+![](/images/ss-inpainting-architecture.png)
 
-Semantic features are learnt by this task and the features from the discriminator can be used for downstream tasks.
+For downstream tasks, [Pathak et al.](https://arxiv.org/abs/1604.07379) have shown that semantic features learnt by such generator gives 10.2% improvement over random initialization on the [PASCAL VOC 2012](http://host.robots.ox.ac.uk/pascal/VOC/voc2012/index.html) semantic segmentation challenge, while giving <4% improvements over classification and object detection.
 
 **Papers**:  
-[Photo-Realistic Single Image Super-Resolution Using a Generative Adversarial Network](https://arxiv.org/abs/1609.04802)
+[Context encoders: Feature learning by inpainting](https://arxiv.org/abs/1604.07379)
 
 ## References
 - Jing, et al. “[Self-Supervised Visual Feature Learning with Deep Neural Networks: A Survey.](https://arxiv.org/abs/1902.06162)”
