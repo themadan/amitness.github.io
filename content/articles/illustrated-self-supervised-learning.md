@@ -3,8 +3,8 @@ Date: 2020-02-22 03:00
 Modified: 2020-02-22 03:00
 Category: research
 Slug: illustrated-self-supervised-learning
-Summary: ...
-Status: published
+Summary: A visual guide to pretext tasks used for self-supervised representation learning
+Status: draft
 Authors: Amit Chaudhary
 
 # Image  
@@ -51,6 +51,39 @@ For downstream tasks, [Pathak et al.](https://arxiv.org/abs/1604.07379) have sho
 
 **Papers**:  
 [Context encoders: Feature learning by inpainting](https://arxiv.org/abs/1604.07379)
+
+## 4. **Image Jigsaw Puzzle**
+Formulation:   
+> What if we prepared training pairs of (shuffled, ordered) puzzles by randomly shuffling patches of images?  
+
+![](/images/ss-image-jigsaw-data.png){.img-center}  
+
+Even with only 9 patches, there can be 362880 possible puzzles. To overcome this, only a subset of possible permutations is used such as 64 permutations with highest hamming distance.
+![](/images/ss-jigsaw-permutations.png){.img-center}
+
+Suppose we use a permutation that changes the image as shown below. Let's use the permutation number 64 from our total available 64 permutations.
+![](/images/ss-jigsaw-permutation-64.png){.img-center}
+
+Now, to recover back the original patches, [Noroozi et al.](https://arxiv.org/abs/1603.09246)
+ proposed a neural network called context-free network (CFN) as shown below. Here, the individual patches are passed through the same siamese convolutional layers that have shared weights. Then, the features are combined in a fully-connected layer. In the output, the model has to predict which permutation was used from the 64 possible classes. If we know the permutation, we can solve the puzzle.
+![](/images/ss-jigsaw-architecture.png){.img-center}
+
+To solve the Jigsaw puzzle, the model needs to learn to identify how parts are assembled in an object, relative positions of different parts of objects and shape of objects. Thus, the representations are useful for downstream tasks in classification and detection.
+
+**Papers**:  
+[Unsupervised learning of visual representions by solving jigsaw puzzles](https://arxiv.org/abs/1603.09246)
+
+## 5. **Context Prediction**
+Formulation:   
+> What if we prepared training pairs of (image-patch, neighbor) by randomly taking image patch and one of its neighbors around it from large, unlabeled image collection?  
+
+![](/images/ss-context-prediction-gen.png){.img-center}  
+
+To solve this pre-text task, we can use architecture similar to that of jigsaw puzzle. We pass the patches through two siamese ConvNets to extract features, concat the features and do a classification over 8 classes denoting the 8 neighbors.
+![](/images/ss-context-prediction-architecture.png){.img-center}
+
+**Papers**:  
+[Unsupervised Visual Representation Learning by Context Prediction](https://arxiv.org/abs/1505.05192)
 
 ## References
 - Jing, et al. “[Self-Supervised Visual Feature Learning with Deep Neural Networks: A Survey.](https://arxiv.org/abs/1902.06162)”
