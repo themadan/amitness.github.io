@@ -105,15 +105,13 @@ Formulation:
 > What if we prepared training pairs of (image, cluster-number) by performing clustering on large, unlabeled image collection?  
 
 
-![](/images/ss-geometric-transformation-gen.png){.img-center}  
+![](/images/ss-image-clustering-gen.png){.img-center}  
 
-To solve this pre-text task, [Gidaris et al.](https://arxiv.org/abs/1505.05192) propose an architecture where a rotated image is passed through a ConvNet and the network has to classify it into 4 classes(0/90/270/360 degrees).
-![](/images/ss-geometric-transformation-architecture.png){.img-center}
-
-Though a very simple idea, the model has to understand location, types and pose of objects in image to solve this task and as such, the representations learnt are useful for downstream tasks.
+To solve this pre-text task, [Caron et al.](https://arxiv.org/abs/1807.05520) propose an architecture called deep clustering. Here, the images are first clustered and the clusters are used as classes. The task of the ConvNet is to predict the cluster label for an input image.
+![](/images/ss-deep-clustering-architecture.png){.img-center}
 
 **Papers**:  
-[Unsupervised Representation Learning by Predicting Image Rotations](https://arxiv.org/abs/1803.07728)
+[Deep clustering for unsupervised learning of visual features](https://arxiv.org/abs/1807.05520)
 
 ## References
 - Jing, et al. “[Self-Supervised Visual Feature Learning with Deep Neural Networks: A Survey.](https://arxiv.org/abs/1902.06162)”
