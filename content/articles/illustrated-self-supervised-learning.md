@@ -79,11 +79,41 @@ Formulation:
 
 ![](/images/ss-context-prediction-gen.png){.img-center}  
 
-To solve this pre-text task, we can use architecture similar to that of jigsaw puzzle. We pass the patches through two siamese ConvNets to extract features, concat the features and do a classification over 8 classes denoting the 8 neighbors.
+To solve this pre-text task, [Doersch et al.](https://arxiv.org/abs/1505.05192) used an architecture similar to that of jigsaw puzzle. We pass the patches through two siamese ConvNets to extract features, concatenate the features and do a classification over 8 classes denoting the 8 possible neighbor positions.
 ![](/images/ss-context-prediction-architecture.png){.img-center}
 
 **Papers**:  
 [Unsupervised Visual Representation Learning by Context Prediction](https://arxiv.org/abs/1505.05192)
+
+## 6. **Geometric Transformation Recognition**
+Formulation:   
+> What if we prepared training pairs of (rotated-image, rotation-angle) by randomly rotating images by (0, 90, 180, 270) from large, unlabeled image collection?  
+
+
+![](/images/ss-geometric-transformation-gen.png){.img-center}  
+
+To solve this pre-text task, [Gidaris et al.](https://arxiv.org/abs/1505.05192) propose an architecture where a rotated image is passed through a ConvNet and the network has to classify it into 4 classes(0/90/270/360 degrees).
+![](/images/ss-geometric-transformation-architecture.png){.img-center}
+
+Though a very simple idea, the model has to understand location, types and pose of objects in image to solve this task and as such, the representations learnt are useful for downstream tasks.
+
+**Papers**:  
+[Unsupervised Representation Learning by Predicting Image Rotations](https://arxiv.org/abs/1803.07728)
+
+## 7. **Image Clustering**
+Formulation:   
+> What if we prepared training pairs of (image, cluster-number) by performing clustering on large, unlabeled image collection?  
+
+
+![](/images/ss-geometric-transformation-gen.png){.img-center}  
+
+To solve this pre-text task, [Gidaris et al.](https://arxiv.org/abs/1505.05192) propose an architecture where a rotated image is passed through a ConvNet and the network has to classify it into 4 classes(0/90/270/360 degrees).
+![](/images/ss-geometric-transformation-architecture.png){.img-center}
+
+Though a very simple idea, the model has to understand location, types and pose of objects in image to solve this task and as such, the representations learnt are useful for downstream tasks.
+
+**Papers**:  
+[Unsupervised Representation Learning by Predicting Image Rotations](https://arxiv.org/abs/1803.07728)
 
 ## References
 - Jing, et al. “[Self-Supervised Visual Feature Learning with Deep Neural Networks: A Survey.](https://arxiv.org/abs/1902.06162)”
