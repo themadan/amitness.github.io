@@ -1,13 +1,23 @@
-Title: Illustrated Survey of Self-Supervised Learning
-Date: 2020-02-22 03:00
-Modified: 2020-02-22 03:00
+Title: The Illustrated Self-Supervised Learning
+Date: 2020-02-25 03:00
+Modified: 2020-02-25 03:00
 Category: research
 Slug: illustrated-self-supervised-learning
-Summary: A visual guide to pretext tasks used for self-supervised representation learning
+Summary: A visual introduction to the patterns of problem formulation in self-supervised learning
 Status: draft
 Authors: Amit Chaudhary
 
-# Image  
+
+In a [recent talk](https://www.youtube.com/watch?v=7I0Qt7GALVk&t=2639s), Yann Lecun introduced a "cake analogy" to illustrate the importance of self-supervised learning. We have seen this in the Natural Language Processing field where recent developments (Word2Vec, Glove, ELMO, BERT) have embraced self-supervision and achieved state of the art results.
+> “If intelligence is a cake, the bulk of the cake is self-supervised learning, the icing on the cake is supervised learning, and the cherry on the cake is reinforcement learning (RL).”  
+  
+  
+Curious to know how self-supervised learning have been applied in the computer vision field, I read up on existing literature on self-supervised learning applied to computer vision through a [recent survey paper](https://arxiv.org/abs/1902.06162) by Jing et. al. 
+
+This post is my attempt to provide an intuitive visual summary of the patterns of problem formulation in self-supervised learning.
+
+
+# Computer Vision
 ## 1. **Image Colorization**
 Formulation:   
 > What if we prepared pairs of (grayscale, colorized) images by applying grayscale to millions of images we have freely available?  
@@ -112,6 +122,19 @@ To solve this pre-text task, [Caron et al.](https://arxiv.org/abs/1807.05520) pr
 
 **Papers**:  
 [Deep clustering for unsupervised learning of visual features](https://arxiv.org/abs/1807.05520)
+
+## 8. **Synthetic Imagery**
+Formulation:   
+> What if we prepared training pairs of (image, properties) by generating synthetic images using game engines and adapting it to real images?  
+
+
+![](/images/synthetic-imagery-data.png){.img-center}  
+
+To solve this pre-text task, [Ren et al.](https://arxiv.org/pdf/1711.09082.pdf) propose an architecture where weight-shared ConvNets are trained on both synthetic and real images and then a discriminator learns to classify whether ConvNet features fed to it is of a synthetic image or a real image. Due to adversarial nature, the shared representations between real and synthetic images get better.
+![](/images/synthetic-image-architecture.png){.img-center}
+
+**Papers**:  
+[Cross-Domain Self-supervised Multi-task Feature Learning using Synthetic Imagery](https://arxiv.org/pdf/1711.09082.pdf)
 
 ## References
 - Jing, et al. “[Self-Supervised Visual Feature Learning with Deep Neural Networks: A Survey.](https://arxiv.org/abs/1902.06162)”
