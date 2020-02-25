@@ -1,14 +1,14 @@
 Title: The Illustrated Self-Supervised Learning
 Date: 2020-02-25 03:00
 Modified: 2020-02-25 03:00
-Category: research
+Category: illustration
 Slug: illustrated-self-supervised-learning
 Summary: A visual introduction to the patterns of problem formulation in self-supervised learning
-Status: draft
+Status: published
 Authors: Amit Chaudhary
 
 
-In a [recent talk](https://www.youtube.com/watch?v=7I0Qt7GALVk&t=2639s), Yann Lecun introduced a "cake analogy" to illustrate the importance of self-supervised learning. We have seen this in the Natural Language Processing field where recent developments (Word2Vec, Glove, ELMO, BERT) have embraced self-supervision and achieved state of the art results.
+Yann Lecun, in his [talk](https://www.youtube.com/watch?v=7I0Qt7GALVk&t=2639s), introduced the "cake analogy" to illustrate the importance of self-supervised learning. We have seen this in the Natural Language Processing field where recent developments (Word2Vec, Glove, ELMO, BERT) have embraced self-supervision and achieved state of the art results.
 > “If intelligence is a cake, the bulk of the cake is self-supervised learning, the icing on the cake is supervised learning, and the cherry on the cake is reinforcement learning (RL).”  
   
   
@@ -30,6 +30,9 @@ We could use a encoder-decoder architecture based on fully convolutional neural 
 
 To solve this task, the model has to learn about different objects present in image and related parts so that it can paint those parts in the same color. Thus, representations learned are useful for downstream tasks.
 ![](/images/ss-colorization-learning.png){.img-center}  
+
+**Papers:**  
+[Colorful Image Colorization](https://arxiv.org/abs/1603.08511) | [Real-Time User-Guided Image Colorization with Learned Deep Priors](https://arxiv.org/abs/1705.02999) | [Let there be Color!: Joint End-to-end Learning of Global and Local Image Priors for Automatic Image Colorization with Simultaneous Classification](http://iizuka.cs.tsukuba.ac.jp/projects/colorization/en/)
 
 ## 2. **Image Superresolution**
 Formulation:   
