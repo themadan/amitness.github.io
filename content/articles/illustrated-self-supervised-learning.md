@@ -17,7 +17,7 @@ Curious to know how self-supervised learning have been applied in the computer v
 This post is my attempt to provide an intuitive visual summary of the patterns of problem formulation in self-supervised learning.
 
 
-# Computer Vision
+# Learning from Images
 ## 1. **Image Colorization**
 Formulation:   
 > What if we prepared pairs of (grayscale, colorized) images by applying grayscale to millions of images we have freely available?  
@@ -42,7 +42,7 @@ Formulation:
 
 
 GAN based models such as [SRGAN](https://arxiv.org/abs/1609.04802) are popular for this task. A generator takes a low-resolution image and outputs a high-resolution image using fully convolutional network. The actual and generated images are compared using both mean-squared-error and content loss to imitate human like quality comparison. A binary-classification discriminator takes an image and classifies whether it's an actual high resolution image(1) or a fake generated superresolution image(0). This interplay between the two models leads to generator learning to produce images wth fine details. 
-![](/images/ss-srgan-architecture.png)
+![](/images/ss-srgan-architecture.png){.img-center}  
 
 Both generator and discriminator learn semantic features which can be used for downstream tasks.
 
@@ -58,7 +58,7 @@ Formulation:
 
 
 Similar to superresolution, we can leverage a GAN-based architecture where the Generator can learn to reconstruct the image while discriminator separates real and generated images.
-![](/images/ss-inpainting-architecture.png)
+![](/images/ss-inpainting-architecture.png){.img-center}  
 
 For downstream tasks, [Pathak et al.](https://arxiv.org/abs/1604.07379) have shown that semantic features learnt by such generator gives 10.2% improvement over random initialization on the [PASCAL VOC 2012](http://host.robots.ox.ac.uk/pascal/VOC/voc2012/index.html) semantic segmentation challenge, while giving <4% improvements over classification and object detection.
 
@@ -135,6 +135,18 @@ Formulation:
 
 To solve this pre-text task, [Ren et al.](https://arxiv.org/pdf/1711.09082.pdf) propose an architecture where weight-shared ConvNets are trained on both synthetic and real images and then a discriminator learns to classify whether ConvNet features fed to it is of a synthetic image or a real image. Due to adversarial nature, the shared representations between real and synthetic images get better.
 ![](/images/ss-synthetic-image-architecture.png){.img-center}
+
+# Learning from Videos
+## 1. **Frame Order Verification**
+Formulation:   
+> What if we prepared training pairs of (image, properties) by generating synthetic images using game engines and adapting it to real images?  
+
+
+![](/images/synthetic-imagery-data.png){.img-center}  
+
+To solve this pre-text task, [Ren et al.](https://arxiv.org/pdf/1711.09082.pdf) propose an architecture where weight-shared ConvNets are trained on both synthetic and real images and then a discriminator learns to classify whether ConvNet features fed to it is of a synthetic image or a real image. Due to adversarial nature, the shared representations between real and synthetic images get better.
+![](/images/ss-temporal-order-architecture.png){.img-center}
+
 
 **Papers**:  
 [Cross-Domain Self-supervised Multi-task Feature Learning using Synthetic Imagery](https://arxiv.org/pdf/1711.09082.pdf)
