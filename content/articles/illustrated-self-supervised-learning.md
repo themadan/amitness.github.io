@@ -134,7 +134,7 @@ Formulation:
 ![](/images/synthetic-imagery-data.png){.img-center}  
 
 To solve this pre-text task, [Ren et al.](https://arxiv.org/pdf/1711.09082.pdf) propose an architecture where weight-shared ConvNets are trained on both synthetic and real images and then a discriminator learns to classify whether ConvNet features fed to it is of a synthetic image or a real image. Due to adversarial nature, the shared representations between real and synthetic images get better.
-![](/images/synthetic-image-architecture.png){.img-center}
+![](/images/ss-synthetic-image-architecture.png){.img-center}
 
 **Papers**:  
 [Cross-Domain Self-supervised Multi-task Feature Learning using Synthetic Imagery](https://arxiv.org/pdf/1711.09082.pdf)
