@@ -139,17 +139,17 @@ To solve this pre-text task, [Ren et al.](https://arxiv.org/pdf/1711.09082.pdf) 
 # Learning from Videos
 ## 1. **Frame Order Verification**
 Formulation:   
-> What if we prepared training pairs of (image, properties) by generating synthetic images using game engines and adapting it to real images?  
+> What if we prepared training pairs of (video frames, correct/incorrect order) by shuffling frames from videos of objects in motion?   
 
 
-![](/images/synthetic-imagery-data.png){.img-center}  
+![](/images/ss-frame-order-data-gen.png){.img-center}  
 
-To solve this pre-text task, [Ren et al.](https://arxiv.org/pdf/1711.09082.pdf) propose an architecture where weight-shared ConvNets are trained on both synthetic and real images and then a discriminator learns to classify whether ConvNet features fed to it is of a synthetic image or a real image. Due to adversarial nature, the shared representations between real and synthetic images get better.
+To solve this pre-text task, [Misra et al.](https://arxiv.org/pdf/1711.09082.pdf) propose an architecture where video frames are passed through weight-shared ConvNets and the model has to figure out whether the frames are in correct order or not. In doing so, the model learn not just spatial features but also takes into account temporal features.
 ![](/images/ss-temporal-order-architecture.png){.img-center}
 
 
 **Papers**:  
-[Cross-Domain Self-supervised Multi-task Feature Learning using Synthetic Imagery](https://arxiv.org/pdf/1711.09082.pdf)
+[Shuffle and Learn: Unsupervised Learning using Temporal Order Verification](https://arxiv.org/abs/1603.08561)
 
 ## References
 - Jing, et al. “[Self-Supervised Visual Feature Learning with Deep Neural Networks: A Survey.](https://arxiv.org/abs/1902.06162)”
