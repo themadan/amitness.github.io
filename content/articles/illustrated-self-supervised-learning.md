@@ -12,10 +12,25 @@ Yann Lecun, in his [talk](https://www.youtube.com/watch?v=7I0Qt7GALVk&t=2639s), 
 > “If intelligence is a cake, the bulk of the cake is self-supervised learning, the icing on the cake is supervised learning, and the cherry on the cake is reinforcement learning (RL).”  
   
   
-Curious to know how self-supervised learning have been applied in the computer vision field, I read up on existing literature on self-supervised learning applied to computer vision through a [recent survey paper](https://arxiv.org/abs/1902.06162) by Jing et. al. 
+Curious to know how self-supervised learning has been applied in the computer vision field, I read up on existing literature on self-supervised learning applied to computer vision through a [recent survey paper](https://arxiv.org/abs/1902.06162) by Jing et. al. 
 
 This post is my attempt to provide an intuitive visual summary of the patterns of problem formulation in self-supervised learning.
 
+# The Key Idea
+To apply supervised learning, we need enough labeled data. To acquire that, human annotators manually label data(images/text) which is both a time consuming and expensive process. There are also fields such as the medical field where getting enough data is a challenge itself.
+
+![](/images/supervised-manual-annotation.png)
+
+This is where self-supervised learning comes into play. It poses the following question to solve this:
+> Can we design the task in such a way that we can generate virtually unlimited labels from our existing images and use that to learn the representations?  
+
+![](/images/supervised-automated.png){.img-center}
+
+We replace the human annotation block by creatively exploiting some property of data to set up a supervised task. For example, here instead of labeling images as cat/dog, we could instead rotate them by 0/90/180/270 degrees and train a model to predict rotation. We can generate virtually unlimited training data from millions of images we have freely available.
+![](/images/self-supervised-workflow.png){.img-center}
+
+# Existing Creative Approaches
+Below is a list of approaches various researchers have proposed to exploit image and video properties and learn representation in a self-supervised manner.
 
 # Learning from Images
 ## 1. **Image Colorization**
@@ -24,11 +39,11 @@ Formulation:
 
 ![](/images/ss-colorization-data-gen.png){.img-center}  
 
-We could use a encoder-decoder architecture based on fully convolutional neural network and compute the L2 loss between the predicted and actual color images.
+We could use an encoder-decoder architecture based on a fully convolutional neural network and compute the L2 loss between the predicted and actual color images.
 
 ![](/images/ss-image-colorization.png){.img-center}    
 
-To solve this task, the model has to learn about different objects present in image and related parts so that it can paint those parts in the same color. Thus, representations learned are useful for downstream tasks.
+To solve this task, the model has to learn about different objects present in the image and related parts so that it can paint those parts in the same color. Thus, representations learned are useful for downstream tasks.
 ![](/images/ss-colorization-learning.png){.img-center}  
 
 **Papers:**  
@@ -41,10 +56,10 @@ Formulation:
 ![](/images/ss-superresolution-training-gen.png){.img-center}  
 
 
-GAN based models such as [SRGAN](https://arxiv.org/abs/1609.04802) are popular for this task. A generator takes a low-resolution image and outputs a high-resolution image using fully convolutional network. The actual and generated images are compared using both mean-squared-error and content loss to imitate human like quality comparison. A binary-classification discriminator takes an image and classifies whether it's an actual high resolution image(1) or a fake generated superresolution image(0). This interplay between the two models leads to generator learning to produce images wth fine details. 
+GAN based models such as [SRGAN](https://arxiv.org/abs/1609.04802) are popular for this task. A generator takes a low-resolution image and outputs a high-resolution image using a fully convolutional network. The actual and generated images are compared using both mean-squared-error and content loss to imitate human-like quality comparison. A binary-classification discriminator takes an image and classifies whether it's an actual high-resolution image(1) or a fake generated superresolution image(0). This interplay between the two models leads to generator learning to produce images with fine details. 
 ![](/images/ss-srgan-architecture.png){.img-center}  
 
-Both generator and discriminator learn semantic features which can be used for downstream tasks.
+Both generator and discriminator learn semantic features that can be used for downstream tasks.
 
 **Papers**:  
 [Photo-Realistic Single Image Super-Resolution Using a Generative Adversarial Network](https://arxiv.org/abs/1609.04802)
@@ -52,7 +67,7 @@ Both generator and discriminator learn semantic features which can be used for d
 
 ## 3. **Image Inpainting**
 Formulation:   
-> What if we prepared training pairs of (corruped, fixed) images by randomly removing part of images?  
+> What if we prepared training pairs of (corrupted, fixed) images by randomly removing part of images?  
 
 ![](/images/ss-image-inpainting-data-gen.png){.img-center}  
 
@@ -60,7 +75,7 @@ Formulation:
 Similar to superresolution, we can leverage a GAN-based architecture where the Generator can learn to reconstruct the image while discriminator separates real and generated images.
 ![](/images/ss-inpainting-architecture.png){.img-center}  
 
-For downstream tasks, [Pathak et al.](https://arxiv.org/abs/1604.07379) have shown that semantic features learnt by such generator gives 10.2% improvement over random initialization on the [PASCAL VOC 2012](http://host.robots.ox.ac.uk/pascal/VOC/voc2012/index.html) semantic segmentation challenge, while giving <4% improvements over classification and object detection.
+For downstream tasks, [Pathak et al.](https://arxiv.org/abs/1604.07379) have shown that semantic features learned by such a generator give 10.2% improvement over random initialization on the [PASCAL VOC 2012](http://host.robots.ox.ac.uk/pascal/VOC/voc2012/index.html) semantic segmentation challenge while giving <4% improvements over classification and object detection.
 
 **Papers**:  
 [Context encoders: Feature learning by inpainting](https://arxiv.org/abs/1604.07379)
@@ -71,7 +86,7 @@ Formulation:
 
 ![](/images/ss-image-jigsaw-data.png){.img-center}  
 
-Even with only 9 patches, there can be 362880 possible puzzles. To overcome this, only a subset of possible permutations is used such as 64 permutations with highest hamming distance.
+Even with only 9 patches, there can be 362880 possible puzzles. To overcome this, only a subset of possible permutations is used such as 64 permutations with the highest hamming distance.
 ![](/images/ss-jigsaw-permutations.png){.img-center}
 
 Suppose we use a permutation that changes the image as shown below. Let's use the permutation number 64 from our total available 64 permutations.
@@ -84,15 +99,15 @@ Now, to recover back the original patches, [Noroozi et al.](https://arxiv.org/ab
 To solve the Jigsaw puzzle, the model needs to learn to identify how parts are assembled in an object, relative positions of different parts of objects and shape of objects. Thus, the representations are useful for downstream tasks in classification and detection.
 
 **Papers**:  
-[Unsupervised learning of visual representions by solving jigsaw puzzles](https://arxiv.org/abs/1603.09246)
+[Unsupervised learning of visual representations by solving jigsaw puzzles](https://arxiv.org/abs/1603.09246)
 
 ## 5. **Context Prediction**
 Formulation:   
-> What if we prepared training pairs of (image-patch, neighbor) by randomly taking image patch and one of its neighbors around it from large, unlabeled image collection?  
+> What if we prepared training pairs of (image-patch, neighbor) by randomly taking an image patch and one of its neighbors around it from large, unlabeled image collection?  
 
 ![](/images/ss-context-prediction-gen.png){.img-center}  
 
-To solve this pre-text task, [Doersch et al.](https://arxiv.org/abs/1505.05192) used an architecture similar to that of jigsaw puzzle. We pass the patches through two siamese ConvNets to extract features, concatenate the features and do a classification over 8 classes denoting the 8 possible neighbor positions.
+To solve this pre-text task, [Doersch et al.](https://arxiv.org/abs/1505.05192) used an architecture similar to that of a jigsaw puzzle. We pass the patches through two siamese ConvNets to extract features, concatenate the features and do a classification over 8 classes denoting the 8 possible neighbor positions.
 ![](/images/ss-context-prediction-architecture.png){.img-center}
 
 **Papers**:  
@@ -108,7 +123,7 @@ Formulation:
 To solve this pre-text task, [Gidaris et al.](https://arxiv.org/abs/1505.05192) propose an architecture where a rotated image is passed through a ConvNet and the network has to classify it into 4 classes(0/90/270/360 degrees).
 ![](/images/ss-geometric-transformation-architecture.png){.img-center}
 
-Though a very simple idea, the model has to understand location, types and pose of objects in image to solve this task and as such, the representations learnt are useful for downstream tasks.
+Though a very simple idea, the model has to understand location, types and pose of objects in an image to solve this task and as such, the representations learned are useful for downstream tasks.
 
 **Papers**:  
 [Unsupervised Representation Learning by Predicting Image Rotations](https://arxiv.org/abs/1803.07728)
@@ -144,7 +159,7 @@ Formulation:
 
 ![](/images/ss-frame-order-data-gen.png){.img-center}  
 
-To solve this pre-text task, [Misra et al.](https://arxiv.org/pdf/1711.09082.pdf) propose an architecture where video frames are passed through weight-shared ConvNets and the model has to figure out whether the frames are in correct order or not. In doing so, the model learn not just spatial features but also takes into account temporal features.
+To solve this pre-text task, [Misra et al.](https://arxiv.org/pdf/1711.09082.pdf) propose an architecture where video frames are passed through weight-shared ConvNets and the model has to figure out whether the frames are in the correct order or not. In doing so, the model learns not just spatial features but also takes into account temporal features.
 ![](/images/ss-temporal-order-architecture.png){.img-center}
 
 
