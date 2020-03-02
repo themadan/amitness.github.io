@@ -47,19 +47,55 @@ The framework is very simple. An image is taken and random transformations are a
 ![](/images/simclr-general-architecture.png){.img-center}
 
 
-## Example
-Let's explore the various components of the framework with an example. Suppose we have a training corpus of millions of unlabeled animal images.
+## Step by Step Example
+Let's explore the various components of the framework with an example. Suppose we have a training corpus of millions of unlabeled images.
+![](/images/simclr-raw-data.png){.img-center}
 
-1. **Training Data**  
-We can use unlabeled images as the training data.
+1. **Data Augmentation**  
+Next, we pick batches of size N from the raw images. Let's take a batch size N=2 for simplicity.
+![](/images/simclr-single-batch.png){.img-center}  
 
-2. **Data Augmentation**  
-3. **Base Encoder**  
-4. **Projection Head**  
-5. **Loss function**  
+The paper defines a random transformation function T that takes an image and applies a combination of `random (crop + flip + color jitter + grayscale)`.
+![](/images/simclr-random-transformation-function.gif){.img-center}  
+
+For each image in this batch, random transformation function is applied to get 2 pairs of images. Thus, for a batch size of 2, we get 2N = 4 total pairs of images.  
+[images of batch size 3 after augmentation]  
+
+
+
+2. **Base Encoder**  
+
+The two pairs of images in the batch are then passed through an encoder to get representations. The encoder is generic. In the paper, they use ResNet-50 as the architecture of the encoder. We get image representations from this.
+[show upto encoder part of the framework]
+
+3. **Projection Head**  
+The representations for the two pairs of image are then passed through a series a Dense -> Relu -> Dense blocks to apply non-linear transformation and project it into a representation z.
+
+4. **Loss function**  
+Similarity for the z-representations are computed using cosine similarity.  
+
+[figure for comparison of 2 z-representations]  
+The similarity between two augmented versions of an image is calculated using cosine similarity. For two augmented images <tt class="math">x_i</tt> and <tt class="math">x_j</tt>, the cosine similarity is calculated on its projected representations <tt class="math">z_i</tt> and <tt class="math">z_j</tt>.
+<pre class="math">
+s_{i,j} = \frac{z_{i}^{T}z_{j}}{(\tau ||z_{i}|| ||z_{j}||)}
+</pre>
+
+where   
+<tt class="math">\tau</tt> is the temperature parameter which can be tuned.
+<tt class="math">||z_{i}||</tt> is the norm of the vector
+
+SimCLR uses the NT-Xent loss (the normalized temperature-scaled cross entropy loss).
+Based on the similarity, the loss function is computed as 
+<pre class="math">
+l(i, j) = -log\frac{exp(s_{i, j})}{ \sum_{k=1}^{2N} l_{[k!= i]} exp(s_{i, k})}
+</pre>
+
+<pre class="math">
+L = \frac{1}{2N} \sum_{k=1}^{N} [l(2k-1, 2k) + l(2k, 2k-1)]
+</pre>
 
 ## Downstream Tasks
-
+Once the model is trained on contrastive learning task, it can be used for transfer learning. In this, the representations from the encoder are used instead of representations obtained from the projection head. This representations can be used for downstream tasks like classification on ImageNet.
 
 ## Objective Results
 SimCLR outperformed previous supervised and self-supervised methods on ImageNet.  
