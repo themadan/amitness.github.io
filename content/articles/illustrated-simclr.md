@@ -4,24 +4,24 @@ Modified: 2020-03-01 10:00
 Category: illustration
 Slug: illustrated-simclr
 Summary: A visual guide to the SimCLR framework for contrastive learning of visual representations
-Status: draft
+Status: published
 Authors: Amit Chaudhary
 
-In recent years, [numerous self-supervised learning methods](https://amitness.com/2020/02/illustrated-self-supervised-learning/) have been proposed, improving the performance on various tasks. But, their performance was still below the supervised counterparts. This changed when Chen et. al proposed a new framework in their paper "[SimCLR: A Simple Framework for Contrastive Learning of Visual Representations](https://arxiv.org/abs/2002.05709)". It not only improved upon the previous state-of-the-art self-supervised learning methods but also beat the supervised learning method on ImageNet.
+In recent years, [numerous self-supervised learning methods](https://amitness.com/2020/02/illustrated-self-supervised-learning/) have been proposed for learning image representations, each getting better than the previous. But, their performance was still below the supervised counterparts. This changed when **Chen et. al** proposed a new framework in their paper "[SimCLR: A Simple Framework for Contrastive Learning of Visual Representations](https://arxiv.org/abs/2002.05709)". The paper not only improves upon the previous state-of-the-art self-supervised learning methods but also beats the supervised learning method on ImageNet classification.
 
-In this article, I will explain the key ideas of the framework proposed in the paper.
+In this article, I will explain the key ideas of the framework proposed in the paper using diagrams.
 
 ## The Nostalgic Intuition
 As a kid, I remember we had to solve such puzzles in our textbook.  
-![](/images/contrastive-find-a-pair.png)  
+![](/images/contrastive-find-a-pair.png){.img-center}    
 The way a child would solve it is look at the picture of animal on left side, know its a cat, then search for cat on the right side.  
-![](/images/contrastive-puzzle.gif)  
+![](/images/contrastive-puzzle.gif){.img-center}    
 > "Such exercises were prepared for the child to be able to recognize an object and contrast that to other objects. Can we teach machines in a similar manner?"
 
-It turns out that we can through an idea called contrastive learning. It attempts to teach machines to distinguish between similar and dissimilar things.
+It turns out that we can through a technique called **Contrastive Learning**. It attempts to teach machines to distinguish between similar and dissimilar things.
 
 ## Problem Formulation for Machines
-In order to model the above exercise for a machine instead of a child, we can observe that we require 3 things:  
+In order to model the above exercise for a machine instead of a child, we see that we require 3 things:  
 
 1. **Examples of similar and dissimilar images**   
 We would require example pairs of images that are similar and images that are different for training a model.  
@@ -43,7 +43,7 @@ We need some mechanism to compute similarity of two images.
 The paper proposes a framework "**SimCLR**" for modeling the above problem in a self-supervised manner. It blends the concept of *Contrastive Learning* with a few novel ideas to learn visual representations without human supervision. 
 
 ## Framework
-The framework is very simple. An image is taken and random transformations are applied to it to get a pair of images. Each image in that pair is passed through an encoder to get representations. Then a non-linear fully connected layer is applied to get representations z. The task is to maximize the similarity between these two representations for same image.
+The framework, as the full-form suggests, is very simple. An image is taken and random transformations are applied to it to get a pair of two augmented images. Each image in that pair is passed through an encoder to get representations. Then a non-linear fully connected layer is applied to get representations z. The task is to maximize the similarity between these two representations z_i and z_j for same image.
 ![](/images/simclr-general-architecture.png){.img-center}
 
 
@@ -52,29 +52,29 @@ Let's explore the various components of the framework with an example. Suppose w
 ![](/images/simclr-raw-data.png){.img-center}
 
 1. **Data Augmentation**  
-Next, we pick batches of size N from the raw images. Let's take a batch size N=2 for simplicity.
+First, we generate batches of size N from the raw images. Let's take a batch of size N = 2 for simplicity.
 ![](/images/simclr-single-batch.png){.img-center}  
 
 The paper defines a random transformation function T that takes an image and applies a combination of `random (crop + flip + color jitter + grayscale)`.
 ![](/images/simclr-random-transformation-function.gif){.img-center}  
 
 For each image in this batch, random transformation function is applied to get 2 pairs of images. Thus, for a batch size of 2, we get 2N = 4 total pairs of images.  
-[images of batch size 3 after augmentation]  
-
-
-
+![](/images/simclr-batch-data-preparation.png){.img-center}  
 2. **Base Encoder**  
 
-The two pairs of images in the batch are then passed through an encoder to get representations. The encoder is generic. In the paper, they use ResNet-50 as the architecture of the encoder. We get image representations from this.
-[show upto encoder part of the framework]
+Each augmented image in a pair is passed through an encoder to get image representations. The encoder used is generic and replaceable with other architectures. The two encoders shown above are weighted shared and we get vectors <tt class="math">h_i</tt> and <tt class="math">h_j</tt>.
+![](/images/simclr-encoder-part.png){.img-center}
 
+In the paper, the authors used ResNet-50 architecture as the ConvNet encoder. The output is a 2048-dimensional vector h.
+![](/images/simclr-paper-encoder.png){.img-center}
 3. **Projection Head**  
 The representations for the two pairs of image are then passed through a series a Dense -> Relu -> Dense blocks to apply non-linear transformation and project it into a representation z.
 
 4. **Loss function**  
 Similarity for the z-representations are computed using cosine similarity.  
 
-[figure for comparison of 2 z-representations]  
+> [figure for comparison of 2 z-representations]  
+
 The similarity between two augmented versions of an image is calculated using cosine similarity. For two augmented images <tt class="math">x_i</tt> and <tt class="math">x_j</tt>, the cosine similarity is calculated on its projected representations <tt class="math">z_i</tt> and <tt class="math">z_j</tt>.
 <pre class="math">
 s_{i,j} = \frac{z_{i}^{T}z_{j}}{(\tau ||z_{i}|| ||z_{j}||)}
