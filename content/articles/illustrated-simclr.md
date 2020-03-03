@@ -4,7 +4,7 @@ Modified: 2020-03-01 10:00
 Category: illustration
 Slug: illustrated-simclr
 Summary: A visual guide to the SimCLR framework for contrastive learning of visual representations
-Status: published
+Status: draft
 Authors: Amit Chaudhary
 
 In recent years, [numerous self-supervised learning methods](https://amitness.com/2020/02/illustrated-self-supervised-learning/) have been proposed for learning image representations, each getting better than the previous. But, their performance was still below the supervised counterparts. This changed when **Chen et. al** proposed a new framework in their paper "[SimCLR: A Simple Framework for Contrastive Learning of Visual Representations](https://arxiv.org/abs/2002.05709)". The paper not only improves upon the previous state-of-the-art self-supervised learning methods but also beats the supervised learning method on ImageNet classification.
@@ -51,7 +51,7 @@ The framework, as the full-form suggests, is very simple. An image is taken and 
 Let's explore the various components of the framework with an example. Suppose we have a training corpus of millions of unlabeled images.
 ![](/images/simclr-raw-data.png){.img-center}
 
-1. **Data Augmentation**  
+1. **Data Augmentation** (Self-supervised Formulation)  
 First, we generate batches of size N from the raw images. Let's take a batch of size N = 2 for simplicity.
 ![](/images/simclr-single-batch.png){.img-center}  
 
@@ -60,7 +60,7 @@ The paper defines a random transformation function T that takes an image and app
 
 For each image in this batch, random transformation function is applied to get 2 pairs of images. Thus, for a batch size of 2, we get 2N = 4 total pairs of images.  
 ![](/images/simclr-batch-data-preparation.png){.img-center}  
-2. **Base Encoder**  
+2. **Base Encoder** (Getting Representations)  
 
 Each augmented image in a pair is passed through an encoder to get image representations. The encoder used is generic and replaceable with other architectures. The two encoders shown above are weighted shared and we get vectors <tt class="math">h_i</tt> and <tt class="math">h_j</tt>.
 ![](/images/simclr-encoder-part.png){.img-center}
@@ -68,7 +68,7 @@ Each augmented image in a pair is passed through an encoder to get image represe
 In the paper, the authors used ResNet-50 architecture as the ConvNet encoder. The output is a 2048-dimensional vector h.
 ![](/images/simclr-paper-encoder.png){.img-center}
 3. **Projection Head**  
-The representations for the two pairs of image are then passed through a series a Dense -> Relu -> Dense blocks to apply non-linear transformation and project it into a representation z.
+The representations <tt class="math">h_i</tt> and <tt class="math">h_j</tt> of the two augmented images are then passed through a series of non-linear **Dense -> Relu -> Dense** layers to apply non-linear transformation and project it into a representation <tt class="math">z_i</tt> and <tt class="math">z_j</tt>.
 
 4. **Loss function**  
 Similarity for the z-representations are computed using cosine similarity.  
