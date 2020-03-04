@@ -4,7 +4,7 @@ Modified: 2020-03-01 10:00
 Category: illustration
 Slug: illustrated-simclr
 Summary: A visual guide to the SimCLR framework for contrastive learning of visual representations
-Status: published
+Status: draft
 Authors: Amit Chaudhary
 
 In recent years, [numerous self-supervised learning methods](https://amitness.com/2020/02/illustrated-self-supervised-learning/) have been proposed for learning image representations, each getting better than the previous. But, their performance was still below the supervised counterparts. This changed when **Chen et. al** proposed a new framework in their paper "[SimCLR: A Simple Framework for Contrastive Learning of Visual Representations](https://arxiv.org/abs/2002.05709)". The paper not only improves upon the previous state-of-the-art self-supervised learning methods but also beats the supervised learning method on ImageNet classification.
