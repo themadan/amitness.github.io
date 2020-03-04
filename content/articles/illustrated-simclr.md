@@ -44,7 +44,7 @@ We need some mechanism to compute the similarity of two images.
 The paper proposes a framework "**SimCLR**" for modeling the above problem in a self-supervised manner. It blends the concept of *Contrastive Learning* with a few novel ideas to learn visual representations without human supervision. 
 
 ## Framework
-The framework, as the full-form suggests, is very simple. An image is taken and random transformations are applied to it to get a pair of two augmented images. Each image in that pair is passed through an encoder to get representations. Then a non-linear fully connected layer is applied to get representations z. The task is to maximize the similarity between these two representations z_i and z_j for the same image.
+The framework, as the full-form suggests, is very simple. An image is taken and random transformations are applied to it to get a pair of two augmented images. Each image in that pair is passed through an encoder to get representations. Then a non-linear fully connected layer is applied to get representations z. The task is to maximize the similarity between these two representations <tt class="math">z_i</tt> and <tt class="math">z_j</tt> for the same image.
 ![](/images/simclr-general-architecture.png){.img-center}
 
 
