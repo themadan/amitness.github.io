@@ -1,6 +1,6 @@
 Title: The Illustrated SimCLR Framework
-Date: 2020-03-01 10:00
-Modified: 2020-03-01 10:00
+Date: 2020-03-04 10:00
+Modified: 2020-03-04 10:00
 Category: illustration
 Slug: illustrated-simclr
 Summary: A visual guide to the SimCLR framework for contrastive learning of visual representations
