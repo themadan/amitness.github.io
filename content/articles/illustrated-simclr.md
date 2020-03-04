@@ -14,7 +14,7 @@ In this article, I will explain the key ideas of the framework proposed in the p
 ## The Nostalgic Intuition
 As a kid, I remember we had to solve such puzzles in our textbook.  
 ![](/images/contrastive-find-a-pair.png){.img-center}    
-The way a child would solve it is look at the picture of animal on left side, know its a cat, then search for cat on the right side.  
+The way a child would solve it is by looking at the picture of the animal on the left side, know its a cat, then search for a cat on the right side.  
 ![](/images/contrastive-puzzle.gif){.img-center}    
 > "Such exercises were prepared for the child to be able to recognize an object and contrast that to other objects. Can we teach machines in a similar manner?"
 
@@ -22,7 +22,7 @@ It turns out that we can through a technique called **Contrastive Learning**. It
 ![](/images/simclr-contrastive-learning.png){.img-center}
 
 ## Problem Formulation for Machines
-In order to model the above exercise for a machine instead of a child, we see that we require 3 things:  
+To model the above exercise for a machine instead of a child, we see that we require 3 things:  
 
 1. **Examples of similar and dissimilar images**   
 We would require example pairs of images that are similar and images that are different for training a model.  
@@ -32,11 +32,11 @@ The supervised school of thought would require us to manually create such pairs 
 ![](/images/contrastive-self-supervised-approach.png){.img-center}  
 
 2. **Ability to know what an image represents**  
-We need some mechanism to get representations that allows machine to understand an image.
+We need some mechanism to get representations that allow the machine to understand an image.
 ![](/images/image-representation.png){.img-center}
 
 3. **Ability to quantify if two images are similar**  
-We need some mechanism to compute similarity of two images. 
+We need some mechanism to compute the similarity of two images. 
 ![](/images/image-similarity.png){.img-center}
 
 ## The SimCLR Framework Approach
@@ -44,7 +44,7 @@ We need some mechanism to compute similarity of two images.
 The paper proposes a framework "**SimCLR**" for modeling the above problem in a self-supervised manner. It blends the concept of *Contrastive Learning* with a few novel ideas to learn visual representations without human supervision. 
 
 ## Framework
-The framework, as the full-form suggests, is very simple. An image is taken and random transformations are applied to it to get a pair of two augmented images. Each image in that pair is passed through an encoder to get representations. Then a non-linear fully connected layer is applied to get representations z. The task is to maximize the similarity between these two representations z_i and z_j for same image.
+The framework, as the full-form suggests, is very simple. An image is taken and random transformations are applied to it to get a pair of two augmented images. Each image in that pair is passed through an encoder to get representations. Then a non-linear fully connected layer is applied to get representations z. The task is to maximize the similarity between these two representations z_i and z_j for the same image.
 ![](/images/simclr-general-architecture.png){.img-center}
 
 
@@ -91,14 +91,14 @@ where
 - <tt class="math">\tau</tt> is the adjustable temperature parameter. It can scale the inputs and widen the range [-1, 1] of cosine similarity.  
 - <tt class="math">||z_{i}||</tt> is the norm of the vector
 
-The pairwise cosine similarity between each augmented image in a batch is calculated using the above formula. As shown in figure, in an ideal case, the similarities between augmented images of cat and elephant will be high while similarity between cat and elephant will be low.
+The pairwise cosine similarity between each augmented image in a batch is calculated using the above formula. As shown in the figure, in an ideal case, the similarities between augmented images of cat and elephant will be high while the similarity between cat and elephant will be lower.
 ![](/images/simclr-pairwise-similarity.png){.img-center}
 
 b. **Loss Calculation**  
-SimCLR uses the NT-Xent loss (the normalized temperature-scaled cross entropy loss). Let see intuitively how it works.  
+SimCLR uses the NT-Xent loss (the normalized temperature-scaled cross-entropy loss). Let see intuitively how it works.  
 Here, the augmented pairs in the batch are taken one by one.
 ![](/images/simclr-augmented-pairs-batch.png){.img-center}
-Next, we apply softmax function to get the probability of these two images being similar.
+Next, we apply the softmax function to get the probability of these two images being similar.
 ![](/images/simclr-softmax-calculation.png)
 This softmax calculation is equivalent to getting the probability of the second augmented image being the most similar to the first image in the pair. 
 ![](/images/simclr-softmax-interpretation.png){.img-center}
@@ -111,7 +111,7 @@ l(i, j) = -log\frac{exp(s_{i, j})}{ \sum_{k=1}^{2N} l_{[k!= i]} exp(s_{i, k})}
 
 ![](/images/simclr-softmax-loss.png)
 
-We calculate loss for the same pair a second time as well where the positions of the images are interchanged.
+We calculate the loss for the same pair a second time as well where the positions of the images are interchanged.
 ![](/images/simclr-softmax-loss-inverted.png)
 
 Finally, we compute loss over all the pairs in the batch of size N=2 and take an average.
@@ -126,7 +126,7 @@ Based on the loss, the encoder and projection head representations improves over
 
 
 ## Downstream Tasks
-Once the model is trained on contrastive learning task, it can be used for transfer learning. In this, the representations from the encoder are used instead of representations obtained from the projection head. This representations can be used for downstream tasks like classification on ImageNet.
+Once the model is trained on the contrastive learning task, it can be used for transfer learning. In this, the representations from the encoder are used instead of representations obtained from the projection head. These representations can be used for downstream tasks like classification on ImageNet.
 ![](/images/simclr-downstream.png)
 
 ## Objective Results
