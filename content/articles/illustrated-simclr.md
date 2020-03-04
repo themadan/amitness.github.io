@@ -68,21 +68,25 @@ Each augmented image in a pair is passed through an encoder to get image represe
 In the paper, the authors used ResNet-50 architecture as the ConvNet encoder. The output is a 2048-dimensional vector h.
 ![](/images/simclr-paper-encoder.png){.img-center}
 3. **Projection Head**  
-The representations <tt class="math">h_i</tt> and <tt class="math">h_j</tt> of the two augmented images are then passed through a series of non-linear **Dense -> Relu -> Dense** layers to apply non-linear transformation and project it into a representation <tt class="math">z_i</tt> and <tt class="math">z_j</tt>.
+The representations <tt class="math">h_i</tt> and <tt class="math">h_j</tt> of the two augmented images are then passed through a series of non-linear **Dense -> Relu -> Dense** layers to apply non-linear transformation and project it into a representation <tt class="math">z_i</tt> and <tt class="math">z_j</tt>. This is denoted by <tt class="math">g(.)</tt> in the paper and called projection head.
+>[add grayscale image of mod]  
 
-4. **Loss function**  
-Similarity for the z-representations are computed using cosine similarity.  
-
-> [figure for comparison of 2 z-representations]  
+4. **Loss function**  (Tuning Model)
 
 The similarity between two augmented versions of an image is calculated using cosine similarity. For two augmented images <tt class="math">x_i</tt> and <tt class="math">x_j</tt>, the cosine similarity is calculated on its projected representations <tt class="math">z_i</tt> and <tt class="math">z_j</tt>.
+![](/images/simclr-cosine-similarity.png){.img-center}
+
 <pre class="math">
-s_{i,j} = \frac{z_{i}^{T}z_{j}}{(\tau ||z_{i}|| ||z_{j}||)}
+s_{i,j} = \frac{ \textcolor{#ff7070}{z_{i}^{T}z_{j}} }{(\tau ||\textcolor{#ff7070}{z_{i}}|| ||\textcolor{#ff7070}{z_{j}}||)}
 </pre>
 
 where   
-<tt class="math">\tau</tt> is the temperature parameter which can be tuned.
+<tt class="math">\tau</tt> is the adjustable temperature parameter. It can scale the inputs and widen the range [-1, 1] of cosine similarity.
+
 <tt class="math">||z_{i}||</tt> is the norm of the vector
+
+The pairwise cosine similarity between each augmented image in a batch is calculated using the above formula. As shown in figure, in an ideal case, the similarties between augmented images of cat and elephant will be high while similarity between cat and elephant will be low.
+![](/images/simclr-pairwise-similarity.png){.img-center}
 
 SimCLR uses the NT-Xent loss (the normalized temperature-scaled cross entropy loss).
 Based on the similarity, the loss function is computed as 
@@ -96,6 +100,7 @@ L = \frac{1}{2N} \sum_{k=1}^{N} [l(2k-1, 2k) + l(2k, 2k-1)]
 
 ## Downstream Tasks
 Once the model is trained on contrastive learning task, it can be used for transfer learning. In this, the representations from the encoder are used instead of representations obtained from the projection head. This representations can be used for downstream tasks like classification on ImageNet.
+> [Show downtream figure by removing projection head]
 
 ## Objective Results
 SimCLR outperformed previous supervised and self-supervised methods on ImageNet.  
@@ -105,3 +110,5 @@ SimCLR outperformed previous supervised and self-supervised methods on ImageNet.
 
 ## References
 - [A Simple Framework for Contrastive Learning of Visual Representations](https://arxiv.org/abs/2002.05709)
+- [On Calibration of Modern Neural Networks](https://arxiv.org/pdf/1706.04599.pdf)
+- [Distilling the Knowledge in a Neural Network](https://arxiv.org/pdf/1503.02531.pdf)
