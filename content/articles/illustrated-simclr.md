@@ -3,7 +3,7 @@ Date: 2020-03-04 10:00
 Modified: 2020-03-04 10:00
 Category: illustration
 Slug: illustrated-simclr
-Summary: A visual guide to the SimCLR framework for contrastive learning of visual representations
+Summary: A visual guide to the SimCLR framework for contrastive learning of visual representations.
 Status: published
 Authors: Amit Chaudhary
 
