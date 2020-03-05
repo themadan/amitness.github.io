@@ -53,7 +53,7 @@ Let's explore the various components of the framework with an example. Suppose w
 ![](/images/simclr-raw-data.png){.img-center}
 
 1. **Self-supervised Formulation** [Data Augmentation]  
-First, we generate batches of size N from the raw images. Let's take a batch of size N = 2 for simplicity.
+First, we generate batches of size N from the raw images. Let's take a batch of size N = 2 for simplicity. In the paper, they use a large batch size of 8192.
 ![](/images/simclr-single-batch.png){.img-center}  
 
 The paper defines a random transformation function T that takes an image and applies a combination of `random (crop + flip + color jitter + grayscale)`.
@@ -66,7 +66,7 @@ For each image in this batch, random transformation function is applied to get a
 Each augmented image in a pair is passed through an encoder to get image representations. The encoder used is generic and replaceable with other architectures. The two encoders shown below are weighted shared and we get vectors <tt class="math">h_i</tt> and <tt class="math">h_j</tt>.
 ![](/images/simclr-encoder-part.png){.img-center}
 
-In the paper, the authors used ResNet-50 architecture as the ConvNet encoder. The output is a 2048-dimensional vector h.
+In the paper, the authors used [ResNet-50](https://arxiv.org/abs/1512.03385) architecture as the ConvNet encoder. The output is a 2048-dimensional vector h.
 ![](/images/simclr-paper-encoder.png){.img-center}
 3. **Projection Head**  
 The representations <tt class="math">h_i</tt> and <tt class="math">h_j</tt> of the two augmented images are then passed through a series of non-linear **Dense -> Relu -> Dense** layers to apply non-linear transformation and project it into a representation <tt class="math">z_i</tt> and <tt class="math">z_j</tt>. This is denoted by <tt class="math">g(.)</tt> in the paper and called projection head.
@@ -95,16 +95,16 @@ The pairwise cosine similarity between each augmented image in a batch is calcul
 ![](/images/simclr-pairwise-similarity.png){.img-center}
 
 b. **Loss Calculation**  
-SimCLR uses the NT-Xent loss (the normalized temperature-scaled cross-entropy loss). Let see intuitively how it works.  
+SimCLR uses a contrastive loss called "**NT-Xent**" (**Normalized Temperature-Scaled Cross-Entropy Loss**). Let see intuitively how it works.  
   
 First, the augmented pairs in the batch are taken one by one.
 ![](/images/simclr-augmented-pairs-batch.png){.img-center}
-Next, we apply the softmax function to get the probability of these two images being similar.
+Next, we apply the softmax function to get the probability of these two images being similar.  
 ![](/images/simclr-softmax-calculation.png)
-This softmax calculation is equivalent to getting the probability of the second augmented cat image being the most similar to the first cat image in the pair. 
+This softmax calculation is equivalent to getting the probability of the second augmented cat image being the most similar to the first cat image in the pair. Here, all remaining images in the batch are sampled as dissimilar image (negative pair). Thus, we don't need specialized architecture, memory bank or queue need by previous approaches like [InstDisc](https://arxiv.org/pdf/1805.01978.pdf), [MoCo](https://arxiv.org/abs/1911.05722) or [PIRL](https://arxiv.org/abs/1912.01991) 
 ![](/images/simclr-softmax-interpretation.png){.img-center}
 
-Then, the loss is calculated for a pair by taking the negative of the log of this calculation as:  
+Then, the loss is calculated for a pair by taking the negative of the log of above calculation. This formulation is the Noise Contrastive Estimation(NCE) Loss.
 <pre class="math">
 l(i, j) = -log\frac{exp(s_{i, j})}{ \sum_{k=1}^{2N} l_{[k!= i]} exp(s_{i, k})}
 </pre>
@@ -130,9 +130,13 @@ Once the model is trained on the contrastive learning task, it can be used for t
 ![](/images/simclr-downstream.png)
 
 ## Objective Results
-SimCLR outperformed previous supervised and self-supervised methods on ImageNet.  
+SimCLR outperformed previous self-supervised methods on ImageNet. The below image shows top-1 accuracy of linear classifiers trained on representations learned with different self-supervised methods on ImageNet. The gray cross is supervised ResNet50 and SimCLR is shown in bold.
+![](/images/simclr-performance.png){.img-center}
+<p class="has-text-centered">
+Source: [SimCLR paper](https://arxiv.org/abs/2002.05709)
+</p>
 
-- On ImageNet, it achieves 76.5% top-1 accuracy which is 7% improvement over previous SOTA self-supervised method and on-par with supervised ResNet50.  
+- On ImageNet [ILSVRC-2012](http://image-net.org/challenges/LSVRC/2012/), it achieves 76.5% top-1 accuracy which is 7% improvement over previous SOTA self-supervised method [Contrastive Predictive Coding](https://arxiv.org/abs/1905.09272) and on-par with supervised ResNet50.  
 - When trained on 1% of labels, it achieves 85.8% top-5 accuracy outperforming AlexNet with 100x fewer labels
 
 ## Conclusion
