@@ -135,6 +135,9 @@ SimCLR outperformed previous supervised and self-supervised methods on ImageNet.
 - On ImageNet, it achieves 76.5% top-1 accuracy which is 7% improvement over previous SOTA self-supervised method and on-par with supervised ResNet50.  
 - When trained on 1% of labels, it achieves 85.8% top-5 accuracy outperforming AlexNet with 100x fewer labels
 
+## Conclusion
+Thus, SimCLR provides a strong framework for doing further research in this direction and improve the state of self-supervised learning for Computer Vision.
+
 ## References
 - ["A Simple Framework for Contrastive Learning of Visual Representations"](https://arxiv.org/abs/2002.05709)  
 - ["On Calibration of Modern Neural Networks"](https://arxiv.org/pdf/1706.04599.pdf)  
