@@ -63,7 +63,7 @@ For each image in this batch, random transformation function is applied to get 2
 ![](/images/simclr-batch-data-preparation.png){.img-center}  
 2. **Getting Representations** [Base Encoder]  
 
-Each augmented image in a pair is passed through an encoder to get image representations. The encoder used is generic and replaceable with other architectures. The two encoders shown above are weighted shared and we get vectors <tt class="math">h_i</tt> and <tt class="math">h_j</tt>.
+Each augmented image in a pair is passed through an encoder to get image representations. The encoder used is generic and replaceable with other architectures. The two encoders shown above have shared weights and we get vectors <tt class="math">h_i</tt> and <tt class="math">h_j</tt>.
 ![](/images/simclr-encoder-part.png){.img-center}
 
 In the paper, the authors used ResNet-50 architecture as the ConvNet encoder. The output is a 2048-dimensional vector h.
