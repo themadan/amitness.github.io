@@ -3,13 +3,13 @@ Date: 2020-03-04 10:00
 Modified: 2020-03-04 10:00
 Category: illustration
 Slug: illustrated-simclr
-Summary: A visual guide to the SimCLR framework for contrastive learning of visual representations
+Summary: A visual guide to the SimCLR framework for contrastive learning of visual representations.
 Status: published
 Authors: Amit Chaudhary
 
-In recent years, [numerous self-supervised learning methods](https://amitness.com/2020/02/illustrated-self-supervised-learning/) have been proposed for learning image representations, each getting better than the previous. But, their performance was still below the supervised counterparts. This changed when **Chen et. al** proposed a new framework in their paper "[SimCLR: A Simple Framework for Contrastive Learning of Visual Representations](https://arxiv.org/abs/2002.05709)". The paper not only improves upon the previous state-of-the-art self-supervised learning methods but also beats the supervised learning method on ImageNet classification.
+In recent years, [numerous self-supervised learning methods](https://amitness.com/2020/02/illustrated-self-supervised-learning/) have been proposed for learning image representations, each getting better than the previous. But, their performance was still below the supervised counterparts. This changed when **Chen et. al** proposed a new framework in their research paper "[SimCLR: A Simple Framework for Contrastive Learning of Visual Representations](https://arxiv.org/abs/2002.05709)". The research paper not only improves upon the previous state-of-the-art self-supervised learning methods but also beats the supervised learning method on ImageNet classification.
 
-In this article, I will explain the key ideas of the framework proposed in the paper using diagrams.
+In this article, I will explain the key ideas of the framework proposed in the research paper using diagrams.
 
 ## The Nostalgic Intuition
 As a kid, I remember we had to solve such puzzles in our textbook.  
@@ -27,7 +27,7 @@ To model the above exercise for a machine instead of a child, we see that we req
 1. **Examples of similar and dissimilar images**   
 We would require example pairs of images that are similar and images that are different for training a model.  
 ![](/images/contrastive-need-one.png){.img-center}  
-The supervised school of thought would require us to manually create such pairs by a human. Self-supervised learning can be applied to automate this. But how?
+The supervised school of thought would require a human to manually create such pairs. To automate this, we could leverage [self-supervised learning](https://amitness.com/2020/02/illustrated-self-supervised-learning/). But how do we formulate it?
 ![](/images/contrastive-supervised-approach.png){.img-center}  
 ![](/images/contrastive-self-supervised-approach.png){.img-center}  
 
@@ -44,7 +44,7 @@ We need some mechanism to compute the similarity of two images.
 The paper proposes a framework "**SimCLR**" for modeling the above problem in a self-supervised manner. It blends the concept of *Contrastive Learning* with a few novel ideas to learn visual representations without human supervision. 
 
 ## Framework
-The framework, as the full-form suggests, is very simple. An image is taken and random transformations are applied to it to get a pair of two augmented images. Each image in that pair is passed through an encoder to get representations. Then a non-linear fully connected layer is applied to get representations z. The task is to maximize the similarity between these two representations <tt class="math">z_i</tt> and <tt class="math">z_j</tt> for the same image.
+The framework, as the full-form suggests, is very simple. An image is taken and random transformations are applied to it to get a pair of two augmented images <tt class="math">x_i</tt> and <tt class="math">x_j</tt>. Each image in that pair is passed through an encoder to get representations. Then a non-linear fully connected layer is applied to get representations z. The task is to maximize the similarity between these two representations <tt class="math">z_i</tt> and <tt class="math">z_j</tt> for the same image.
 ![](/images/simclr-general-architecture.png){.img-center}
 
 
@@ -53,20 +53,20 @@ Let's explore the various components of the framework with an example. Suppose w
 ![](/images/simclr-raw-data.png){.img-center}
 
 1. **Self-supervised Formulation** [Data Augmentation]  
-First, we generate batches of size N from the raw images. Let's take a batch of size N = 2 for simplicity.
+First, we generate batches of size N from the raw images. Let's take a batch of size N = 2 for simplicity. In the paper, they use a large batch size of 8192.
 ![](/images/simclr-single-batch.png){.img-center}  
 
 The paper defines a random transformation function T that takes an image and applies a combination of `random (crop + flip + color jitter + grayscale)`.
 ![](/images/simclr-random-transformation-function.gif){.img-center}  
 
-For each image in this batch, random transformation function is applied to get 2 pairs of images. Thus, for a batch size of 2, we get 2N = 4 total pairs of images.  
+For each image in this batch, random transformation function is applied to get a pairs of 2 images. Thus, for a batch size of 2, we get 2\*N = 2\*2 = 4 total images.  
 ![](/images/simclr-batch-data-preparation.png){.img-center}  
 2. **Getting Representations** [Base Encoder]  
 
-Each augmented image in a pair is passed through an encoder to get image representations. The encoder used is generic and replaceable with other architectures. The two encoders shown above have shared weights and we get vectors <tt class="math">h_i</tt> and <tt class="math">h_j</tt>.
+Each augmented image in a pair is passed through an encoder to get image representations. The encoder used is generic and replaceable with other architectures. The two encoders shown below are weighted shared and we get vectors <tt class="math">h_i</tt> and <tt class="math">h_j</tt>.
 ![](/images/simclr-encoder-part.png){.img-center}
 
-In the paper, the authors used ResNet-50 architecture as the ConvNet encoder. The output is a 2048-dimensional vector h.
+In the paper, the authors used [ResNet-50](https://arxiv.org/abs/1512.03385) architecture as the ConvNet encoder. The output is a 2048-dimensional vector h.
 ![](/images/simclr-paper-encoder.png){.img-center}
 3. **Projection Head**  
 The representations <tt class="math">h_i</tt> and <tt class="math">h_j</tt> of the two augmented images are then passed through a series of non-linear **Dense -> Relu -> Dense** layers to apply non-linear transformation and project it into a representation <tt class="math">z_i</tt> and <tt class="math">z_j</tt>. This is denoted by <tt class="math">g(.)</tt> in the paper and called projection head.
@@ -91,20 +91,20 @@ where
 - <tt class="math">\tau</tt> is the adjustable temperature parameter. It can scale the inputs and widen the range [-1, 1] of cosine similarity.  
 - <tt class="math">||z_{i}||</tt> is the norm of the vector
 
-The pairwise cosine similarity between each augmented image in a batch is calculated using the above formula. As shown in the figure, in an ideal case, the similarities between augmented images of cat and elephant will be high while the similarity between cat and elephant will be lower.
+The pairwise cosine similarity between each augmented image in a batch is calculated using the above formula. As shown in the figure, in an ideal case, the similarities between augmented images of cats will be high while the similarity between cat and elephant images will be lower.
 ![](/images/simclr-pairwise-similarity.png){.img-center}
 
 b. **Loss Calculation**  
-SimCLR uses the NT-Xent loss (the normalized temperature-scaled cross-entropy loss). Let see intuitively how it works.  
-Here, the augmented pairs in the batch are taken one by one.
+SimCLR uses a contrastive loss called "**NT-Xent**" (**Normalized Temperature-Scaled Cross-Entropy Loss**). Let see intuitively how it works.  
+  
+First, the augmented pairs in the batch are taken one by one.
 ![](/images/simclr-augmented-pairs-batch.png){.img-center}
-Next, we apply the softmax function to get the probability of these two images being similar.
+Next, we apply the softmax function to get the probability of these two images being similar.  
 ![](/images/simclr-softmax-calculation.png)
-This softmax calculation is equivalent to getting the probability of the second augmented image being the most similar to the first image in the pair. 
+This softmax calculation is equivalent to getting the probability of the second augmented cat image being the most similar to the first cat image in the pair. Here, all remaining images in the batch are sampled as dissimilar image (negative pair). Thus, we don't need specialized architecture, memory bank or queue need by previous approaches like [InstDisc](https://arxiv.org/pdf/1805.01978.pdf), [MoCo](https://arxiv.org/abs/1911.05722) or [PIRL](https://arxiv.org/abs/1912.01991) 
 ![](/images/simclr-softmax-interpretation.png){.img-center}
 
-Then, the loss is calculated for a pair by taking the negative of the log of this calculation as:
-Based on the similarity, the loss function is computed as 
+Then, the loss is calculated for a pair by taking the negative of the log of above calculation. This formulation is the Noise Contrastive Estimation(NCE) Loss.
 <pre class="math">
 l(i, j) = -log\frac{exp(s_{i, j})}{ \sum_{k=1}^{2N} l_{[k!= i]} exp(s_{i, k})}
 </pre>
@@ -126,14 +126,21 @@ Based on the loss, the encoder and projection head representations improves over
 
 
 ## Downstream Tasks
-Once the model is trained on the contrastive learning task, it can be used for transfer learning. In this, the representations from the encoder are used instead of representations obtained from the projection head. These representations can be used for downstream tasks like classification on ImageNet.
+Once the model is trained on the contrastive learning task, it can be used for transfer learning. In this, the representations from the encoder are used instead of representations obtained from the projection head. These representations can be used for downstream tasks like  ImageNet Classification.
 ![](/images/simclr-downstream.png)
 
 ## Objective Results
-SimCLR outperformed previous supervised and self-supervised methods on ImageNet.  
+SimCLR outperformed previous self-supervised methods on ImageNet. The below image shows top-1 accuracy of linear classifiers trained on representations learned with different self-supervised methods on ImageNet. The gray cross is supervised ResNet50 and SimCLR is shown in bold.
+![](/images/simclr-performance.png){.img-center}
+<p class="has-text-centered">
+Source: [SimCLR paper](https://arxiv.org/abs/2002.05709)
+</p>
 
-- On ImageNet, it achieves 76.5% top-1 accuracy which is 7% improvement over previous SOTA self-supervised method and on-par with supervised ResNet50.  
+- On ImageNet [ILSVRC-2012](http://image-net.org/challenges/LSVRC/2012/), it achieves 76.5% top-1 accuracy which is 7% improvement over previous SOTA self-supervised method [Contrastive Predictive Coding](https://arxiv.org/abs/1905.09272) and on-par with supervised ResNet50.  
 - When trained on 1% of labels, it achieves 85.8% top-5 accuracy outperforming AlexNet with 100x fewer labels
+
+## Conclusion
+Thus, SimCLR provides a strong framework for doing further research in this direction and improve the state of self-supervised learning for Computer Vision.
 
 ## References
 - ["A Simple Framework for Contrastive Learning of Visual Representations"](https://arxiv.org/abs/2002.05709)  
