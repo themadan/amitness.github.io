@@ -24,7 +24,7 @@ We see above how the sentence as a whole is negative because of present of the w
 ## RNNs in Keras
 Let's take a simple example of encoding a sentence using RNN layer in Keras.
 
-![](/images/i-am-groot-sentence.png){.img-center}
+![I am Groot Sentence](/images/i-am-groot-sentence.png){.img-center}
 <p class="has-text-centered">
 Credits: Marvel Studios
 </p>
