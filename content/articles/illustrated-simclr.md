@@ -13,31 +13,31 @@ In this article, I will explain the key ideas of the framework proposed in the r
 
 ## The Nostalgic Intuition
 As a kid, I remember we had to solve such puzzles in our textbook.  
-![](/images/contrastive-find-a-pair.png){.img-center}    
+![Find a Pair Exercise](/images/contrastive-find-a-pair.png){.img-center}    
 The way a child would solve it is by looking at the picture of the animal on the left side, know its a cat, then search for a cat on the right side.  
-![](/images/contrastive-puzzle.gif){.img-center}    
+![Child Matching Animal Pairs](/images/contrastive-puzzle.gif){.img-center}    
 > "Such exercises were prepared for the child to be able to recognize an object and contrast that to other objects. Can we teach machines in a similar manner?"
 
 It turns out that we can through a technique called **Contrastive Learning**. It attempts to teach machines to distinguish between similar and dissimilar things.
-![](/images/simclr-contrastive-learning.png){.img-center}
+![Contrastive Learning Block](/images/simclr-contrastive-learning.png){.img-center}
 
 ## Problem Formulation for Machines
 To model the above exercise for a machine instead of a child, we see that we require 3 things:  
 
 1. **Examples of similar and dissimilar images**   
 We would require example pairs of images that are similar and images that are different for training a model.  
-![](/images/contrastive-need-one.png){.img-center}  
+![Pair of similar and dissimilar images](/images/contrastive-need-one.png){.img-center}  
 The supervised school of thought would require a human to manually create such pairs. To automate this, we could leverage [self-supervised learning](https://amitness.com/2020/02/illustrated-self-supervised-learning/). But how do we formulate it?
-![](/images/contrastive-supervised-approach.png){.img-center}  
-![](/images/contrastive-self-supervised-approach.png){.img-center}  
+![Manually Labeling pairs of Images](/images/contrastive-supervised-approach.png){.img-center}  
+![Self-supervised Approach to Labeling Images](/images/contrastive-self-supervised-approach.png){.img-center}  
 
 2. **Ability to know what an image represents**  
 We need some mechanism to get representations that allow the machine to understand an image.
-![](/images/image-representation.png){.img-center}
+![Converting Image to Representations](/images/image-representation.png){.img-center}
 
 3. **Ability to quantify if two images are similar**  
 We need some mechanism to compute the similarity of two images. 
-![](/images/image-similarity.png){.img-center}
+![Computing Similarity between Images](/images/image-similarity.png){.img-center}
 
 ## The SimCLR Framework Approach
 
@@ -45,42 +45,42 @@ The paper proposes a framework "**SimCLR**" for modeling the above problem in a 
 
 ## Framework
 The framework, as the full-form suggests, is very simple. An image is taken and random transformations are applied to it to get a pair of two augmented images <tt class="math">x_i</tt> and <tt class="math">x_j</tt>. Each image in that pair is passed through an encoder to get representations. Then a non-linear fully connected layer is applied to get representations z. The task is to maximize the similarity between these two representations <tt class="math">z_i</tt> and <tt class="math">z_j</tt> for the same image.
-![](/images/simclr-general-architecture.png){.img-center}
+![General Architecture of the SimCLR Framework](/images/simclr-general-architecture.png){.img-center}
 
 
 ## Step by Step Example
 Let's explore the various components of the framework with an example. Suppose we have a training corpus of millions of unlabeled images.
-![](/images/simclr-raw-data.png){.img-center}
+![Corpus of millions of images](/images/simclr-raw-data.png){.img-center}
 
 1. **Self-supervised Formulation** [Data Augmentation]  
 First, we generate batches of size N from the raw images. Let's take a batch of size N = 2 for simplicity. In the paper, they use a large batch size of 8192.
-![](/images/simclr-single-batch.png){.img-center}  
+![A single batch of images](/images/simclr-single-batch.png){.img-center}  
 
 The paper defines a random transformation function T that takes an image and applies a combination of `random (crop + flip + color jitter + grayscale)`.
-![](/images/simclr-random-transformation-function.gif){.img-center}  
+![Random Augmentation on Image](/images/simclr-random-transformation-function.gif){.img-center}  
 
 For each image in this batch, random transformation function is applied to get a pairs of 2 images. Thus, for a batch size of 2, we get 2\*N = 2\*2 = 4 total images.  
-![](/images/simclr-batch-data-preparation.png){.img-center}  
+![Augmenting images in a batch for SimCLR](/images/simclr-batch-data-preparation.png){.img-center}  
 2. **Getting Representations** [Base Encoder]  
 
 Each augmented image in a pair is passed through an encoder to get image representations. The encoder used is generic and replaceable with other architectures. The two encoders shown below have shared weights and we get vectors <tt class="math">h_i</tt> and <tt class="math">h_j</tt>.
-![](/images/simclr-encoder-part.png){.img-center}
+![Encoder part of SimCLR](/images/simclr-encoder-part.png){.img-center}
 
 In the paper, the authors used [ResNet-50](https://arxiv.org/abs/1512.03385) architecture as the ConvNet encoder. The output is a 2048-dimensional vector h.
-![](/images/simclr-paper-encoder.png){.img-center}
+![ResNet-50 as encoder in SimCLR](/images/simclr-paper-encoder.png){.img-center}
 3. **Projection Head**  
 The representations <tt class="math">h_i</tt> and <tt class="math">h_j</tt> of the two augmented images are then passed through a series of non-linear **Dense -> Relu -> Dense** layers to apply non-linear transformation and project it into a representation <tt class="math">z_i</tt> and <tt class="math">z_j</tt>. This is denoted by <tt class="math">g(.)</tt> in the paper and called projection head.
-![](/images/simclr-projection-head-component.png){.img-center}
+![Projection Head Component of SimCLR](/images/simclr-projection-head-component.png){.img-center}
 4. **Tuning Model**: [Bringing similar closer]  
 Thus, for each augmented image in the batch, we get embedding vectors <tt class="math">z</tt> for it.
-![](/images/simclr-projection-vectors.png){.img-center}
+![Projecting image to embedding vectors](/images/simclr-projection-vectors.png){.img-center}
 
 From these embedding, we calculate the loss in following steps:  
 
 a. **Calculation of Cosine Similarity**
 
 Now, the similarity between two augmented versions of an image is calculated using cosine similarity. For two augmented images <tt class="math">x_i</tt> and <tt class="math">x_j</tt>, the cosine similarity is calculated on its projected representations <tt class="math">z_i</tt> and <tt class="math">z_j</tt>.
-![](/images/simclr-cosine-similarity.png){.img-center}
+![Cosine similarity between image embeddings](/images/simclr-cosine-similarity.png){.img-center}
 
 <pre class="math">
 s_{i,j} = \frac{ \textcolor{#ff7070}{z_{i}^{T}z_{j}} }{(\tau ||\textcolor{#ff7070}{z_{i}}|| ||\textcolor{#ff7070}{z_{j}}||)}
@@ -92,34 +92,34 @@ where
 - <tt class="math">||z_{i}||</tt> is the norm of the vector
 
 The pairwise cosine similarity between each augmented image in a batch is calculated using the above formula. As shown in the figure, in an ideal case, the similarities between augmented images of cats will be high while the similarity between cat and elephant images will be lower.
-![](/images/simclr-pairwise-similarity.png){.img-center}
+![Pairwise cosine similarity between 4 images](/images/simclr-pairwise-similarity.png){.img-center}
 
 b. **Loss Calculation**  
 SimCLR uses a contrastive loss called "**NT-Xent**" (**Normalized Temperature-Scaled Cross-Entropy Loss**). Let see intuitively how it works.  
   
 First, the augmented pairs in the batch are taken one by one.
-![](/images/simclr-augmented-pairs-batch.png){.img-center}
+![Example of a single batch in SimCLR](/images/simclr-augmented-pairs-batch.png){.img-center}
 Next, we apply the softmax function to get the probability of these two images being similar.  
-![](/images/simclr-softmax-calculation.png)
+![Softmax Calculation on Image Similarities](/images/simclr-softmax-calculation.png)
 This softmax calculation is equivalent to getting the probability of the second augmented cat image being the most similar to the first cat image in the pair. Here, all remaining images in the batch are sampled as dissimilar image (negative pair). Thus, we don't need specialized architecture, memory bank or queue need by previous approaches like [InstDisc](https://arxiv.org/pdf/1805.01978.pdf), [MoCo](https://arxiv.org/abs/1911.05722) or [PIRL](https://arxiv.org/abs/1912.01991) 
-![](/images/simclr-softmax-interpretation.png){.img-center}
+![Interpretation of Softmax Function](/images/simclr-softmax-interpretation.png){.img-center}
 
 Then, the loss is calculated for a pair by taking the negative of the log of above calculation. This formulation is the Noise Contrastive Estimation(NCE) Loss.
 <pre class="math">
 l(i, j) = -log\frac{exp(s_{i, j})}{ \sum_{k=1}^{2N} l_{[k!= i]} exp(s_{i, k})}
 </pre>
 
-![](/images/simclr-softmax-loss.png)
+![Calculation of Loss from softmax](/images/simclr-softmax-loss.png)
 
 We calculate the loss for the same pair a second time as well where the positions of the images are interchanged.
-![](/images/simclr-softmax-loss-inverted.png)
+![Calculation of loss for exchanged pairs of images](/images/simclr-softmax-loss-inverted.png)
 
 Finally, we compute loss over all the pairs in the batch of size N=2 and take an average.
 <pre class="math">
 L = \frac{1}{ 2\textcolor{#2196f3}{N} } \sum_{k=1}^{N} [l(2k-1, 2k) + l(2k, 2k-1)]
 </pre>
 
-![](/images/simclr-total-loss.png)
+![Total loss in SimCLR](/images/simclr-total-loss.png)
 
 Based on the loss, the encoder and projection head representations improves over time and the representations obtained place similar images closer in the space.
 
@@ -127,11 +127,11 @@ Based on the loss, the encoder and projection head representations improves over
 
 ## Downstream Tasks
 Once the model is trained on the contrastive learning task, it can be used for transfer learning. In this, the representations from the encoder are used instead of representations obtained from the projection head. These representations can be used for downstream tasks like  ImageNet Classification.
-![](/images/simclr-downstream.png)
+![Using SimCLR for downstream tasks](/images/simclr-downstream.png)
 
 ## Objective Results
 SimCLR outperformed previous self-supervised methods on ImageNet. The below image shows top-1 accuracy of linear classifiers trained on representations learned with different self-supervised methods on ImageNet. The gray cross is supervised ResNet50 and SimCLR is shown in bold.
-![](/images/simclr-performance.png){.img-center}
+![Performance of SimCLR on ImageNet](/images/simclr-performance.png){.img-center}
 <p class="has-text-centered">
 Source: [SimCLR paper](https://arxiv.org/abs/2002.05709)
 </p>
