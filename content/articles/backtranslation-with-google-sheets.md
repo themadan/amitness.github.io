@@ -30,28 +30,28 @@ Luckily, Google provides a handy feature in their Google Sheets web app, which w
 
 ### Step 1: Load your data
 Let's assume we are building a sentiment analysis model and our dataset has sentences and their associated labels. We can load it into Google Sheets by importing the Excel/CSV file directly.
-![](/images/backtranslation-sheets-step-1.png)
+![Loading Files in Google Sheets](/images/backtranslation-sheets-step-1.png)
 
 ## Step 2: Add a column to hold augmented data
 Add a new column and use the `GOOGLETRANSLATE()` function to translate from English to French and back to English.
-![](/images/backtranslation-sheets-step-2.png)
+![Add column for translation](/images/backtranslation-sheets-step-2.png)
 
 The command to place in the column is
 ```js
 =GOOGLETRANSLATE(GOOGLETRANSLATE(A2, "en", "fr"), "fr", "en")
 ```
 Once the command is placed, press Enter and you will see the translation.
-![](/images/backtranslation-sheets-step-2.2.png)
+![Run translation on cells](/images/backtranslation-sheets-step-2.2.png)
 
 Now, select the first cell of "Backtranslated" column and drag the small square at the bottom right side below to apply this formula over the whole column 
-![](/images/backtranslation-sheets-step-2.3.png)
+![Drag translation to all cells](/images/backtranslation-sheets-step-2.3.png)
 
 This should apply to all your training texts and you will get back the augmented version.
-![](/images/backtranslation-sheets-step-2.4.png)
+![Example of translated rows](/images/backtranslation-sheets-step-2.4.png)
 
 ## Step 3: Filter out duplicated data
 For texts where the original text and what get back from `back translation` are the same, we can filter them out programmatically by comparing the original text column and the augmented column. Then, only keep responses that have `True` value in the `Changed` column.
-![](/images/backtranslation-sheets-step-3.2.png)
+![Filter out same translation](/images/backtranslation-sheets-step-3.2.png)
 
 ## Step 4: Export your data
 You can download your data as a CSV file and augment your existing training data.
