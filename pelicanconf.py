@@ -9,7 +9,7 @@ DOMAIN = 'http://localhost:8000'
 BIO_TEXT = 'Ideas & Thoughts'
 
 SITE_AUTHOR = 'Amit Chaudhary'
-INDEX_DESCRIPTION = 'A T-shaped engineer exploring the multidisciplinary fields of applied data science, one at a time.'
+INDEX_DESCRIPTION = 'T-shaped Machine Learning Engineer applying research to products.'
 
 ICONS_PATH = 'images/icons'
 
@@ -17,6 +17,8 @@ GOOGLE_FONTS = [
     'Nunito Sans:300,700',
     'Source Code Pro',
 ]
+
+TWITTER_USERNAME = 'amitness'
 
 
 # Pelican settings
