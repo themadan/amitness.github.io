@@ -6,7 +6,6 @@ import bulrush
 
 SITENAME = 'Amit Chaudhary'
 DOMAIN = 'http://localhost:8000'
-SITEURL = 'https://amitness.com'
 
 BIO_TEXT = 'Ideas & Thoughts'
 
@@ -52,6 +51,7 @@ DISPLAY_CATEGORIES_ON_MENU = False
 
 MENUITEMS = (
     ('contact', '/contact/'),
+    ('archive', '/archives'),
     ('about', '/about/'),
 )
 
