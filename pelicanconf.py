@@ -6,6 +6,8 @@ import bulrush
 
 SITENAME = 'Amit Chaudhary'
 DOMAIN = 'http://localhost:8000'
+SITEURL = 'https://amitness.com'
+
 BIO_TEXT = 'Ideas & Thoughts'
 
 SITE_AUTHOR = 'Amit Chaudhary'
@@ -62,7 +64,7 @@ ARTICLE_SAVE_AS = ARTICLE_URL + 'index.html'
 PAGE_URL = '{slug}/'
 PAGE_SAVE_AS = PAGE_URL + 'index.html'
 
-ARCHIVES_SAVE_AS = 'archive/index.html'
+ARCHIVES_SAVE_AS = 'archives.html'
 YEAR_ARCHIVE_SAVE_AS = '{date:%Y}/index.html'
 MONTH_ARCHIVE_SAVE_AS = '{date:%Y}/{date:%m}/index.html'
 
