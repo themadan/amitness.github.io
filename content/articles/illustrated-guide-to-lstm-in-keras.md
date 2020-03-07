@@ -18,7 +18,7 @@ I will be explaining the mental model through the lens of Natural Language Proce
 
 ## The Higher Purpose
 Let's say we have some text and you want to apply machine learning on it. We know models only understand numeric data, so we need some way to convert it into numeric form. We have word vector techniques to get the numeric form (embeddings) for the words.
-![](/images/rnn-necessity.png){.img-center}    
+![Necessity of RNN](/images/rnn-necessity.png){.img-center}    
 We see above how the sentence as a whole is negative because of present of the word "**not**" before "**good**". We would want our ML models such that previous words are taken into current when processing the current word. Thus, we need a concept of state/memory. That's where RNN shines.
 
 ## RNNs in Keras
