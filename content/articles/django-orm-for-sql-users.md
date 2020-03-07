@@ -15,7 +15,7 @@ In this post, I will be illustrating how to use Django ORM by drawing analogies 
 
 Let us consider a simple base model for a person with attributes name, age, and gender. 
 
-![Person ER Diagram](https://i.imgur.com/t7Fs6oc.png)
+![Person ER Diagram](/images/entity-diagram-django.png)
 
 To implement the above entity, we would model it as a table in SQL.
 
