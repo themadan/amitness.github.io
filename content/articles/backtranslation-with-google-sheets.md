@@ -18,7 +18,7 @@ The key idea of back translation is very simple. We create augmented version of 
 3. You convert the translated text back into English using Google Translate   
 4. Keep the augmented text if the original text and the back-translated text are different. 
 
-![](/images/backtranslation-en-fr.png){.img-center}
+![Backtranslation with English and French](/images/backtranslation-en-fr.png){.img-center}
 <p class="has-text-centered has-text-grey">
 Figure: Back Translation
 </p>
