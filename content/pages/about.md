@@ -3,23 +3,20 @@ Date: 2015-07-18 08:00
 Modified: 2015-07-18 08:00
 
 **Who I am**  
-
-Hi, I'm Amit Chaudhary and I live in Kathmandu - Nepal.  
-  
-I'm  a T-shaped engineer exploring the multidisciplinary fields of applied data science, one at a time.
+I'm a T-shaped engineer going [wide and deep](https://github.com/amitness/learning) on the multidisciplinary fields of data science.
 
 <br>
+**Interest Areas**  
+I'm interested in areas of *Self-Supervised Learning*, *Semi-Supervised Learning* and *Natural Language Processing*.
+<br>  
 **What I do**  
 
-Currently, I work as a Machine Learning Engineer at [Fusemachines](https://fusemachines.com), where I help businesses impart intelligence into their products.  
-<br>
-I'm trained in data science and machine learning through fellowships from Microsoft and Fusemachines and a [Micromasters](https://www.edx.org/micromasters/columbiax-artificial-intelligence) from Columbia University. I've been applying the data skills to highlight evidence-based issues for a non-profit organization "[Code For Nepal](https://codefornepal.org/)".  
-<br>
-Previously, I've worked as a software engineer to build products for varying business domains all the way from the early prototypes to delivery to the user at scale.  
-<br>
-Besides my core skills in data, I'm also AWS certified with proficiency leveraging cloud for scaling up services. 
-
+Currently, I work as a Machine Learning Engineer at [Fusemachines](https://fusemachines.com), where I apply state-of-the-art research to products. I've worked in domains of healthcare, education technology, logistics and marketing.
+<br>  
+I have a strong foundation in Machine Learning through fellowships from Microsoft and a [Micromasters](https://www.edx.org/micromasters/columbiax-artificial-intelligence) from Columbia University.
+<br>  
+**Community**  
+I've been applying the data skills to highlight evidence-based issues for a non-profit organization [Code For Nepal](https://codefornepal.org/).  
 <br>
 **About this blog**  
-
-The goal of this blog is to talk about things that I'm passionate about.
+The goal of this blog is to leverage intuition and visualizations to make machine learning research clear and accessible for everyone.
