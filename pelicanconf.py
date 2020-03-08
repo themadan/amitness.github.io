@@ -95,7 +95,7 @@ PAGE_EXCLUDES = ['404.html']
 STATIC_PATHS = ['images', 'extra']
 IGNORE_FILES = ['.DS_Store', 'pneumatic.scss', 'pygments.css', 'icomoon.css']
 
-extras = ['CNAME', 'favicon.ico', 'robots.txt']
+extras = ['CNAME', 'favicon.ico', 'robots.txt', 'ads.txt']
 EXTRA_PATH_METADATA = {'extra/%s' % file: {'path': file} for file in extras}
 
 PLUGIN_PATHS = ['./pelican-plugins']
