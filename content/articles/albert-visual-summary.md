@@ -144,5 +144,16 @@ ALBERT attacks these problems by building upon on BERT with a few novel ideas:
 ## Conclusion
 ALBERT marks an important step towards building language models that not only get SOTA on the leaderboards but are also feasible for real-world applications.
 
+## Citation Info (BibTex)
+If you found this blog post useful, please consider citing it as:
+```
+@misc{chaudhary2020albert,
+  title   = {Visual Paper Summary: ALBERT (A Lite BERT)},
+  author  = {Amit Chaudhary},
+  year    = 2020,
+  note    = {\url{https://amitness.com/2020/02/albert-visual-summary}}
+}
+```
+
 ## References
 - [ALBERT: A Lite BERT for Self-supervised Learning of Language Representations](https://arxiv.org/pdf/1909.11942.pdf)

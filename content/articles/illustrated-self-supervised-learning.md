@@ -166,5 +166,16 @@ To solve this pre-text task, [Misra et al.](https://arxiv.org/pdf/1711.09082.pdf
 **Papers**:  
 [Shuffle and Learn: Unsupervised Learning using Temporal Order Verification](https://arxiv.org/abs/1603.08561)
 
+## Citation Info (BibTex)
+If you found this blog post useful, please consider citing it as:
+```
+@misc{chaudhary2020selfsupervised,
+  title   = {The Illustrated Self-Supervised Learning},
+  author  = {Amit Chaudhary},
+  year    = 2020,
+  note    = {\url{https://amitness.com/2020/02/illustrated-self-supervised-learning}}
+}
+```
+
 ## References
 - Jing, et al. “[Self-Supervised Visual Feature Learning with Deep Neural Networks: A Survey.](https://arxiv.org/abs/1902.06162)”

@@ -142,6 +142,17 @@ Source: [SimCLR paper](https://arxiv.org/abs/2002.05709)
 ## Conclusion
 Thus, SimCLR provides a strong framework for doing further research in this direction and improve the state of self-supervised learning for Computer Vision.
 
+## Citation Info (BibTex)
+If you found this blog post useful, please consider citing it as:
+```
+@misc{chaudhary2020simclr,
+  title   = {The Illustrated SimCLR Framework},
+  author  = {Amit Chaudhary},
+  year    = 2020,
+  note    = {\url{https://amitness.com/2020/03/illustrated-simclr}}
+}
+```
+
 ## References
 - ["A Simple Framework for Contrastive Learning of Visual Representations"](https://arxiv.org/abs/2002.05709)  
 - ["On Calibration of Modern Neural Networks"](https://arxiv.org/pdf/1706.04599.pdf)  
