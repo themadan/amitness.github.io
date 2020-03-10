@@ -1,25 +1,25 @@
-Title: Illustrated Guide on Using LSTM in Keras
-Date: 2020-02-10 03:00
-Modified: 2020-02-10 03:00
+Title: Illustrated Guide to Recurrent Layers in Keras
+Date: 2020-03-07 03:00
+Modified: 2020-03-07 03:00
 Category: nlp
 Slug: illustrated-lstm-keras
-Summary: An illustrated guide on applying LSTM in Keras
+Summary: Understand how to use Recurrent Layers in Keras with diagrams.
 Status: draft
 Authors: Amit Chaudhary
 
 
-From the realm of Dense and Convolution layers, when I first came across sequence modeling architectures such as RNN, GRU and LSTM, I was intrigued by how simple but powerful they were.
+From the realm of simple feed-forward networks, when I first came across sequence modeling architectures such as RNN, GRU and LSTM, I was intrigued by how simple but powerful they were.
 
-However, when it came to implementation using frameworks like Keras, there were  many roadblocks ranging from input shape issues to not understanding how to formulate a problem using LSTM itself. 
+However, when it came to leveraging them using frameworks like Keras, there were many roadblocks ranging from not understanding how to formulate a problem using the available layers to input shape issues. 
 
-Having learnt these things the hard way, I've built a mental model now to easily design architectures and leverage LSTMs on various problems. This post is an attempt to make these mental model concrete and allow others to leverage it. The mental model rests on this core idea of being able to visualize at a high level how the inputs and outputs from these units pass.
+Having learnt these things the hard way, I've built a mental model now to design architectures with sequence model on various problems. This post is an attempt to make these mental model concrete for others. The mental model rests on this idea of being able to visualize how the inputs and outputs pass from these units.
 
-I will be explaining the mental model through the lens of Natural Language Processing to make the examples intuitive.
+In this post, I will be explaining the mental model through the lens of Natural Language Processing to make the examples intuitive.
 
-## The Higher Purpose
-Let's say we have some text and you want to apply machine learning on it. We know models only understand numeric data, so we need some way to convert it into numeric form. We have word vector techniques to get the numeric form (embeddings) for the words.
+## The Core Purpose
+Let's say we have some text and you want to apply machine learning on it. We know models only understand numeric data, so we need some way to convert it into numeric form. We can leverage word vector technique to get the numeric form (embeddings) for the words.
 ![Necessity of RNN](/images/rnn-necessity.png){.img-center}    
-We see above how the sentence as a whole is negative because of present of the word "**not**" before "**good**". We would want our ML models such that previous words are taken into current when processing the current word. Thus, we need a concept of state/memory. That's where RNN shines.
+We see above how the sentence as a whole is negative because of the presence of the word "**not**" before "**good**". We would want our ML models such that previous words are taken into account when processing the current word. Thus, we need a concept of state/memory. That's where RNN shines.
 
 ## RNNs in Keras
 Let's take a simple example of encoding a sentence using RNN layer in Keras.
@@ -60,8 +60,6 @@ model.add(SimpleRNN(4))
 ```
 
 ![](/images/rnn-stacked.png){.img-center}
-
-## Conclusion
 
 ## References
 - [Recurrent Layers - Keras Documentation](https://keras.io/layers/recurrent/)
