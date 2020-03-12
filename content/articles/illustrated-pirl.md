@@ -34,8 +34,11 @@ PIRL defines a generic framework to allow implementation of this idea. First, yo
 ![](/images/pirl-general-architecture.png){.img-center}
 
 ## Step by Step Example
-Let’s explore the various components of the framework with an example. Suppose we have a training corpus of millions of unlabeled images.
-![](/images/simclr-raw-data.png)
+Let’s explore the various components of the framework with an example. Suppose we have a training corpus of millions of unlabeled images.  
+![](/images/simclr-raw-data.png){.img-center}
+
+## Future Work
+The authors talk about possibilities of extending transformation to other sets of pretext tasks and also how PIRL could be combined with clustering-based approaches for better representation learning.
 
 ## Citation Info (BibTex)
 If you found this blog post useful, please consider citing it as:
