@@ -6,6 +6,7 @@ Tags:
 Slug: automate-ssh-commands
 Summary: Learn how to automate repetitive commands after connecting to a SSH server
 Authors: Amit Chaudhary
+Status: published
 
 I recently worked on a Django web application which was deployed on a Linux Server with SSH access. Deployments
 were done manually and the CI/CD pipeline was still in planning.
