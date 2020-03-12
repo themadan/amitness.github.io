@@ -98,6 +98,17 @@ IGNORE_FILES = ['.DS_Store', 'pneumatic.scss', 'pygments.css', 'icomoon.css']
 extras = ['CNAME', 'favicon.ico', 'robots.txt', 'ads.txt']
 EXTRA_PATH_METADATA = {'extra/%s' % file: {'path': file} for file in extras}
 
+MARKDOWN = {
+    'extension_configs': {
+        'markdown.extensions.codehilite': {'css_class': 'highlight'},
+        'markdown.extensions.extra': {},
+        'markdown.extensions.meta': {},
+        'markdown.extensions.toc': {},
+    },
+    'output_format': 'html5',
+}
+
+
 PLUGIN_PATHS = ['./pelican-plugins']
 PLUGINS = ['assets', 'neighbors', 'pelican_katex', 'sitemap', 'share_post']
 # ASSET_SOURCE_PATHS = ['static']
