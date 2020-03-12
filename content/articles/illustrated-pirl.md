@@ -3,7 +3,7 @@ Date: 2020-03-11 10:00
 Modified: 2020-03-11 10:00
 Category: illustration
 Slug: illustrated-pirl
-Summary: Learn how PIRL generates self-supervised image representations invariant to image transformations
+Summary: Learn how PIRL generates image representations invariant to image transformations in self-supervised manner
 Status: draft
 Authors: Amit Chaudhary
 
@@ -12,7 +12,7 @@ The end of 2019 saw a surge in the number of self-supervised learning research p
 In this article, I will explain the rationale behind the paper and how it advances the self-supervised representation learning scene further for vision. We will also see how this compares to the current SOTA approach "[SimCLR](https://amitness.com/2020/03/illustrated-simclr/)" (as of March 11, 2020) which improves shortcomings of PIRL.
 
 ## Motivation
-A number of interesting [self-supervised learning methods](https://amitness.com/2020/02/illustrated-self-supervised-learning/) have been proposed to learn image representations in recent times. Many of these use the idea of setting up a pretext task exploiting some geometric transformation to get labels. This includes "**Geometric Rotation Prediction**", "**Context Prediction**", "**Jigsaw Puzzle**", "**Frame Order Recognition**", "**[Auto-Encoding Transformation (AET)](https://arxiv.org/abs/1901.04596)**" among many others.
+A number of interesting [self-supervised learning methods](https://amitness.com/2020/02/illustrated-self-supervised-learning/) have been proposed to learn image representations in recent times. Many of these use the idea of setting up a pretext task exploiting some geometric transformation to get labels. This includes [Geometric Rotation Prediction](https://amitness.com/2020/02/illustrated-self-supervised-learning/#6-geometric-transformation-recognition), [Context Prediction](https://amitness.com/2020/02/illustrated-self-supervised-learning/#5-context-prediction), [Jigsaw Puzzle](https://amitness.com/2020/02/illustrated-self-supervised-learning/#4-image-jigsaw-puzzle), [Frame Order Recognition](https://amitness.com/2020/02/illustrated-self-supervised-learning/#1-frame-order-verification), [Auto-Encoding Transformation (AET)](https://arxiv.org/abs/1901.04596) among many others.
 ![](/images/pirl-geometric-pretext-tasks.png){.img-center}
 
 The pretext task is setup such that representations are learnt for a transformed image to predict some property of transformation. For example, for a rotation prediction task, we randomly rotate the image by say 90 degrees and then ask the network to predict the rotation angle. 
