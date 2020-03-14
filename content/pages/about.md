@@ -19,4 +19,4 @@ I have a strong foundation in Machine Learning through fellowships from Microsof
 I've been applying the data skills to highlight evidence-based issues for a non-profit organization [Code For Nepal](https://codefornepal.org/).  
 <br>
 **About this blog**  
-The goal of this blog is to leverage intuition and visualizations to make machine learning research clear and accessible to everyone.
+The goal of this blog is to leverage intuition and visualizations and make machine learning research clear and accessible to everyone.
