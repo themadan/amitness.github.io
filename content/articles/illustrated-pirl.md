@@ -53,6 +53,8 @@ Now, we take mini-batches from the training data. Let's assume we take a batch o
 **3. Pretext transformation**  
 For each image in batch, we apply the transformation based on the pretext task used. Here, we show the transformation for pretext task of geometric rotation prediction.
 ![](/images/pirl-rotation-gif.gif){.img-center}  
+Thus, for 2 images in our batch, we get two pairs and total four images.
+![](/images/pirl-augmented-pairs-batch.png){.img-center}
 **4. Encoder**  
 Now, for each image, the image and its counterpart transformation are passed through a network to get representations. The paper uses ResNet-50 as the base ConvNet encoder and we get back 2048-dimensional representation.
 ![](/images/pirl-encoder.png){.img-center}  
