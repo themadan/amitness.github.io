@@ -91,16 +91,16 @@ L_{NCE}(I, I^t) = -log[h(m_I, g(V_{I^t}))] - \sum_{I' \in D_N} log[ 1 - h( g(V_{
 where <tt class="math">f(V_I)</tt> is replaced by <tt class="math">m_I</tt> and <tt class="math">f(V_{I'})</tt> is replaced by <tt class="math">m_{I'}</tt>.
 
 In ideal case, similarity of image and it's transformation is highest i.e. 1 while similarity with any negative images is zero. So, loss becomes zero in that case.
+![](/images/pirl-ideal-nce.png){.img-center}
 <pre class="math">
-L_{NCE}(I, I^t) = -log[1] - log[1-0] = 0
+L_{NCE}(I, I^t) = -log[1] - (log[1-0] + log[1-0]) = 0
 </pre>
 
-We see how above loss only compares <tt class="math">I</tt> to <tt class="math">I^t</tt> and compares <tt class="math">I^t</tt> to <tt class="math">I'</tt>. It doesn't compare <tt class="math">I</tt> and <tt class="math">I'</tt>
-
-To do that, we introduce another another loss term and combine both these losses using following formulation
+We see how above loss only compares <tt class="math">I</tt> to <tt class="math">I^t</tt> and compares <tt class="math">I^t</tt> to <tt class="math">I'</tt>. It doesn't compare <tt class="math">I</tt> and <tt class="math">I'</tt>. To do that, we introduce another another loss term and combine both these losses using following formulation.
 <pre class="math">
-L(I, I^t) = \lambda L_{NCE}(m_I, g(V_{I^t}) + (1-\lambda)L_{NCE}(m_I, f(V_I))
+L(I, I^t) = \lambda L_{NCE}(m_I, g(V_{I^t})) + (1-\lambda)L_{NCE}(m_I, f(V_I))
 </pre>
+![](/images/pirl-final-loss-visualization.png){.img-center}
 
 With this formulation, we compare image to its transformation, transformation to negative image and original image to negative image as well.
 
