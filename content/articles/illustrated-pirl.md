@@ -66,6 +66,22 @@ The representations obtained from encoder are passed through a single linear lay
 **6. Improving Model (Loss function)**  
 Currently, for each image, we have representations for original and transformed versions of it.
 Our goal is to produce similar representations for both, while producing different representations for other images.
+![](/images/pirl-batch-outputs.png){.img-center}
+
+Now, we calculate the loss in the following steps:
+
+a. **Cosine Similarity**  
+Cosine similarity is used as similarity measure of any two representations. Below, we are comparing similarity of a cat image and it's rotated counterpart. It is denoted by <tt class="math">s()</tt>
+![](/images/pirl-cosine-similarity.png){.img-center}
+
+b. **Noise Contrastive Estimator**  
+We use a Noise Contrastive Estimator(NCE) function to compute similarity score of two representations normalized over all negative images.
+For a cat image and it's rotated counterpart, the noise contrastive estimator is denoted by:
+![](/images/pirl-nce-calculation.png){.img-center}
+Mathematically, this is denoted by:
+<pre class="math">
+h(V_I, V_{I^T}) = \frac{ exp(\frac{s(V_I, V_{I^t})}{\tau} ) }{ exp(\frac{s(V_{I^t}, V_{I^t})}{\tau} ) +  \sum_{ I' \in D_{N} }  exp(\frac{s(V_{I^t}, V_{I'})}{\tau} ) }
+</pre>
 
 
 ## Transfer Learning
