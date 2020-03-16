@@ -109,7 +109,7 @@ With this formulation, we compare image to its transformation, transformation to
 Based on these losses, the encoder and projection heads improve over time and better representations are obtained. The representations for images in the memory bank for the current batch are also updated by applying exponential moving average.
 
 ## Transfer Learning
-After the model is trained, then the projection heads <tt class="math">f(.)</tt> and <tt class="math">g(.)</tt> are removed and the ResNet-50 encoder is used for downstream tasks.
+After the model is trained, then the projection heads <tt class="math">f(.)</tt> and <tt class="math">g(.)</tt> are removed and the ResNet-50 encoder is used for downstream tasks. You can either freeze the ResNet-50 model and use this as a feature extractor or you can finetune the whole network for your downstream task.
 
 ## Future Work
 The authors state two promising areas for improving PIRL and learn better image representations:  
