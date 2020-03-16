@@ -28,52 +28,45 @@ PIRL proposes a method to tackle the problem of representations being covariant 
 - Make representations of the original and transformed image different from other random images in the dataset  
 ![](/images/pirl-concept.png){.img-center}
 
-> Intuitively this makes sense because even if an image was rotated, it doesn't change the semantic meaning that this image is still a "cat on a surface"
+> Intuitively this makes sense because even if an image was rotated, it doesn't change the semantic meaning that this image is still a "**cat sitting on a surface**"
 
 ## PIRL Framework
-PIRL defines a generic framework to implement this idea. First, you take a original image I, apply a transformation from some pretext task(e.g. rotation prediction) to get transformed image <tt class="math">I^t</tt>. Then, both the images are passed through ConvNet <tt class="math">\theta</tt> with shared weights to get representations <tt class="math">V_I</tt> and <tt class="math">V_{I^T}</tt>. The representation <tt class="math">V_I</tt> of original image is passed through a projection head f(.) to get representation <tt class="math">f(V_I)</tt>. Similarly, a separate projection head g(.) is used to get representation <tt class="math">g(V_{I^T})</tt> for transformed image. These representations are tuned with a loss function such that representations of <tt class="math">I</tt> and <tt class="math">I^t</tt> are similar, while making it different from other random image representations stored in a memory bank.
+PIRL defines a generic framework to implement this idea. First, you take a original image I, apply a transformation borrowed from some pretext task(e.g. rotation prediction) to get transformed image <tt class="math">I^t</tt>. Then, both the images are passed through ConvNet <tt class="math">\theta</tt> with shared weights to get representations <tt class="math">V_I</tt> and <tt class="math">V_{I^T}</tt>. The representation <tt class="math">V_I</tt> of original image is passed through a projection head f(.) to get representation <tt class="math">f(V_I)</tt>. Similarly, a separate projection head g(.) is used to get representation <tt class="math">g(V_{I^T})</tt> for transformed image. These representations are tuned with a loss function such that representations of <tt class="math">I</tt> and <tt class="math">I^t</tt> are similar, while making it different from other random image representations <tt class="math">I'</tt> stored in a memory bank.
 ![](/images/pirl-general-architecture.png){.img-center}
 
 ## Step by Step Example
-Let's assume we take a training corpus of only 3 RGB images for simplicity.  
+Let's assume we have a training corpus containing 3 RGB images for simplicity.
 ![Training Corpus for PIRL](/images/pirl-raw-data.png){.img-center}
 
+Here is how PIRL works on these images step by step:
+
 1. **Memory Bank**  
-To learn better image representations, it's better to compare the current image with a large number of negative images. One common approach is to use larger batches and consider all other images in this batch as negative. Loading larger batches of images comes with its set of resource challenges.
+To learn better image representations, it's better to compare the current image with a large number of negative images. One common approach is to use larger batches and consider all other images in this batch as negative. However, loading larger batches of images comes with its set of resource challenges.
 ![](/images/pirl-batch-size-negative-pair.png){.img-center}
-
-To solve this problem, PIRL proposes to use a memory bank which caches representations of all images and use that during training. This allows us to use a large number of negative pairs without increasing batch size.  
-
-In our example, the network is initialized with random weights. Then, a foward pass is done for all images in training data and the representations <tt class="math">f(V_I)</tt> are stored in memory bank.  
-![](/images/pirl-memory-bank.png){.img-center}
-
+To solve this problem, PIRL proposes to use a memory bank which caches representations of all images and use that during training. This allows us to use a large number of negative pairs without increasing batch size.   
+<br>
+In our example, the PIRL model is initialized with random weights. Then, a foward pass is done for all images in training data and the representation <tt class="math">f(V_I)</tt> for each image is stored in memory bank.  
+![](/images/pirl-memory-bank.png){.img-center}  
 **2. Prepare batches of images**  
 Now, we take mini-batches from the training data. Let's assume we take a batch of size 2 in our case.  
-![](/images/pirl-single-batch.png){.img-center}
-
+![](/images/pirl-single-batch.png){.img-center}  
 **3. Pretext transformation**  
 For each image in batch, we apply the transformation based on the pretext task used. Here, we show the transformation for pretext task of geometric rotation prediction.
-![](/images/pirl-rotation-gif.gif){.img-center} 
-
+![](/images/pirl-rotation-gif.gif){.img-center}  
 **4. Encoder**  
 Now, for each image, the image and its counterpart transformation are passed through a network to get representations. The paper uses ResNet-50 as the base ConvNet encoder and we get back 2048-dimensional representation.
-![](/images/pirl-encoder.png){.img-center}
-
+![](/images/pirl-encoder.png){.img-center}  
 **5. Projection Head**  
 The representations obtained from encoder are passed through a single linear layer to project the representation from 2048 dimension to 128 dimension. Separate linear layers f(.) and g(.) are used for the original and transformed image respectively. We get final representation <tt class="math">f(V_I)</tt> for original image and <tt class="math">g(V_{I^T})</tt> for transformed image.
-![](/images/pirl-projection-head.png){.img-center}
-
+![](/images/pirl-projection-head.png){.img-center}  
 **6. Improving Model (Loss function)**  
 Currently, for each image, we have representations for original and transformed versions of it.
 Our goal is to produce similar representations for both while producing different representations for other images.
-![](/images/pirl-batch-outputs.png){.img-center}
-
-Now, we calculate the loss in the following steps:
-
+![](/images/pirl-batch-outputs.png){.img-center}  
+Now, we calculate the loss in the following steps:  
 a. **Cosine Similarity**  
 Cosine similarity is used as a similarity measure of any two representations. Below, we are comparing the similarity of a cat image and it's rotated counterpart. It is denoted by <tt class="math">s()</tt>
-![](/images/pirl-cosine-similarity.png){.img-center}
-
+![](/images/pirl-cosine-similarity.png){.img-center}  
 b. **Noise Contrastive Estimator**  
 We use a Noise Contrastive Estimator(NCE) function to compute the similarity score of two representations normalized by all negative images.
 For a cat image and it's rotated counterpart, the noise contrastive estimator is denoted by:
