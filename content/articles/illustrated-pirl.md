@@ -116,6 +116,9 @@ The authors state two promising areas for improving PIRL and learn better image 
 1. Borrow transformation from other pretext tasks instead of jigsaw and rotation.  
 2. Combine PIRL with clustering-based approaches  
 
+## Code Implementation
+An implementation of PIRL in PyTorch by Arkadiusz Kwasigroch is available [here](https://github.com/akwasigroch/Pretext-Invariant-Representations). Models are available for both rotation as well as jigsaw task. It tests the performance of the network on a small dataset of 2000 skin lesions images and gets an AUC score of 0.7 compared to a random initialization score of 0.55. 
+
 ## Citation Info (BibTex)
 If you found this blog post useful, please consider citing it as:
 ```
