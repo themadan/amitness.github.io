@@ -241,8 +241,10 @@ X.Y
 It gives the sum of the products of the corresponding entries of the two sequences of numbers.
 ```python
 X = [1, 2, 3]
-Y = [4, 5, 7]
-# 1*4 + 2*5 + 3*7
+Y = [4, 5, 6]
+dot = sum([i*j for i, j in zip(X, Y)])
+# 1*4 + 2*5 + 3*6
+# 32
 ```
 <br>
 ### Hat
