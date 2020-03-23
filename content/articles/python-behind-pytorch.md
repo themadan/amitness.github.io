@@ -50,6 +50,21 @@ Alternatively, the above code can be combined in the single line itself.
 4
 ```
 
+This works because everything in Python is an object. See an example of a function below that doubles a number.
+```python
+def double(x):
+    return 2*x
+
+>>> double(2)
+4
+```
+Even functions invoke the`__call__` method behind the scenes.
+```python
+>>> double.__call__(2)
+4
+```
+
+
 ## Magic methods in Forward Pass
 Let's see an example of a model that applies a single fully connected layer to MNIST images to get 10 outputs.
 ```python
@@ -260,4 +275,4 @@ images, labels = trainloader.__iter__().__next__()
 Thus, we get images and labels for a single batch.
 
 ## Conclusion
-Thus, we saw how PyTorch borrows several advanced concepts from Python itself in its API design. I hope the article was helpful to demystify how these concepts work behind the scenes and will help you become a better PyTorch user.
+Thus, we saw how PyTorch borrows several advanced concepts from native Python itself in its API design. I hope the article was helpful to demystify how these concepts work behind the scenes and will help you become a better PyTorch user.
