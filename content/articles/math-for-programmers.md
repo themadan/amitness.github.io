@@ -131,7 +131,7 @@ abs(y) # 20
 | x |
 </pre>
 <pre class="math">
-|| x || 
+\|\| x \|\| 
 </pre>
 
 The norm is used to calculate the magnitude of a vector. In Python, this means squaring each element of an array, summing them and then taking the square root.
@@ -143,9 +143,9 @@ x = [1, 2, 3]
 math.sqrt(x[0]**2 + x[1]**2 + x[2]**2)
 ```
 
-## Epsilon
+## Belongs to
 <pre class="math">
-3\ \epsilon\ X
+3\ \in\ X
 </pre>
 
 This symbol checks if an element is part of a set. In Python, this would be equivalent to
@@ -180,7 +180,7 @@ y = 2.5
 z = math.pi
 ```
 
-You will also enounter symbols such as 
+You will also encounter symbols such as 
 <pre class="math">
 f: R^d \rightarrow R
 </pre>
@@ -198,7 +198,7 @@ Y = f(X)
   
 ### Transpose
 <pre class="math">
-X^T
+X^{\mathsf{T}} 
 </pre>
 
 This is basically exchanging the rows and columns.
@@ -239,15 +239,15 @@ Output is
 <br>
 ### Dot Product
 <pre class="math">
-XY \newline
-X.Y
+xy \newline
+x \cdot y
 </pre>
 
 It gives the sum of the products of the corresponding entries of the two sequences of numbers.
 ```python
-X = [1, 2, 3]
-Y = [4, 5, 6]
-dot = sum([i*j for i, j in zip(X, Y)])
+x = [1, 2, 3]
+y = [4, 5, 6]
+dot = sum([i*j for i, j in zip(x, y)])
 # 1*4 + 2*5 + 3*6
 # 32
 ```
