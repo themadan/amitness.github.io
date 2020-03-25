@@ -55,7 +55,7 @@ x = [1, 2, 3, 4, 5]
 result = 0
 N = len(x)
 for i in range(N):
- result = result + x[i]
+    result = result + x[i]
 print(result)
 ```
 The above code can even be shortened using built-in functions in Python as
@@ -76,8 +76,8 @@ Here we reuse the sigma notation and divide by the number of elements to get an 
 x = [1, 2, 3, 4, 5]
 result = 0
 N = len(x)
-for i in range(n):
- result = result + x[i]
+for i in range(N):
+    result = result + x[i]
 average = result / N
 print(average)
 ```
@@ -101,7 +101,7 @@ x = [1, 2, 3, 4, 5]
 result = 1
 N = len(x)
 for i in range(N):
- result = result * x[i]
+    result = result * x[i]
 print(result)
 ```
 
@@ -137,6 +137,8 @@ abs(y) # 20
 The norm is used to calculate the magnitude of a vector. In Python, this means squaring each element of an array, summing them and then taking the square root.
 
 ```python
+import math
+
 x = [1, 2, 3]
 math.sqrt(x[0]**2 + x[1]**2 + x[2]**2)
 ```
@@ -160,8 +162,8 @@ f: X \rightarrow Y
 This denotes a function which takes a domain X and maps it to range Y. In Python, it's equivalent to taking a pool of values X, doing some operation on it to calculate pool of values Y.
 ```python
 def f(X):
- Y = ...
- return Y
+    Y = ...
+    return Y
 ```
 
 You will encounter the following symbols in place of X and Y. Here are what they mean:
@@ -172,6 +174,7 @@ f: R \rightarrow R
 `R` means input and outputs are real numbers and can take any value (integer, float, irrational, rational).
 In Python, this is equivalent to any value except complex numbers.
 ```python
+import math
 x = 1
 y = 2.5
 z = math.pi
@@ -187,7 +190,7 @@ f: R^d \rightarrow R
 Let's assume d = 2. In Python, an example can be a function that takes 2-D array and returns it's sum. It will be mapping a <tt class="math">R^d</tt> to <tt class="math">R</tt>
 ```python
 X = [1, 2]
-f = np.sum
+f = sum
 Y = f(X)
 ```
 
@@ -201,6 +204,7 @@ X^T
 This is basically exchanging the rows and columns.
 In Python, this would be equivalent to
 ```python
+import numpy as np
 X = [[1, 2, 3], 
     [4, 5, 6]]
 np.transpose(X)
@@ -220,6 +224,7 @@ z = x \odot y
 
 It means multiplying the corresponding elements in two tensors. In Python, this would be equivalent to multiplying the corresponding elements in two lists.
 ```python
+import numpy as np
 x = [[1, 2], 
     [3, 4]]
 y = [[2, 2], 
@@ -254,12 +259,14 @@ dot = sum([i*j for i, j in zip(X, Y)])
 
 The hat gives the unit vector. This means dividing each component in a vector by it's length(norm).
 ```python
+import math
 x = [1, 2, 3]
 length = math.sqrt(sum([e**2 for e in x]))
 x_hat = [e/length for e in x]
 ```
 This makes the magnitude of the vector 1 and only keeps the direction.
 ```python
+import math
 math.sqrt(sum([e**2 for e in x_hat]))
 # 1.0
 ```
@@ -281,6 +288,7 @@ print(fact)
 The same thing can also be calculated using built-in function.
 ```python
 import math
+x = 5
 math.factorial(x)
 ```
 The output is
