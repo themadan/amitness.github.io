@@ -101,7 +101,7 @@ First, the augmented pairs in the batch are taken one by one.
 ![Example of a single batch in SimCLR](/images/simclr-augmented-pairs-batch.png){.img-center}
 Next, we apply the softmax function to get the probability of these two images being similar.  
 ![Softmax Calculation on Image Similarities](/images/simclr-softmax-calculation.png)
-This softmax calculation is equivalent to getting the probability of the second augmented cat image being the most similar to the first cat image in the pair. Here, all remaining images in the batch are sampled as dissimilar image (negative pair). Thus, we don't need specialized architecture, memory bank or queue need by previous approaches like [InstDisc](https://arxiv.org/pdf/1805.01978.pdf), [MoCo](https://arxiv.org/abs/1911.05722) or [PIRL](https://arxiv.org/abs/1912.01991) 
+This softmax calculation is equivalent to getting the probability of the second augmented cat image being the most similar to the first cat image in the pair. Here, all remaining images in the batch are sampled as dissimilar image (negative pair). Thus, we don't need specialized architecture, memory bank or queue need by previous approaches like [InstDisc](https://arxiv.org/pdf/1805.01978.pdf), [MoCo](https://arxiv.org/abs/1911.05722) or [PIRL](https://arxiv.org/abs/1912.01991).
 ![Interpretation of Softmax Function](/images/simclr-softmax-interpretation.png){.img-center}
 
 Then, the loss is calculated for a pair by taking the negative of the log of above calculation. This formulation is the Noise Contrastive Estimation(NCE) Loss.
