@@ -133,8 +133,9 @@ The paper uses wider and shallower variants of ResNet called [Wide Residual Netw
 
 ### 3. Model Training and Loss Function
 - **Step 1: Preparing batches**  
-We prepare batches of the labeled images of size B and unlabeled images of batch size <tt class="math">\mu B</tt>. Here <tt class="math">\mu</tt> is a hyperparameter that decides the relative size of labeled:unlabeled images in a batch. For example, <tt class="math">\mu=2</tt> means that we use twice the number of unlabeled images compared to labeled images.  
- The paper tried increasing values of <tt class="math">\mu</tt> and found that as we increased the number of unlabeled images, the error rate decreases.
+We prepare batches of the labeled images of size B and unlabeled images of batch size <tt class="math">\textcolor{#774cc3}{\mu} B</tt>. Here <tt class="math">\textcolor{#774cc3}{\mu}</tt> is a hyperparameter that decides the relative size of labeled:unlabeled images in a batch. For example, <tt class="math">\textcolor{#774cc3}{\mu}=2</tt> means that we use twice the number of unlabeled images compared to labeled images.
+![](/images/fixmatch-batch-sizes.png){.img-center}
+ The paper tried increasing values of <tt class="math">\textcolor{#774cc3}{\mu}</tt> and found that as we increased the number of unlabeled images, the error rate decreases. The paper uses <tt class="math">\textcolor{#774cc3}{\mu} = 7</tt> for evaluation datasets.
 ![](/images/fixmatch-effect-of-mu.png){.img-center}
 <p class="has-text-centered">Source: FixMatch paper</p>
 - **Step 2: Supervised Learning**  
