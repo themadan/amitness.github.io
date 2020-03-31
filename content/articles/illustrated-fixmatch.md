@@ -6,6 +6,7 @@ Slug: fixmatch-semi-supervised
 Summary: Learn how to leverage unlabeled data using FixMatch for semi-supervised learning
 Status: draft
 Authors: Amit Chaudhary
+Cover: /images/fixmatch-pipeline.png
 
 
 Deep Learning has shown very promising results in the field of Computer Vision. But when applying it to practical domains such as medical imaging, lack of labeled data is a major challenge. 
@@ -102,7 +103,7 @@ So, FixMatch uses one among two variants of AutoAugment:
 **a. RandAugment**  
 The idea of Random Augmentation(RandAugment) is very simple.
 
-- First you have a list of possible augmentation with their range of possible magnitudes.
+- First you have a list of 14 possible augmentation with range of their possible magnitudes.
 ![](/images/fixmatch-randaug-pool.png){.img-center}
 - You select random N augmentations from this list. Here, we are selecting any two from the list.
 ![](/images/fixmatch-randaug-random-N.png){.img-center}
@@ -116,7 +117,7 @@ The idea of Random Augmentation(RandAugment) is very simple.
 **b. CTAugment**  
 CTAugment was a augmentation technique introduced in the ReMixMatch paper and uses ideas from control theory to remove the need for Reinforcement Learning in AutoAugment. Here's how it works: 
  
-- We have a set of possible transformations like in RandAugment
+- We have a set of 18 possible transformations similar to RandAugment
 - Magnitude values for transformations are divided into bins and each bin is assigned a weight. Initially, all bins have a weight of 1.
 - Now two transformations are selected at random with equal chances from this set and their sequence forms a pipeline. This is similar to RandAugment.
 - For each transformation, a magnitude bin is selected randomly with a probability according to the normalized bin weights
@@ -131,32 +132,66 @@ Thus, this is very suitable for semi-supervised setting where labeled data is sc
 The paper uses wider and shallower variants of ResNet called [Wide Residual Networks](https://arxiv.org/abs/1605.07146) as the base architecture. The exact variant used is Wide-Resnet-28-2 with a depth of 28 and widening factor of 2. Thus, this model is two times wider than ResNet. The model has 1.5 million parameters. This model can be combined with a linear layer with output neurons equal to number of classes (e.g. 10 for CIFAR-10 and 100 for CIFAR-100).
 
 ### 3. Model Training and Loss Function
-- We prepare batches of the labeled images of size B and unlabeled images of batch size <tt class="math">\mu B</tt>. Here <tt class="math">\mu</tt> is a hyperparameter that decides the relative size of labeled:unlabeled images in a batch. For example, <tt class="math">\mu=2</tt> means that we use twice the number of unlabeled images compared to labeled images.  
+- **Step 1: Preparing batches**  
+We prepare batches of the labeled images of size B and unlabeled images of batch size <tt class="math">\mu B</tt>. Here <tt class="math">\mu</tt> is a hyperparameter that decides the relative size of labeled:unlabeled images in a batch. For example, <tt class="math">\mu=2</tt> means that we use twice the number of unlabeled images compared to labeled images.  
  The paper tried increasing values of <tt class="math">\mu</tt> and found that as we increased the number of unlabeled images, the error rate decreases.
 ![](/images/fixmatch-effect-of-mu.png){.img-center}
-<p class="has-text-centered">Source: Figure 3(a) | FixMatch paper</p>
-- For the supervised part of the pipeline which is trained on labeled images, we use the regular cross-entropy loss H() for classification task. The total loss for a batch is defined by <tt class="math">l_s</tt> and is calculated by taking average of cross-entropy losses for each image:
+<p class="has-text-centered">Source: FixMatch paper</p>
+- **Step 2: Supervised Learning**  
+For the supervised part of the pipeline which is trained on labeled images, we use the regular cross-entropy loss H() for classification task. The total loss for a batch is defined by <tt class="math">l_s</tt> and is calculated by taking average of cross-entropy losses for each image:
 <pre class="math">
-l_s = \frac{1}{B} \sum_{b=1}^{B} H( P_b, P_m(y | \alpha(x_b))
+l_s = \frac{1}{B} \sum_{b=1}^{B} H( p_b, p_m(y | \alpha(x_b))
 </pre>
-- For the unlabeled images, first we apply weak augmentation to the unlabeled image and get the probability for the highest predicted class by applying argmax. This is the pseudo-label that will be compared with output of model on strongly augmented image.
+- **Step 3: Pseudolabeling**  
+For the unlabeled images, first we apply weak augmentation to the unlabeled image and get the probability for the highest predicted class by applying argmax. This is the pseudo-label that will be compared with output of model on strongly augmented image.
 <pre class="math">
 q_b = p_m(y | \alpha(\mu_b) )
 </pre>
 <pre class="math">
-\vec{q_b} = argmax(q_b)
+\hat{q_b} = argmax(q_b)
 </pre>
-- Now, the same unlabeled image is strongly augmented and it's output is compared to our pseudolabel to compute cross-entropy loss H(). The total unlabeled batch loss is denoted by <tt class="math">l_u</tt> and given by:
+- **Step 4: Consistency Regularization**  
+Now, the same unlabeled image is strongly augmented and it's output is compared to our pseudolabel to compute cross-entropy loss H(). The total unlabeled batch loss is denoted by <tt class="math">l_u</tt> and given by:
 <pre class="math">
-l_u = \frac{1}{\mu B} \sum_{b=1}^{\mu B} l(max(q_b) >= \tau) H( \vec{q_b}, p_m(y | A(\mu b) )
+l_u = \frac{1}{\mu B} \sum_{b=1}^{\mu B} l(max(q_b) >= \tau) H( \hat{q_b}, p_m(y | A(\mu b) \ )
 </pre>
 Here <tt class="math">\tau</tt> denotes the threshold above which we take a pseudo-label. This loss is similar to the pseudo-labeling loss. The difference is that we're using weak augmentation for labels and strong augmentation for loss.
-- We finally combine these two losses to get total loss that we optimize to improve our model. <tt class="math">\lambda_u</tt> is a fixed scalar hyperparameter that decides how much both the unlabeled image loss contribute relative to the labeled loss.
+- **Step 5: Curriculum Learning**  
+We finally combine these two losses to get total loss that we optimize to improve our model. <tt class="math">\lambda_u</tt> is a fixed scalar hyperparameter that decides how much both the unlabeled image loss contribute relative to the labeled loss.
 <pre class="math">
 loss = l_s + \lambda_u l_u
 </pre>
-An interesting result comes from <tt class="math">\lambda_u</tt>. Previous works [43, 21, 3, 2, 31] have shown that increasing weight during course of training is good. But, in FixMatch, this comes for free. Since initially, the model is not confident on labeled data, so its output predictions on unlabeled data will be below threshold. As such, the model will be trained only on labeled data. But as the training progress, the model becomes more confident on labeled data and as such, predictions on unlabeled data will also start to cross threshold. As such, the loss will soon start incorporating predictions on unlabeled images as well. This gives us a free form of curriculum learning. Intuitively, this is how we learn as a child. In early years, we learn easy concepts such as addition of single digit number 1+2, 2+2 before going to 2 digit numbers and then to complex concepts like algebra.
+An interesting result comes from <tt class="math">\lambda_u</tt>. Previous works have shown that increasing weight during course of training is good. But, in FixMatch, this comes for free. Since initially, the model is not confident on labeled data, so its output predictions on unlabeled data will be below threshold. As such, the model will be trained only on labeled data. But as the training progress, the model becomes more confident on labeled data and as such, predictions on unlabeled data will also start to cross threshold. As such, the loss will soon start incorporating predictions on unlabeled images as well. This gives us a free form of curriculum learning. Intuitively, this is how we learn as a child. In early years, we learn easy concepts such as addition of single digit number 1+2, 2+2 before going to 2 digit numbers and then to complex concepts like algebra.
 
+## Paper Insights  
+## 1. Can we learn with just one image per class?  
+The authors performed a really interesting experiment on CIFAR-10 dataset. They trained a model on CIFAR-10 using only 10 labeled images i.e. 1 labeled example of each class.  
+
+- They created 4 datasets by randomly selecting 1 example per class from the dataset and trained on each dataset 4 times. They reached a test accuracy between 48.58% to 85.32% with a median accuracy of 64.28%. These variability in the accuracy was caused due to quality of labeled examples. It is difficult for model to learn each class effectively when provided with low quality example.
+![](/images/fixmatch-1-label-example.png){.img-center}
+- To test this, they created 8 training datasets with examples ranging from most representative to least representative. They followed the ordering from this [paper](https://arxiv.org/abs/1910.13427) and divided the ordering into 8 buckets. The first bucket would contain the most representative images while last bucket would contain outliers. Then, they took one example of each class randomly from each bucket to create 8 labeled training sets and trained the FixMatch model. Results were:
+    - **Most representative bucket**: 78% median accuracy with maximum of 84% accuracy
+    - **Middle bucket**: 65% accuracy
+    - **Outlier bucket**: Fails to converge completely with only 10% accuracy
+
+## Evaluation and Results
+The authors ran evaluations on datasets commonly used for SSL such as CIFAR-10, CIFAR-100, SVHN, STL-10 and ImageNet.
+
+- **CIFAR-10 and SVHN:**  
+FixMatch achieves state of the art results on CIFAR-10 and SVHN benchmarks. They use 5 different folds for each dataset.
+![](/images/fixmatch-cifar-10-svhn.png){.img-center}
+
+- **CIFAR-100**  
+On CIFAR-100, ReMixMatch is a bit superior than FixMatch. To understand why, the authors borrowed various components from ReMixMatch to FixMatch and saw impact on performance. They found that *Distribution Alignment(DA)* component which encourages model to emit all classes with equal probability was the cause. So, when they combined FixMatch with DA, they achieved 40.14% error rate compared to 44.28% error rate of ReMixMatch.
+![](/images/fixmatch-cifar-100.png){.img-center}
+
+- **STL-10:**  
+STL-10 dataset consists of 100,000 unlabeled images and 5000 labeled images. We need to predict 10 classes(airplane, bird, car, cat, deer, dog, horse, monkey, ship, truck.). It is more representative evaluation for semi-supervised learning because its unlabeled set has out-of-distribution images.  
+FixMatch achieves the lowest error rate with CTAugment when evaluated on 5-folds of 1000 labeled images each among all methods.
+![](/images/fixmatch-stl-10.png){.img-center}
+
+- **ImageNet**  
+The author also evaluate model on ImageNet to verify if it works on large and complex datasets. They take 10% of the training data as labeled images and all remaining 90% as unlabeled. Also, the architecture used is ResNet-50 instead of WideResNet and RandAugment is used as strong augmentation. They achieve a top-1 error rate of <tt class="math">28.54\pm0.52%</tt> which is <tt class="math">2.68\%</tt> better than UDA. The top-5 error rate is <tt class="math">10.87\pm0.28\%</tt>.
 
 
 ## Code Implementation
@@ -166,7 +201,7 @@ The official implementation from the paper authors is available [here](https://g
 If you found this blog post useful, please consider citing it as:
 ```
 @misc{chaudhary2020fixmatch,
-  title   = {A Visual Introduction to FixMatch},
+  title   = {The Illustrated FixMatch for Semi-Supervised Learning},
   author  = {Amit Chaudhary},
   year    = 2020,
   note    = {\url{https://amitness.com/2020/03/illustrated-fixmatch}}
