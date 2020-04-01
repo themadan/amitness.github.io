@@ -11,19 +11,19 @@ Cover: /images/fixmatch-pipeline.png
 
 Deep Learning has shown very promising results in the field of Computer Vision. But when applying it to practical domains such as medical imaging, lack of labeled data is a major challenge. 
 
-In practical settings, labeling data is a time consuming and expensive process. Though, you have a lot of images, only a small portion of them can be labeled due to resource constraints. In such settings, how can we leverage the remaining unlabeled images along with the labeled images to improve performance of our model? The answer is semi-supervised learning.
+In practical settings, labeling data is a time consuming and expensive process. Though, you have a lot of images, only a small portion of them can be labeled due to resource constraints. In such settings, how can we leverage the remaining unlabeled images along with the labeled images to improve the performance of our model? The answer is semi-supervised learning.
 
-FixMatch is a recent approach by *Sohn et al.* from Google Brain that improved the state of the art in semi-supervised learning(SSL). It is a simpler combination of previous methods such as UDA and ReMixMatch.  In this post, we will the understand the concept and working mechanism of FixMatch.
+FixMatch is a recent semi-supervised approach by *Sohn et al.* from Google Brain that improved the state of the art in semi-supervised learning(SSL). It is a simpler combination of previous methods such as UDA and ReMixMatch.  In this post, we will understand the concept of FixMatch and also see it got 78% accuracy on CIFAR-10 with just 10 images.
 
 ## Intuition behind FixMatch
-Say we're doing a cat vs dog classification where we have limited labeled data and a lot of unlabelled images of cats and dogs.
+Let's say we're doing a cat vs dog classification where we have limited labeled data and a lot of unlabelled images of cats and dogs.
 ![](/images/fixmatch-labeled-vs-unlabeled.png){.img-center}  
 
 Our usual *supervised learning* approach would be to just train a classifier on labeled images and ignore the unlabelled images.
 ![](/images/fixmatch-supervised-part.png){.img-center}
 
-Instead of ignoring unlabeled images, we could instead apply below approach. We know that a model should be able to handle perturbations of an image as well to improve generalization.  
->> What if we create augmented versions of unlabeled images and make the supervised model predict those images. Since it's the same image, the predicted labels should be same for both.
+Instead of ignoring unlabeled images, we could instead apply the below approach. We know that a model should be able to handle perturbations of an image as well to improve generalization.  
+>> What if we create augmented versions of unlabeled images and make the supervised model predict those images. Since it's the same image, the predicted labels should be the same for both.
 
 ![](/images/fixmatch-unlabeled-augment-concept.png){.img-center}
 Thus, even without knowing their correct labels, we can use the unlabeled images as a part of our training pipeline. This is the core idea behind FixMatch and many preceding papers it builds upon.
@@ -58,7 +58,7 @@ weak_im = transforms.RandomHorizontalFlip(p=0.5)(im)
 
 - **Random Vertical and Horizontal Translation**  
 ![](/images/fixmatch-translate.gif){.img-center}
-This augmentation is applied up to 12.5%. In PyTorch, this can be implemented using following code where 32 is the size of image needed:
+This augmentation is applied up to 12.5%. In PyTorch, this can be implemented using the following code where 32 is the size of the image needed:
 ```python
 import torchvision.transforms as transforms
 from PIL import Image
@@ -71,11 +71,11 @@ translated = transforms.RandomCrop(size=32,
 ```
 
 **b. Strong Augmentation**  
-These includes augmentations which outputs heavily distorted versions of the input images. FixMatch applies the CutOut augmentation followed by one of RandAugment or CTAugment.
+These include augmentations that output heavily distorted versions of the input images. FixMatch applies the CutOut augmentation followed by one of RandAugment or CTAugment.
 
 **1. Cutout**  
 ![](/images/fixmatch-cutout.gif){.img-center}
-This augmentation randomly removes a square part of the image and fills it with gray or black color. PyTorch doesn't have implementation of Cutout but we can reuse its `RandomErasing` transformation to apply CutOut effect.
+This augmentation randomly removes a square part of the image and fills it with gray or black color. PyTorch doesn't have a built-in implementation of Cutout but we can reuse its `RandomErasing` transformation to apply CutOut effect.
 ```python
 import torch
 import torchvision.transforms as transforms
@@ -97,39 +97,39 @@ cutout_im = transforms.RandomErasing(p=1,
 ```
 
 **2. AutoAugment Variants**  
-Previous SSL work used *AutoAugment*, which trained a Reinforcement Learning algorithm to find augmentations that leads to best accuracy on some proxy task(e.g. CIFAR-10). This is problematic since we require some labeled dataset to learn the augmentation and also due to resource requirements associated with RL.  
+Previous SSL work used *AutoAugment*, which trained a Reinforcement Learning algorithm to find augmentations that leads to the best accuracy on a proxy task(e.g. CIFAR-10). This is problematic since we require some labeled dataset to learn the augmentation and also due to resource requirements associated with RL.  
 
 So, FixMatch uses one among two variants of AutoAugment:  
 **a. RandAugment**  
 The idea of Random Augmentation(RandAugment) is very simple.
 
-- First you have a list of 14 possible augmentation with range of their possible magnitudes.
+- First, you have a list of 14 possible augmentations with a range of their possible magnitudes.
 ![](/images/fixmatch-randaug-pool.png){.img-center}
 - You select random N augmentations from this list. Here, we are selecting any two from the list.
 ![](/images/fixmatch-randaug-random-N.png){.img-center}
 - Then you select a random magnitude M ranging from 1 to 10. We can select a magnitude of 5. This means a magnitude of 50% in terms of percentage as maximum possible M is 10 and so percentage = 5/10 = 50%.
 ![](/images/fixmatch-randaug-mag-calculation.png){.img-center}
-- Now, the selected augmentations are applied on an image in sequence. Each augmentation has a 50% probability of being applied.
+- Now, the selected augmentations are applied to an image in the sequence. Each augmentation has a 50% probability of being applied.
 ![](/images/fixmatch-randaugment-sequence.png){.img-center}  
-- The values of N and M can be found by hyper-parameter optimization on a validation set with grid search. In the paper, they use random magnitude from a pre-defined range at each training step instead of a fixed magnitude.
+- The values of N and M can be found by hyper-parameter optimization on a validation set with a grid search. In the paper, they use random magnitude from a pre-defined range at each training step instead of fixed magnitude.
 ![](/images/fixmatch-randaugment-grid-search.png){.img-center}
 
 **b. CTAugment**  
-CTAugment was a augmentation technique introduced in the ReMixMatch paper and uses ideas from control theory to remove the need for Reinforcement Learning in AutoAugment. Here's how it works: 
+CTAugment was an augmentation technique introduced in the ReMixMatch paper and uses ideas from control theory to remove the need for Reinforcement Learning in AutoAugment. Here's how it works: 
  
 - We have a set of 18 possible transformations similar to RandAugment
 - Magnitude values for transformations are divided into bins and each bin is assigned a weight. Initially, all bins have a weight of 1.
 - Now two transformations are selected at random with equal chances from this set and their sequence forms a pipeline. This is similar to RandAugment.
 - For each transformation, a magnitude bin is selected randomly with a probability according to the normalized bin weights
 - Now, a labeled example is augmented with these two transformations and passed to the model to get a prediction
-- Based on how close the model predictions was to the actual label, the magnitude bins weights for these transformation are updated.
+- Based on how close the model predictions were to the actual label, the magnitude bins weights for these transformations are updated.
 - Thus, it learns to choose augmentations that the model has a high chance to predict a correct label and thus augmentation that fall within the network tolerance.
 
 > Thus, we see that unlike RandAugment, CTAugment can learn magnitude for each transformation dynamically during training. So, we don't need to optimize it on some supervised proxy task and it has no sensitive hyperparameters to optimize.
-Thus, this is very suitable for semi-supervised setting where labeled data is scarce.
+Thus, this is very suitable for the semi-supervised setting where labeled data is scarce.
 
 ### 2. Model Architecture
-The paper uses wider and shallower variants of ResNet called [Wide Residual Networks](https://arxiv.org/abs/1605.07146) as the base architecture. The exact variant used is Wide-Resnet-28-2 with a depth of 28 and widening factor of 2. Thus, this model is two times wider than ResNet. The model has 1.5 million parameters. This model can be combined with a linear layer with output neurons equal to number of classes (e.g. 10 for CIFAR-10 and 100 for CIFAR-100).
+The paper uses wider and shallower variants of ResNet called [Wide Residual Networks](https://arxiv.org/abs/1605.07146) as the base architecture. The exact variant used is Wide-Resnet-28-2 with a depth of 28 and a widening factor of 2. Thus, this model is two times wider than the ResNet. The model has 1.5 million parameters. This model can be combined with an output layer with nodes equal to the number of classes (e.g. 10 for CIFAR-10 and 100 for CIFAR-100).
 
 ### 3. Model Training and Loss Function
 - **Step 1: Preparing batches**  
@@ -170,28 +170,28 @@ An interesting result comes from <tt class="math">\lambda_u</tt>. Previous works
 
 ## Paper Insights  
 ## 1. Can we learn with just one image per class?  
-The authors performed a really interesting experiment on CIFAR-10 dataset. They trained a model on CIFAR-10 using only 10 labeled images i.e. 1 labeled example of each class.  
+The authors performed a really interesting experiment on the CIFAR-10 dataset. They trained a model on CIFAR-10 using only 10 labeled images i.e. 1 labeled example of each class.  
 
-- They created 4 datasets by randomly selecting 1 example per class from the dataset and trained on each dataset 4 times. They reached a test accuracy between 48.58% to 85.32% with a median accuracy of 64.28%. These variability in the accuracy was caused due to quality of labeled examples. It is difficult for model to learn each class effectively when provided with low quality example.
+- They created 4 datasets by randomly selecting 1 example per class from the dataset and trained on each dataset 4 times. They reached a test accuracy between 48.58% to 85.32% with a median accuracy of 64.28%. This variability in the accuracy was caused due to the quality of labeled examples. It is difficult for a model to learn each class effectively when provided with low quality examples.
 ![](/images/fixmatch-1-label-example.png){.img-center}
-- To test this, they created 8 training datasets with examples ranging from most representative to least representative. They followed the ordering from this [paper](https://arxiv.org/abs/1910.13427) and divided the ordering into 8 buckets. The first bucket would contain the most representative images while last bucket would contain outliers. Then, they took one example of each class randomly from each bucket to create 8 labeled training sets and trained the FixMatch model. Results were:
-    - **Most representative bucket**: 78% median accuracy with maximum of 84% accuracy
+- To test this, they created 8 training datasets with examples ranging from most representative to the least representative. They followed the ordering from this [paper](https://arxiv.org/abs/1910.13427) and divided the ordering into 8 buckets. The first bucket would contain the most representative images while the last bucket would contain outliers. Then, they took one example of each class randomly from each bucket to create 8 labeled training sets and trained the FixMatch model. Results were:
+    - **Most representative bucket**: 78% median accuracy with a maximum accuracy of 84%
     - **Middle bucket**: 65% accuracy
     - **Outlier bucket**: Fails to converge completely with only 10% accuracy
 
 ## Evaluation and Results
-The authors ran evaluations on datasets commonly used for SSL such as CIFAR-10, CIFAR-100, SVHN, STL-10 and ImageNet.
+The authors ran evaluations on datasets commonly used for SSL such as CIFAR-10, CIFAR-100, SVHN, STL-10, and ImageNet.
 
 - **CIFAR-10 and SVHN:**  
-FixMatch achieves state of the art results on CIFAR-10 and SVHN benchmarks. They use 5 different folds for each dataset.
+FixMatch achieves the state of the art results on CIFAR-10 and SVHN benchmarks. They use 5 different folds for each dataset.
 ![](/images/fixmatch-cifar-10-svhn.png){.img-center}
 
 - **CIFAR-100**  
-On CIFAR-100, ReMixMatch is a bit superior than FixMatch. To understand why, the authors borrowed various components from ReMixMatch to FixMatch and saw impact on performance. They found that *Distribution Alignment(DA)* component which encourages model to emit all classes with equal probability was the cause. So, when they combined FixMatch with DA, they achieved 40.14% error rate compared to 44.28% error rate of ReMixMatch.
+On CIFAR-100, ReMixMatch is a bit superior to FixMatch. To understand why, the authors borrowed various components from ReMixMatch to FixMatch and measured their impact on performance. They found that the *Distribution Alignment(DA)* component which encourages the model to emit all classes with equal probability was the cause. So, when they combined FixMatch with DA, they achieved a 40.14% error rate compared to a 44.28% error rate of ReMixMatch.
 ![](/images/fixmatch-cifar-100.png){.img-center}
 
 - **STL-10:**  
-STL-10 dataset consists of 100,000 unlabeled images and 5000 labeled images. We need to predict 10 classes(airplane, bird, car, cat, deer, dog, horse, monkey, ship, truck.). It is more representative evaluation for semi-supervised learning because its unlabeled set has out-of-distribution images.  
+STL-10 dataset consists of 100,000 unlabeled images and 5000 labeled images. We need to predict 10 classes(airplane, bird, car, cat, deer, dog, horse, monkey, ship, truck.). It is a more representative evaluation for semi-supervised learning because its unlabeled set has out-of-distribution images.  
 FixMatch achieves the lowest error rate with CTAugment when evaluated on 5-folds of 1000 labeled images each among all methods.
 ![](/images/fixmatch-stl-10.png){.img-center}
 
@@ -200,7 +200,8 @@ The author also evaluate model on ImageNet to verify if it works on large and co
 
 
 ## Code Implementation
-The official implementation from the paper authors is available [here](https://github.com/google-research/fixmatch). Unofficial implementations using RandAugment and evaluated on CIFAR-10 and CIFAR-100 in PyTorch are available here ([first](https://github.com/kekmodel/FixMatch-pytorch), [second](https://github.com/CoinCheung/fixmatch), [third](https://github.com/valencebond/FixMatch_pytorch)).
+The official implementation of FixMatch in Tensorflow by the paper authors is available [here](https://github.com/google-research/fixmatch). Unofficial implementations of FixMatch paper in PyTorch are available on github ([first](https://github.com/kekmodel/FixMatch-pytorch), [second](https://github.com/CoinCheung/fixmatch), [third](https://github.com/valencebond/FixMatch_pytorch)). They use RandAugment and are evaluated on CIFAR-10 and CIFAR-100.  
+The paper is available here: [FixMatch on Arxiv](https://arxiv.org/abs/2001.07685).
 
 ## Citation Info (BibTex)
 If you found this blog post useful, please consider citing it as:
