@@ -4,7 +4,7 @@ Modified: 2020-03-31 10:00
 Category: illustration
 Slug: fixmatch-semi-supervised
 Summary: Learn how to leverage unlabeled data using FixMatch for semi-supervised learning
-Status: draft
+Status: published
 Authors: Amit Chaudhary
 Cover: /images/fixmatch-pipeline.png
 
@@ -139,22 +139,25 @@ We prepare batches of the labeled images of size B and unlabeled images of batch
 ![](/images/fixmatch-effect-of-mu.png){.img-center}
 <p class="has-text-centered">Source: FixMatch paper</p>
 - **Step 2: Supervised Learning**  
-For the supervised part of the pipeline which is trained on labeled images, we use the regular cross-entropy loss H() for classification task. The total loss for a batch is defined by <tt class="math">l_s</tt> and is calculated by taking average of cross-entropy losses for each image:
+For the supervised part of the pipeline which is trained on labeled images, we use the regular cross-entropy loss H() for classification task. The total loss for a batch is defined by <tt class="math">l_s</tt> and is calculated by taking average of cross-entropy losses for each image in the batch:
+![](/images/fixmatch-supervised-loss.png){.img-center}
 <pre class="math">
-l_s = \frac{1}{B} \sum_{b=1}^{B} H( p_b, p_m(y | \alpha(x_b))
+l_s = \frac{1}{B} \sum_{b=1}^{B} \textcolor{#9A0007}{H(}\ \textcolor{#7ead16}{p_{b}}, \textcolor{#5CABFD}{p_m(\}y\ | \textcolor{#FF8A50}{\alpha(} \textcolor{#8c5914}{x_b}  \textcolor{#FF8A50}{)}\ \textcolor{#5CABFD}{)} \textcolor{#9A0007}{)}
 </pre>
 - **Step 3: Pseudolabeling**  
 For the unlabeled images, first we apply weak augmentation to the unlabeled image and get the probability for the highest predicted class by applying argmax. This is the pseudo-label that will be compared with output of model on strongly augmented image.
+![](/images/fixmatch-pseudolabel.png){.img-center}
 <pre class="math">
-q_b = p_m(y | \alpha(\mu_b) )
+\textcolor{#5CABFD}{q_b} = p_m(y | \textcolor{#8C5914}{\alpha(} \textcolor{#007C91}{u_b} \textcolor{#8C5914}{)} )
 </pre>
 <pre class="math">
-\hat{q_b} = argmax(q_b)
+\textcolor{#866694}{\hat{q_b}} = \textcolor{#48A999}{argmax(}\textcolor{#5CABFD}{q_b} \textcolor{48A999}{)}
 </pre>
 - **Step 4: Consistency Regularization**  
 Now, the same unlabeled image is strongly augmented and it's output is compared to our pseudolabel to compute cross-entropy loss H(). The total unlabeled batch loss is denoted by <tt class="math">l_u</tt> and given by:
+![](/images/fixmatch-strong-aug-loss.png){.img-center}
 <pre class="math">
-l_u = \frac{1}{\mu B} \sum_{b=1}^{\mu B} l(max(q_b) >= \tau) H( \hat{q_b}, p_m(y | A(\mu b) \ )
+l_u = \frac{1}{\mu B} \sum_{b=1}^{\mu B} 1(max(q_b) >= \tau)\ \textcolor{#9A0007}{H(} \textcolor{#866694}{\hat{q_b}}, p_m(y | \textcolor{#25561F}{A(} \textcolor{#007C91}{u_b} \textcolor{#25561F}{)} \ \textcolor{#9A0007}{)}
 </pre>
 Here <tt class="math">\tau</tt> denotes the threshold above which we take a pseudo-label. This loss is similar to the pseudo-labeling loss. The difference is that we're using weak augmentation for labels and strong augmentation for loss.
 - **Step 5: Curriculum Learning**  
@@ -163,6 +166,7 @@ We finally combine these two losses to get total loss that we optimize to improv
 loss = l_s + \lambda_u l_u
 </pre>
 An interesting result comes from <tt class="math">\lambda_u</tt>. Previous works have shown that increasing weight during course of training is good. But, in FixMatch, this comes for free. Since initially, the model is not confident on labeled data, so its output predictions on unlabeled data will be below threshold. As such, the model will be trained only on labeled data. But as the training progress, the model becomes more confident on labeled data and as such, predictions on unlabeled data will also start to cross threshold. As such, the loss will soon start incorporating predictions on unlabeled images as well. This gives us a free form of curriculum learning. Intuitively, this is how we learn as a child. In early years, we learn easy concepts such as addition of single digit number 1+2, 2+2 before going to 2 digit numbers and then to complex concepts like algebra.
+![](/images/fixmatch-curriculum-learning.png){.img-center}
 
 ## Paper Insights  
 ## 1. Can we learn with just one image per class?  
