@@ -34,7 +34,7 @@ With the intuition clear, let's see how FixMatch is actually applied in practice
 
 **Synopsis:**  
 
-As seen, we train a supervised model on our labeled images with cross-entropy loss. For each unlabeled image, <span style="color:#97621f">weak augmentation</span> and <span style="color: #3fb536">strong augmentations</span> are applied to get two images. The <span style="color:#97621f;">weakly augmented image</span> is passed to our model and we get prediction over classes. The probability for the most confident class is compared to a <span style="color: #CC0066">threshold</span>. If it is above the <span style="color: #CC0066">threshold</span>, then we take that class as the ground label i.e. <span style="color: #b35ae0;">pseudo-label</span>. Then, the <span style="color: #3fb536">strongly augmented</span> image is passed through our model to get a prediction over classes. This <span style="color: #56a2f3;">probability distribution</span> is compared to ground truth <span style="color: #b35ae0;">pseudo-label</span> using cross-entropy loss.
+As seen, we train a supervised model on our labeled images with cross-entropy loss. For each unlabeled image, <span style="color:#97621f">weak augmentation</span> and <span style="color: #3fb536">strong augmentations</span> are applied to get two images. The <span style="color:#97621f;">weakly augmented image</span> is passed to our model and we get prediction over classes. The probability for the most confident class is compared to a <span style="color: #CC0066">threshold</span>. If it is above the <span style="color: #CC0066">threshold</span>, then we take that class as the ground label i.e. <span style="color: #b35ae0;">pseudo-label</span>. Then, the <span style="color: #3fb536">strongly augmented</span> image is passed through our model to get a prediction over classes. This <span style="color: #56a2f3;">probability distribution</span> is compared to ground truth <span style="color: #b35ae0;">pseudo-label</span> using cross-entropy loss. Both the losses are combined and the model is tuned.
 
 
 ## Pipeline Components
@@ -46,7 +46,7 @@ For weak augmentation, the paper uses a standard flip-and-shift strategy. It inc
 
 - **Random Horizontal Flip**  
 ![](/images/fixmatch-horizontal-flip-gif){.img-center}
-It is applied with a probability of 50%. This is skipped for the SVHN dataset since those images contain digits for which horizontal flip is not relevant. In PyTorch, this can be performed using [transforms](https://pytorch.org/docs/stable/torchvision/transforms.html) as:  
+This augmentation is applied with a probability of 50%. This is skipped for the SVHN dataset since those images contain digits for which horizontal flip is not relevant. In PyTorch, this can be performed using [transforms](https://pytorch.org/docs/stable/torchvision/transforms.html) as:  
 
 ```python
 from PIL import Image
@@ -71,7 +71,7 @@ translated = transforms.RandomCrop(size=32,
 ```
 
 **b. Strong Augmentation**  
-These include augmentations that output heavily distorted versions of the input images. FixMatch applies the CutOut augmentation followed by one of RandAugment or CTAugment.
+These include augmentations that output heavily distorted versions of the input images. FixMatch applies the CutOut augmentation followed by either RandAugment or CTAugment.
 
 **1. Cutout**  
 ![](/images/fixmatch-cutout.gif){.img-center}
@@ -97,9 +97,11 @@ cutout_im = transforms.RandomErasing(p=1,
 ```
 
 **2. AutoAugment Variants**  
+
 Previous SSL work used *AutoAugment*, which trained a Reinforcement Learning algorithm to find augmentations that leads to the best accuracy on a proxy task(e.g. CIFAR-10). This is problematic since we require some labeled dataset to learn the augmentation and also due to resource requirements associated with RL.  
 
 So, FixMatch uses one among two variants of AutoAugment:  
+
 **a. RandAugment**  
 The idea of Random Augmentation(RandAugment) is very simple.
 
@@ -129,7 +131,7 @@ CTAugment was an augmentation technique introduced in the ReMixMatch paper and u
 Thus, this is very suitable for the semi-supervised setting where labeled data is scarce.
 
 ### 2. Model Architecture
-The paper uses wider and shallower variants of ResNet called [Wide Residual Networks](https://arxiv.org/abs/1605.07146) as the base architecture. The exact variant used is Wide-Resnet-28-2 with a depth of 28 and a widening factor of 2. Thus, this model is two times wider than the ResNet. The model has 1.5 million parameters. This model can be combined with an output layer with nodes equal to the number of classes (e.g. 10 for CIFAR-10 and 100 for CIFAR-100).
+The paper uses wider and shallower variants of ResNet called [Wide Residual Networks](https://arxiv.org/abs/1605.07146) as the base architecture. The exact variant used is Wide-Resnet-28-2 with a depth of 28 and a widening factor of 2. Thus, this model is two times wider than the ResNet. It has total 1.5 million parameters. This model is stacked with an output layer with nodes equal to the number of classes needed(e.g. 2 classes for cat/dog classification).
 
 ### 3. Model Training and Loss Function
 - **Step 1: Preparing batches**  
@@ -139,13 +141,13 @@ We prepare batches of the labeled images of size B and unlabeled images of batch
 ![](/images/fixmatch-effect-of-mu.png){.img-center}
 <p class="has-text-centered">Source: FixMatch paper</p>
 - **Step 2: Supervised Learning**  
-For the supervised part of the pipeline which is trained on labeled images, we use the regular cross-entropy loss H() for classification task. The total loss for a batch is defined by <tt class="math">l_s</tt> and is calculated by taking average of cross-entropy losses for each image in the batch:
+For the supervised part of the pipeline which is trained on <span style="color: #8c5914">labeled image</span>s, we use the regular <span style="color:#9A0007">cross-entropy loss H()</span> for classification task. The total loss for a batch is defined by <tt class="math">l_s</tt> and is calculated by taking average of <span style="color:#9A0007">cross-entropy loss</span> for <span style="color: #8c5914">each image</span> in the batch.
 ![](/images/fixmatch-supervised-loss.png){.img-center}
 <pre class="math">
 l_s = \frac{1}{B} \sum_{b=1}^{B} \textcolor{#9A0007}{H(}\ \textcolor{#7ead16}{p_{b}}, \textcolor{#5CABFD}{p_m(\}y\ | \textcolor{#FF8A50}{\alpha(} \textcolor{#8c5914}{x_b}  \textcolor{#FF8A50}{)}\ \textcolor{#5CABFD}{)} \textcolor{#9A0007}{)}
 </pre>
 - **Step 3: Pseudolabeling**  
-For the unlabeled images, first we apply weak augmentation to the unlabeled image and get the probability for the highest predicted class by applying argmax. This is the pseudo-label that will be compared with output of model on strongly augmented image.
+For the unlabeled images, first we apply <span style="color: #8C5914">weak augmentation</span> to the <span style="color: #007C91">unlabeled image</span> and get the <span style="color: #866694">highest predicted class</span> by applying <span style="color: #48A999">argmax</span>. This is the <span style="color: #866694">pseudo-label</span> that will be compared with output of model on strongly augmented image.
 ![](/images/fixmatch-pseudolabel.png){.img-center}
 <pre class="math">
 \textcolor{#5CABFD}{q_b} = p_m(y | \textcolor{#8C5914}{\alpha(} \textcolor{#007C91}{u_b} \textcolor{#8C5914}{)} )
@@ -154,19 +156,21 @@ For the unlabeled images, first we apply weak augmentation to the unlabeled imag
 \textcolor{#866694}{\hat{q_b}} = \textcolor{#48A999}{argmax(}\textcolor{#5CABFD}{q_b} \textcolor{48A999}{)}
 </pre>
 - **Step 4: Consistency Regularization**  
-Now, the same unlabeled image is strongly augmented and it's output is compared to our pseudolabel to compute cross-entropy loss H(). The total unlabeled batch loss is denoted by <tt class="math">l_u</tt> and given by:
+Now, the same <span style="color: #007C91">unlabeled image</span> is <span style="color: #25561F">strongly augmented</span> and it's output is compared to our <span style="color: #866694">pseudolabel</span> to compute <span style="color: #9A0007;">cross-entropy loss H()</span>. The total unlabeled batch loss is denoted by <tt class="math">l_u</tt> and given by:
 ![](/images/fixmatch-strong-aug-loss.png){.img-center}
 <pre class="math">
-l_u = \frac{1}{\mu B} \sum_{b=1}^{\mu B} 1(max(q_b) >= \tau)\ \textcolor{#9A0007}{H(} \textcolor{#866694}{\hat{q_b}}, p_m(y | \textcolor{#25561F}{A(} \textcolor{#007C91}{u_b} \textcolor{#25561F}{)} \ \textcolor{#9A0007}{)}
+l_u = \frac{1}{\mu B} \sum_{b=1}^{\mu B} 1(max(q_b) >= \textcolor{#d11e77}{\tau})\ \textcolor{#9A0007}{H(} \textcolor{#866694}{\hat{q_b}}, p_m(y | \textcolor{#25561F}{A(} \textcolor{#007C91}{u_b} \textcolor{#25561F}{)} \ \textcolor{#9A0007}{)}
 </pre>
-Here <tt class="math">\tau</tt> denotes the threshold above which we take a pseudo-label. This loss is similar to the pseudo-labeling loss. The difference is that we're using weak augmentation for labels and strong augmentation for loss.
+Here <tt class="math">\textcolor{#d11e77}{\tau}</tt> denotes the <span style="color: #d11e77;">threshold</span> above which we take a pseudo-label. This loss is similar to the pseudo-labeling loss. The difference is that we're using weak augmentation to generate labels and strong augmentation for loss.
 - **Step 5: Curriculum Learning**  
 We finally combine these two losses to get total loss that we optimize to improve our model. <tt class="math">\lambda_u</tt> is a fixed scalar hyperparameter that decides how much both the unlabeled image loss contribute relative to the labeled loss.
 <pre class="math">
 loss = l_s + \lambda_u l_u
 </pre>
-An interesting result comes from <tt class="math">\lambda_u</tt>. Previous works have shown that increasing weight during course of training is good. But, in FixMatch, this comes for free. Since initially, the model is not confident on labeled data, so its output predictions on unlabeled data will be below threshold. As such, the model will be trained only on labeled data. But as the training progress, the model becomes more confident on labeled data and as such, predictions on unlabeled data will also start to cross threshold. As such, the loss will soon start incorporating predictions on unlabeled images as well. This gives us a free form of curriculum learning. Intuitively, this is how we learn as a child. In early years, we learn easy concepts such as addition of single digit number 1+2, 2+2 before going to 2 digit numbers and then to complex concepts like algebra.
 ![](/images/fixmatch-curriculum-learning.png){.img-center}
+An interesting result comes from <tt class="math">\lambda_u</tt>. Previous works have shown that increasing weight during course of training is good. 
+But, in FixMatch, this is builtin automatically. Since initially, the model is not confident on labeled data, so its output predictions on unlabeled data will be below threshold. As such, the model will be trained only on labeled data. But as the training progress, the model becomes more confident on labeled data and as such, predictions on unlabeled data will also start to cross threshold. As such, the loss will soon start incorporating predictions on unlabeled images as well. This gives us a free form of curriculum learning.  
+Intuitively, this is similar to how we're taught in childhood. In early years, we learn easy concepts such as alphabets and what they represent before moving on to complex topics like word formation, sentence formation and then essays.
 
 ## Paper Insights  
 ## 1. Can we learn with just one image per class?  
