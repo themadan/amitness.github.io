@@ -71,7 +71,7 @@ translated = transforms.RandomCrop(size=32,
 ```
 
 **b. Strong Augmentation**  
-These include augmentations that output heavily distorted versions of the input images. FixMatch applies the CutOut augmentation followed by either RandAugment or CTAugment.
+These include augmentations that output heavily distorted versions of the input images. FixMatch applies either RandAugment or CTAugment and then applies CutOut augmentation.
 
 **1. Cutout**  
 ![](/images/fixmatch-cutout.gif){.img-center}
