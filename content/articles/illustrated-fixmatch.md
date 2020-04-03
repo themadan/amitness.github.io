@@ -13,7 +13,7 @@ Deep Learning has shown very promising results in the field of Computer Vision. 
 
 In practical settings, labeling data is a time consuming and expensive process. Though, you have a lot of images, only a small portion of them can be labeled due to resource constraints. In such settings, how can we leverage the remaining unlabeled images along with the labeled images to improve the performance of our model? The answer is semi-supervised learning.
 
-FixMatch is a recent semi-supervised approach by *Sohn et al.* from Google Brain that improved the state of the art in semi-supervised learning(SSL). It is a simpler combination of previous methods such as UDA and ReMixMatch.  In this post, we will understand the concept of FixMatch and also see it got 78% accuracy on CIFAR-10 with just 10 images.
+FixMatch is a recent semi-supervised approach by *Sohn et al.* from Google Brain that improved the state of the art in semi-supervised learning(SSL). It is a simpler combination of previous methods such as UDA and ReMixMatch.  In this post, we will understand the concept of FixMatch and also see it got 78% median accuracy and 84% maximum accuracy on CIFAR-10 with just 10 labeled images.
 
 ## Intuition behind FixMatch
 Let's say we're doing a cat vs dog classification where we have limited labeled data and a lot of unlabelled images of cats and dogs.
