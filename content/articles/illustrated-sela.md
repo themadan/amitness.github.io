@@ -1,20 +1,20 @@
-Title: An Illustrated Guide to Self-Labelling Images
-Date: 2020-04-05 14:11
-Modified: 2020-04-05 14:11
+Title: A Visual Guide to Self-Labelling Images
+Date: 2020-04-10 14:11
+Modified: 2020-04-10 14:11
 Category: illustration
 Slug: illustrated-self-labelling
-Summary: A self-supervised method to auto-generate labels via simultaneous clustering and representation learning
+Summary: A self-supervised method to generate labels via simultaneous clustering and representation learning
 Status: draft
 Authors: Amit Chaudhary
 
 In the past one year, a number of methods for self-supervised learning of image representations have been proposed. A recent trend in the methods is using Contrastive Learning ([SimCLR](https://amitness.com/2020/03/illustrated-simclr/), [PIRL](https://amitness.com/2020/03/illustrated-pirl/), [MoCo](https://arxiv.org/abs/1911.05722)) which have given very promising results.
 
-However, as we had seen in our survey on  self-supervised learning, there exist many [other problem formulations](https://amitness.com/2020/02/illustrated-self-supervised-learning/) for self-supervised learning. One promising approach is:
+However, as we had seen in our [survey](https://amitness.com/2020/02/illustrated-self-supervised-learning/) on  self-supervised learning, there exist many other problem formulations for self-supervised learning. One promising approach is:
 > Combine clustering and representation learning together to learn both features and labels simultaneously.
 
-A paper **SeLa** presented at ICLR 2020 by Asano et al. of the Visual Geometry Group(VGG), University of Oxford improves this approach and achieved state of the art results in various benchmarks.  
+A paper **[SeLa](https://arxiv.org/abs/1911.05371)** presented at ICLR 2020 by Asano et al. of the Visual Geometry Group(VGG), University of Oxford has a new take on this approach and achieved state of the art results in various benchmarks.  
 ![](/images/sela-intro.png){.img-center}
-The most interesting side-effect of this method is that we can *auto-generate labels for images in some new domain* and then use those labels to bootstrap our regular workflow of training a supervised model with any architecture. Self-Labelling is very practical for industries and domains with scarce labeled data. Let's understand how it works.
+The most interesting part of this method is that we can *auto-generate labels for images in some new domain* and then use those labels with any model architecture just like we do in regular supervised learning. Self-Labelling is a very practical idea for industries and domains with scarce labeled data. Let's understand how it works.
 
 ## Solving The Chicken and Egg Problem
 At a very high level, the Self-Labelling method works as follows:
@@ -51,15 +51,16 @@ Then random transformation are applied to them. The paper uses the following tra
     
 Augmentations are applied so that the self-labelling function learned is transformation invariant. 
 
-**3. Choosing Number of Labels/Clusters**  
+**3. Choosing Number of Clusters(Labels)**  
 
 We then need to choose number of clusters(K) we want to group our data in. By default, ImageNet has 1000 classes so we could use 1000 clusters. This step is dependent on the domain of the data and can be chosen by either domain knowledge or finding optimal number of clusters by looking at model performance. This is denoted by:
 <pre class="math">
 y_1, ..., y_N \in {1, ..., K}
 </pre>
-![](/images/sela-best-cluster.png){.img-center}
 
 The paper experimented with the number of clusters ranging from 1000 to 10,000 and found the ImageNet performance improves till 3000 but slightly degrades when using more clusters than that. So the papers uses 3000 clusters and as a result 3000 classes for the output head of the network.
+![](/images/sela-best-cluster.png){.img-center}
+
 
 **4. Model Architecture**  
 A ConvNet architecture such as AlexNet or ResNet-50 is used as the feature extractor. This network is denoted by <tt class="math">\phi(I)</tt>
@@ -100,6 +101,40 @@ The optimization of labels at step 6 is scheduled to occur at most once an epoch
 
 This shows that doing only random-initialization and augmentation is not enough. Self-labeling is giving us a good increase in performance compared to no self-labeling.
 
+## Insights and Results
+**1. Small Datasets: CIFAR-10/CIFAR-100/SVHN**  
+The paper got state of the art results on CIFAR-10, CIFAR-100 and SVHN datasets beating best previous method [<span style="color: #009688; font-weight: bold;">AND</span>](https://arxiv.org/abs/1904.11567). An interesting result is very small improvement(<span style="color: #8BC34A">+0.8%</span>) on SVHN, which the authors say is because the difference between supervised baseline of 96.1 and AND's 93.7 is already small (<3%).
+![](/images/sela-small-linear-classifier.png){.img-center}
+The authors also evaluated it using weighted KNN and an embedding size of 128 and outperformed previous methods by 2%.
+![](/images/sela-small-data-knn.png){.img-center}
+
+**2. What happens to equipartition assumption if dataset is imbalanced?**   
+The paper has an assumption that images are equally distributed over classes. So, to test the impact on the algorithm when it's trained on unbalanced datasets, the authors prepared three datasets out of CIFAR-10:  
+
+- **Full**: Original CIFAR-10 dataset with 5000 images per class 
+- **Light Imbalance**: Remove 50% of images in the truck class of CIFAR-10
+- **Heavy Imbalance**: Remove 10% of first class, 20% of second class and so on from CIFAR-10
+![](/images/sela-imbalanced-results.png){.img-center}  
+When evaluated using linear probing and kNN classification, <span style="color:#6d983b;">SK(Sinkhorn-Knopp)</span> method beat K-means on all three conditions. In light imbalance, no method was affected much. For heavy imbalance, all methods dropped in performance but the performance decrease was lower for self-supervised methods using K-means and Self-labelling than supervised ones. The self-labelling method beat even <span style="color: #009688;">supervised method on CIFAR-100</span>. Thus, this method is robust and can be applied for imbalanced dataset as well.
+
+
+## Code Implementation
+The official implementation of Self-Labelling in PyTorch by the paper authors is available [here](https://github.com/yukimasano/self-label).
+
+## Citation Info (BibTex)
+If you found this blog post useful, please consider citing it as:
+```
+@misc{chaudhary2020SeLa,
+  title   = {A Visual Guide to Self-Labelling Images},
+  author  = {Amit Chaudhary},
+  year    = 2020,
+  note    = {\url{https://amitness.com/2020/03/illustrated-sela}}
+}
+```
+
+## References
+- [Self-labelling via simultaneous clustering and representation learning](https://arxiv.org/abs/1911.05371)
+- [Deep Clustering for Unsupervised Learning of Visual Features](https://arxiv.org/abs/1807.05520)
 
 ```
 
@@ -132,22 +167,3 @@ This shows that doing only random-initialization and augmentation is not enough.
                 
             then prediction and compare to that label
 ```    
-            
-
-## Code Implementation
-The official implementation of Self-Labelling in PyTorch by the paper authors is available [here](https://github.com/yukimasano/self-label).
-
-## Citation Info (BibTex)
-If you found this blog post useful, please consider citing it as:
-```
-@misc{chaudhary2020SeLa,
-  title   = {An Illustrated Guide to Self-Labelling Images},
-  author  = {Amit Chaudhary},
-  year    = 2020,
-  note    = {\url{https://amitness.com/2020/03/illustrated-sela}}
-}
-```
-
-## References
-- [Self-labelling via simultaneous clustering and representation learning](https://arxiv.org/abs/1911.05371)
-- [Deep Clustering for Unsupervised Learning of Visual Features](https://arxiv.org/abs/1807.05520)
