@@ -13,9 +13,9 @@ In the past year, several methods for self-supervised learning of image represen
 However, as we had seen in our [survey](https://amitness.com/2020/02/illustrated-self-supervised-learning/) on self-supervised learning, there exist many other problem formulations for self-supervised learning. One promising approach is:
 > Combine clustering and representation learning together to learn both features and labels simultaneously.
 
-A paper **[SeLa](https://arxiv.org/abs/1911.05371)** presented at ICLR 2020 by Asano et al. of the Visual Geometry Group(VGG), University of Oxford has a new take on this approach and achieved the state of the art results in various benchmarks.  
+A paper **[Self-Labelling(SeLa)](https://arxiv.org/abs/1911.05371)** presented at ICLR 2020 by Asano et al. of the Visual Geometry Group(VGG), University of Oxford has a new take on this approach and achieved the state of the art results in various benchmarks.  
 ![](/images/sela-intro.png){.img-center}
-The most interesting part of this method is that we can *auto-generate labels for images in some new domain* and then use those labels with any model architecture just like we do in regular supervised learning. Self-Labelling is a very practical idea for industries and domains with scarce labeled data. Let's understand how it works.
+The most interesting part is that we can *auto-generate labels for images in some new domain* with this method and then use those labels independently with any model architecture and regular supervised learning methods. Self-Labelling is a very practical idea for industries and domains with scarce labeled data. Let's understand how it works.
 
 ## Solving The Chicken and Egg Problem
 At a very high level, the Self-Labelling method works as follows:
