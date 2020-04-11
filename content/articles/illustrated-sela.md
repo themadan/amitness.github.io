@@ -35,21 +35,44 @@ The authors of DeepCluster used a randomly initialized <span style="color: #5167
 Thus, we can use labels obtained from a randomly initialized network to kick start the process which can be refined later.
 
 ## Self-Labelling Pipeline
+Let's now understand how self-labelling pipeline works.
+![](/images/sela-pipeline.gif){.img-center}
+
+**Synopsis:**  
+As seen in the figure above, we first generate labels for <span style="color: #935d19;">augmented</span> unlabeled images using a randomly initialized model. Then, the <span style="color: #9559b3">Sinkhorn-Knopp</span> algorithm is applied to cluster the unlabeled images and get a new set of labels. The <span style="color: #30792c">model</span> is again trained on these new set of labels and optimized with cross-entropy loss. <span style="color: #9559b3">Sinkhorn-Knopp</span> algorithm is run once in a while during the course of training to optimize and get new set of labels. This process is repeated for a number of epochs and we get the final labels and a <span style="color: #30792c">trained model</span>.
+
+## Step by Step Example  
+
 Let's see how this method is implemented in practice with a step by step example of the whole pipeline from the input data to the output labels:  
+
 
 **1. Training Data**  
 
-First of all, we require N unlabeled images <tt class="math">I_1, ..., I_N</tt> and take batches of them from some dataset such as ImageNet. In the paper, batches of 256 images are used.
+First of all, we get N unlabeled images <tt class="math">I_1, ..., I_N</tt> and take batches of them from some dataset. In the paper, batches of 256 unlabeled images are prepared from the ImageNet dataset.
+![](/images/sela-batch-size.png){.img-center}
 
 **2. Data Augmentation**  
-Then random transformation are applied to them. The paper uses the following transformations in sequence:  
-    - RandomResizedCrop(224)
-    - RandomGrayscale(p=0.2)
-    - ColorJitter
-    - RandomHorizontalFlip
-    - Normalize  
-    
-Augmentations are applied so that the self-labelling function learned is transformation invariant. 
+We apply augmentations to the unlabeled images so that the self-labelling function learned is transformation invariant. The paper first randomly crops the image into size `224*224`. Then, the image is converted into grayscale with probability 20%. Color Jitter is applied on this image. Finally, horizontal flip is applied 50% of the time. After the transformations are applied, the image is normalized with a mean of`[0.485, 0.456, 0.406]` and standard deviation of `[0.229, 0.224, 0.225]`.
+![](/images/sela-augmentations.png){.img-center}
+
+This can be implemented in PyTorch for some image as:
+```python
+import torchvision.transforms as transforms
+from PIL import Image
+
+im = Image.open('cat.png')
+aug = transforms.Compose([
+    transforms.RandomResizedCrop(224),
+    transforms.RandomGrayscale(p=0.2),
+    transforms.ColorJitter(0.4, 0.4, 0.4, 0.4),
+    transforms.RandomHorizontalFlip(),
+    transforms.ToTensor(),
+    transforms.Normalize(mean=[0.485, 0.456, 0.406],
+                         std=[0.229, 0.224, 0.225])
+])
+aug_im = aug(im)
+
+```
 
 **3. Choosing Number of Clusters(Labels)**  
 
@@ -101,6 +124,20 @@ The optimization of labels at step 6 is scheduled to occur at most once an epoch
 
 This shows that doing only random-initialization and augmentation is not enough. Self-labeling is giving us a good increase in performance compared to no self-labeling.
 
+## Label Transfer
+The labels obtained for images from self-labelling can be used to train another network from scratch using standard supervised training.
+
+In the paper, they took labels assigned by SeLa with AlexNet and retrained another AlexNet network from scratch with those labels using only 90-epochs to get the same accuracy.  
+
+They did another interesting experiment where 3000 labels obtained by applying SeLa to ResNet-50 was used to train AlexNet model from scratch. They got <span style="color:#6d983b;">48.4%</span> accuracy which was higher than <span style="color: #6e3d84;">46.5%</span> accuracy obtained by training AlexNet from scratch directly. This shows how labels can be transferred between architectures.
+![](/images/sela-label-transfer.png){.img-center}
+
+The authors have published their generated labels for the ImageNet dataset. These can be used to train a supervised model from scratch.
+
+- Pseudo-labels from best AlexNet model on ImageNet: [alexnet-labels.csv](http://www.robots.ox.ac.uk/~vgg/research/self-label/asset/alexnet-labels.csv)  
+- Pseudo-labels from best ResNet model on ImageNet: [resnet-labels.csv](http://www.robots.ox.ac.uk/~vgg/research/self-label/asset/resnet-labels.csv)
+
+
 ## Insights and Results
 **1. Small Datasets: CIFAR-10/CIFAR-100/SVHN**  
 The paper got state of the art results on CIFAR-10, CIFAR-100 and SVHN datasets beating best previous method [<span style="color: #009688; font-weight: bold;">AND</span>](https://arxiv.org/abs/1904.11567). An interesting result is very small improvement(<span style="color: #8BC34A">+0.8%</span>) on SVHN, which the authors say is because the difference between supervised baseline of 96.1 and AND's 93.7 is already small (<3%).
@@ -117,9 +154,8 @@ The paper has an assumption that images are equally distributed over classes. So
 ![](/images/sela-imbalanced-results.png){.img-center}  
 When evaluated using linear probing and kNN classification, <span style="color:#6d983b;">SK(Sinkhorn-Knopp)</span> method beat K-means on all three conditions. In light imbalance, no method was affected much. For heavy imbalance, all methods dropped in performance but the performance decrease was lower for self-supervised methods using K-means and Self-labelling than supervised ones. The self-labelling method beat even <span style="color: #009688;">supervised method on CIFAR-100</span>. Thus, this method is robust and can be applied for imbalanced dataset as well.
 
-
 ## Code Implementation
-The official implementation of Self-Labelling in PyTorch by the paper authors is available [here](https://github.com/yukimasano/self-label).
+The official implementation of Self-Labelling in PyTorch by the paper authors is available [here](https://github.com/yukimasano/self-label). They also provide [pretrained weights](https://github.com/yukimasano/self-label#trained-models) for AlexNet and Resnet-50 in their repo.
 
 ## Citation Info (BibTex)
 If you found this blog post useful, please consider citing it as:
@@ -135,7 +171,7 @@ If you found this blog post useful, please consider citing it as:
 ## References
 - [Self-labelling via simultaneous clustering and representation learning](https://arxiv.org/abs/1911.05371)
 - [Deep Clustering for Unsupervised Learning of Visual Features](https://arxiv.org/abs/1807.05520)
-
+- [Visual Geometry Group Blog, University of Oxford](http://www.robots.ox.ac.uk/~vgg/blog/self-labelling-via-simultaneous-clustering-and-representation-learning.html)
 ```
 
 - Choose a number of clusters default ncl = 3000, head count(hc) = 10, architecture=alexnet
