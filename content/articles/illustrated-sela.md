@@ -112,7 +112,7 @@ Let's first understand the optimal transport problem with a simple real-world ex
 - There are multiple possible ways to solve this problem. We could either assign all laptops from warehouse A to shop 1 and all laptops from warehouse B to shop 2. Or we could switch the shops. Or we could transfer 15 laptops from warehouse A and remaining 10 from warehouse B. The only constraint is that the number of laptops allocated from a warehouse cannot exceed their current limit i.e. 25.
 ![](/images/sela-optimal-transport-possibilities.png){.img-center}
 
-- But, if we know the distance from each warehouse to the shops, then we can find an optimal allocation with minimal travel. Here, we can see intuitively that the best allocation would be to deliver all 25 laptops from warehouse B to shop 2 since the distance is less than warehouse A. And we can deliver the 25 laptops from warehouse A to shop 1. This problem can be solved using the Sinkhorn-Knopp algorithm.
+- But, if we know the distance from each warehouse to the shops, then we can find an optimal allocation with minimal travel. Here, we can see intuitively that the best allocation would be to deliver all 25 laptops from warehouse B to shop 2 since the distance is less than warehouse A. And we can deliver the 25 laptops from warehouse A to shop 1. Such optimal allocation can be found out using the Sinkhorn-Knopp algorithm.
 ![](/images/sela-optimal-transport-best.png){.img-center}
 
 Now, that we understand the problem, let's see how it applies in our case of cluster allocation. The authors have formulated the problem of assigning the unlabeled images into clusters as an optimal transport problem in this way:  
