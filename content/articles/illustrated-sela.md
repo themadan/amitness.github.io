@@ -154,6 +154,8 @@ The authors have published their generated labels for the ImageNet dataset. Thes
 - Pseudo-labels from best AlexNet model on ImageNet: [alexnet-labels.csv](http://www.robots.ox.ac.uk/~vgg/research/self-label/asset/alexnet-labels.csv)  
 - Pseudo-labels from best ResNet model on ImageNet: [resnet-labels.csv](http://www.robots.ox.ac.uk/~vgg/research/self-label/asset/resnet-labels.csv)
 
+The author have also setup an interactive demo [here](http://www.robots.ox.ac.uk/~vgg/blog/self-labelling-via-simultaneous-clustering-and-representation-learning.html) to look at all the clusters found from ImageNet.
+
 
 ## Insights and Results
 **1. Small Datasets: CIFAR-10/CIFAR-100/SVHN**  
