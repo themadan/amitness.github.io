@@ -183,7 +183,7 @@ If you found this blog post useful, please consider citing it as:
   title   = {A Visual Guide to Self-Labelling Images},
   author  = {Amit Chaudhary},
   year    = 2020,
-  note    = {\url{https://amitness.com/2020/03/illustrated-sela}}
+  note    = {\url{https://amitness.com/2020/04/illustrated-self-labelling}}
 }
 ```
 
