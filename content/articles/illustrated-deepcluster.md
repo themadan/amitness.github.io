@@ -39,7 +39,7 @@ These cluster assignments are used as the <span style="color: #9559b3; font-weig
 
 ## Step by Step Example  
 
-Let's see how DeepCluster is implemented in practice with a step by step example of the whole pipeline from the input data to the output labels:  
+Let's see how DeepCluster is applied in practice with a step by step example of the whole pipeline from the input data to the output labels:  
 
 
 **1. Training Data**  
@@ -91,6 +91,38 @@ aug_im = t(im)
 **Sobel Transformation**  
 Once we get the normalized image, we remove the color of image by converting it into grayscale. Then, we increase the local contrast of the image using sobel filter.
 ![](/images/deepcluster-sobel.png){.img-center}
+
+Below is a simplified snippet adapted from the author implementation [here](https://github.com/facebookresearch/deepcluster/blob/9796a71abbfd14181a2b117d6244e60c2d94efbf/models/alexnet.py#L35). We can apply it on the augmented image `aug_im` we got above.
+```python
+import torch
+import torch.nn as nn
+
+# Fill kernel of Conv2d layer with grayscale kernel
+grayscale = nn.Conv2d(3, 1, kernel_size=1, stride=1, padding=0)
+grayscale.weight.data.fill_(1.0 / 3.0)
+grayscale.bias.data.zero_()
+
+# Fill kernel of Conv2d layer with sobel kernels
+sobel = nn.Conv2d(1, 2, kernel_size=3, stride=1, padding=1)
+sobel.weight.data[0, 0].copy_(
+    torch.FloatTensor([[1, 0, -1],
+                       [2, 0, -2],
+                       [1, 0, -1]])
+)
+sobel.weight.data[1, 0].copy_(
+    torch.FloatTensor([[1, 2, 1],
+                       [0, 0, 0],
+                       [-1, -2, -1]])
+)
+sobel.bias.data.zero_()
+
+# Combine the two
+combined = nn.Sequential(grayscale, sobel)
+
+# Apply
+batch_image = aug_im.unsqueeze(dim=0)
+sobel_im = combined(batch_image)
+```
 
 **3. Choosing Number of Clusters(Labels)**  
 10000 clusters -> 10000 classes
