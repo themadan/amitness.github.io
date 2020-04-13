@@ -43,20 +43,54 @@ Let's see how DeepCluster is implemented in practice with a step by step example
 
 
 **1. Training Data**  
-- ImageNet
-- 1.3M images uniformly distributed into 1000 classes
-- Mini-batches of size = 256
+We take unlabeled images from the ImageNet dataset which consist of 1.3 million images uniformly distributed into 1000 classes. These images are prepared in mini-batches of 256.
+![](/images/deepcluster-imagenet.png){.img-center}
+
+The training set of N images can be denoted mathematically by:
+<pre class="math">
+X = \{ x_{1}, x_{2}, ..., x_{N} \}
+</pre>
 
 **2. Data Augmentation**  
-- Why: Unsupervised methods don’t work directly on color and diff. Strategies have been considered[25, 26]
-- Fixed linear transformation based on sobel filters
-    - To remove color and increase local contrast
-- Central Crop
-- Data Augmentation:
-    - Random Horizontal Flip
-    - Crops of random sizes and aspect ratio
-- Why: invariance to data augmentation for feature learning [33]
+Transformations are applied to the images so that the features learnt is invariant to augmentations. Two different augmentations are done, one when training model to learn representations and one when sending the image representations to the clustering algorithm:
 
+**Case 1: Transformation when doing clustering**    
+When model representations are to be sent for clustering, random augmentations are not used. The image is simply resized to 256\*256 and center crop is applied to get 224\*224 image. Then normalization is applied.  
+![](/images/deepcluster-aug-clustering.png){.img-center}
+In PyTorch, this can be implemented as:
+```python
+from PIL import Image
+import torchvision.transforms as transforms
+
+im = Image.open('dog.png')
+t = transforms.Compose([transforms.Resize(256),
+                        transforms.CenterCrop(224),
+                        transforms.ToTensor(),
+                        transforms.Normalize(mean=[0.485, 0.456, 0.406],
+                                             std=[0.229, 0.224, 0.225])])
+aug_im = t(im)
+```
+
+**Case 2: Transformation when training model**  
+When model is trained on image and labels, then we use random augmentations. The image is cropped to random size and aspect ratio and then resized to 224*224. Then, the image is horizontal flipped with 50% chance. Finally we normalize the image with imagenet mean and std.
+![](/images/deepcluster-aug-model.png){.img-center}
+In PyTorch, this can be implemented as:
+```python
+from PIL import Image
+import torchvision.transforms as transforms
+
+im = Image.open('dog.png')
+t = transforms.Compose([transforms.RandomResizedCrop(224),
+                        transforms.RandomHorizontalFlip(),
+                        transforms.ToTensor(),
+                        transforms.Normalize(mean=[0.485, 0.456, 0.406],
+                                             std=[0.229, 0.224, 0.225])])
+aug_im = t(im)
+```
+
+**Sobel Transformation**  
+Once we get the normalized image, we remove the color of image by converting it into grayscale. Then, we increase the local contrast of the image using sobel filter.
+![](/images/deepcluster-sobel.png){.img-center}
 
 **3. Choosing Number of Clusters(Labels)**  
 10000 clusters -> 10000 classes
