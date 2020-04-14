@@ -52,9 +52,11 @@ X = \{ x_{1}, x_{2}, ..., x_{N} \}
 </pre>
 
 **2. Data Augmentation**  
+
 Transformations are applied to the images so that the features learnt is invariant to augmentations. Two different augmentations are done, one when training model to learn representations and one when sending the image representations to the clustering algorithm:
 
 **Case 1: Transformation when doing clustering**    
+
 When model representations are to be sent for clustering, random augmentations are not used. The image is simply resized to 256\*256 and center crop is applied to get 224\*224 image. Then normalization is applied.  
 ![](/images/deepcluster-aug-clustering.png){.img-center}
 In PyTorch, this can be implemented as:
@@ -72,6 +74,7 @@ aug_im = t(im)
 ```
 
 **Case 2: Transformation when training model**  
+
 When model is trained on image and labels, then we use random augmentations. The image is cropped to random size and aspect ratio and then resized to 224*224. Then, the image is horizontal flipped with 50% chance. Finally we normalize the image with imagenet mean and std.
 ![](/images/deepcluster-aug-model.png){.img-center}
 In PyTorch, this can be implemented as:
@@ -89,6 +92,7 @@ aug_im = t(im)
 ```
 
 **Sobel Transformation**  
+
 Once we get the normalized image, we remove the color of image by converting it into grayscale. Then, we increase the local contrast of the image using sobel filter.
 ![](/images/deepcluster-sobel.png){.img-center}
 
@@ -125,16 +129,19 @@ sobel_im = combined(batch_image)
 ```
 
 **3. Decide Number of Clusters(Classes)**  
+
 To perform clustering, we need to decide the number of clusters. This will be the number of classes the model will be trained on.
 ![](/images/deepcluster-effect-of-increasing-clusters.png){.img-center}
 By default, ImageNet has 1000 classes, but the paper uses 10,000 clusters as this gives more fine-grained grouping of the unlabeled images. For example, if you previously had grouping of cats and dogs and as you increase clusters, now groupings of breeds of the cat and dog could be created.
 
 **4. Model Architecture**  
+
 The paper primarily uses AlexNet architecture consisting of <span style="color: #7aaf78; font-weight: bold;">5 convolutional layers</span> and 3 fully connected layers. The Local Response Normalization layers are removed and Batch Normalization is applied instead. Dropout is also added. The filter size used is from 2012 competition: 96, 256, 384, 384, 256.  
 ![](/images/deepcluster-alexnet.png){.img-center}
 Alternatively, the paper has also tried replacing AlexNet by VGG-16 with batch normalization to see impact on performance.
 
 **5. Generating the initial labels**  
+
 To generating initial labels for the model to train on, we initialize AlexNet with random weights and the last fully connected layer FC3 removed. We perform a forward pass on the model on images and take the feature vector coming from the second fully connected layer FC2 of the model on an image. This feature vector has a dimension of 4096.
 ![](/images/deepcluster-alexnet-random-repr.png){.img-center}
 
@@ -172,19 +179,14 @@ The paper use Johnson's implementation of K-means from the paper [Billion-scale 
 After clustering is done, new batches of images are created such that images from each cluster has equal chance of being included. Random augmentations are applied to this images.
 
 **7. Representation Learning**  
+
 Once we have the images and clusters, we train our ConvNet model like regular supervised learning. We use a batch size of 256 and use cross-entropy loss to compare model predictions to the ground truth cluster label. The model learns useful representations.
 ![](/images/deepcluster-pipeline-path-2.png){.img-center}
 
 **8. Switching between model training and clustering**  
+
 The model is trained for 500 epochs. The clustering step is run once at the start of each epoch to generate pseudo-labels for whole dataset. Then, the regular training of ConvNet using cross-entropy loss is continued for all the batches.
 The paper uses SGD optimizer with momentum of 0.9, learning rate of 0.05 and weight decay of <tt class="math">10^{-5}</tt>. They trained it on Pascal P100 GPU.
-
-
-## Evaluation and Results
-- Freeze all the conv layers
-- Add a linear layer and train that
-- Trained on ImageNet and YFCC100M
-- Outperforms SOTA by significant margin on all standard benchmarks
 
 ## Code Implementation of DeepCluster
 The official implementation of Deep Cluster in PyTorch by the paper authors is available on [GitHub](https://github.com/facebookresearch/deepcluster). They also provide [pretrained weights](https://github.com/facebookresearch/deepcluster#pre-trained-models) for AlexNet and Resnet-50 architectures.
