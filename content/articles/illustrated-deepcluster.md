@@ -1,32 +1,21 @@
 Title: A Visual Exploration of DeepCluster
-Date: 2020-04-13 14:11
-Modified: 2020-04-13 14:11
+Date: 2020-04-14 10:00
+Modified: 2020-04-14 10:00
 Category: illustration
-Slug: illustrated-deepcluster
-Summary: DeepCluster is a self-supervised method to generate labels via K-means clustering and learn representations
-Status: draft
+Slug: deepcluster
+Summary: DeepCluster is a self-supervised method to combine clustering and representation learning
+Status: published
 Authors: Amit Chaudhary
 Cover: /images/deepcluster-pipeline.png
 
+Many self-supervised methods use pretext tasks to generate surrogate labels and formulate an unsupervised learning problem as a supervised one. Some examples include rotation prediction, image colorization, jigsaw puzzles etc. However, such pretext tasks are domain-dependent and require expertise to design them.
 
-## Preface
-- Clustering unsupervised learning method extensively used in computer vision
-- Little work to adapt it to E2E training of visual features on large scale datasets
-- scalable
-- 
+[DeepCluster](https://arxiv.org/abs/1807.05520) is a self-supervised method proposed by Caron et al. of Facebook AI Research that brings a different approach.
+This method doesn't require domain-specific knowledge and can be used to learn deep representations for scenarios where annotated data is scarce.
 
-## Why needed?
-- Previous method: domain dependent, require expert knowledge to design pretext task to get transferable features
-- Makes little assumption about inputs
-- Domain specific knowledge not needed
-- Learn deep representations specific to domains where annotations are scarce
-- give examples of previous approaches
+## DeepCluster
+DeepCluster combines two pieces: unsupervised clustering and deep neural networks. It proposes an end-to-end method to jointly learn parameters of a deep neural network and the cluster assignments of its representations. The features are generated and clustered iteratively to get both a trained model and labels as output artifacts.
 
-## Deep Cluster
-Jointly learn parameters of NN and cluster assignments of resulting features
-Iteratively group features with standard clustering algo: k-means
-Use subsequent assignment as supervision to update weights of the network
-iterates between clustering with k-means the features produced by the convnet and updating its weights by predicting the cluster assignments as pseudo-labels in a discriminative loss
 
 ## Deep Cluster Pipeline
 Let's now understand how the deep cluster pipeline works with an interactive diagram.
@@ -53,11 +42,11 @@ X = \{ x_{1}, x_{2}, ..., x_{N} \}
 
 **2. Data Augmentation**  
 
-Transformations are applied to the images so that the features learnt is invariant to augmentations. Two different augmentations are done, one when training model to learn representations and one when sending the image representations to the clustering algorithm:
+Transformations are applied to the images so that the features learned is invariant to augmentations. Two different augmentations are done, one when training model to learn representations and one when sending the image representations to the clustering algorithm:
 
 **Case 1: Transformation when doing clustering**    
 
-When model representations are to be sent for clustering, random augmentations are not used. The image is simply resized to 256\*256 and center crop is applied to get 224\*224 image. Then normalization is applied.  
+When model representations are to be sent for clustering, random augmentations are not used. The image is simply resized to 256\*256 and the center crop is applied to get 224\*224 image. Then normalization is applied.  
 ![](/images/deepcluster-aug-clustering.png){.img-center}
 In PyTorch, this can be implemented as:
 ```python
@@ -75,7 +64,7 @@ aug_im = t(im)
 
 **Case 2: Transformation when training model**  
 
-When model is trained on image and labels, then we use random augmentations. The image is cropped to random size and aspect ratio and then resized to 224*224. Then, the image is horizontal flipped with 50% chance. Finally we normalize the image with imagenet mean and std.
+When the model is trained on image and labels, then we use random augmentations. The image is cropped to a random size and aspect ratio and then resized to 224*224. Then, the image is horizontally flipped with a 50% chance. Finally, we normalize the image with ImageNet mean and std.
 ![](/images/deepcluster-aug-model.png){.img-center}
 In PyTorch, this can be implemented as:
 ```python
@@ -93,10 +82,10 @@ aug_im = t(im)
 
 **Sobel Transformation**  
 
-Once we get the normalized image, we remove the color of image by converting it into grayscale. Then, we increase the local contrast of the image using sobel filter.
+Once we get the normalized image, we convert it into grayscale. Then, we increase the local contrast of the image using the Sobel filters.
 ![](/images/deepcluster-sobel.png){.img-center}
 
-Below is a simplified snippet adapted from the author implementation [here](https://github.com/facebookresearch/deepcluster/blob/9796a71abbfd14181a2b117d6244e60c2d94efbf/models/alexnet.py#L35). We can apply it on the augmented image `aug_im` we got above.
+Below is a simplified snippet adapted from the author's implementation [here](https://github.com/facebookresearch/deepcluster/blob/9796a71abbfd14181a2b117d6244e60c2d94efbf/models/alexnet.py#L35). We can apply it on the augmented image `aug_im` we got above.
 ```python
 import torch
 import torch.nn as nn
@@ -132,7 +121,7 @@ sobel_im = combined(batch_image)
 
 To perform clustering, we need to decide the number of clusters. This will be the number of classes the model will be trained on.
 ![](/images/deepcluster-effect-of-increasing-clusters.png){.img-center}
-By default, ImageNet has 1000 classes, but the paper uses 10,000 clusters as this gives more fine-grained grouping of the unlabeled images. For example, if you previously had grouping of cats and dogs and as you increase clusters, now groupings of breeds of the cat and dog could be created.
+By default, ImageNet has 1000 classes, but the paper uses 10,000 clusters as this gives more fine-grained grouping of the unlabeled images. For example, if you previously had a grouping of cats and dogs and you increase clusters, then groupings of breeds of the cat and dog could be created.
 
 **4. Model Architecture**  
 
@@ -145,7 +134,7 @@ Alternatively, the paper has also tried replacing AlexNet by VGG-16 with batch n
 To generating initial labels for the model to train on, we initialize AlexNet with random weights and the last fully connected layer FC3 removed. We perform a forward pass on the model on images and take the feature vector coming from the second fully connected layer FC2 of the model on an image. This feature vector has a dimension of 4096.
 ![](/images/deepcluster-alexnet-random-repr.png){.img-center}
 
-This process is repeated for all images in the batch for the whole dataset. Thus, if we have N total images, we will have a image-feature matrix of [N, 4096].
+This process is repeated for all images in the batch for the whole dataset. Thus, if we have N total images, we will have an image-feature matrix of [N, 4096].
 ![](/images/deepcluster-image-feature-matrix.png){.img-center}
 
 **6. Clustering**  
@@ -154,7 +143,7 @@ Before performing clustering, dimensionality reduction is applied to the image-f
 ![](/images/deepcluster-pca-l2.png){.img-center}
 
 For dimensionality reduction, Principal Component Analysis(PCA) is applied to the features to reduce them from 4096 dimensions to 256 dimensions. The values are also whitened.   
-The paper uses the [faiss](https://github.com/facebookresearch/faiss/wiki/Faiss-building-blocks:-clustering,-PCA,-quantization#computing-a-pca) library to perform this at scale. Faiss provides efficient implementation of PCA which can be applied for some image-feature matrix `x` as:
+The paper uses the [faiss](https://github.com/facebookresearch/faiss/wiki/Faiss-building-blocks:-clustering,-PCA,-quantization#computing-a-pca) library to perform this at scale. Faiss provides an efficient implementation of PCA which can be applied for some image-feature matrix `x` as:
 ```python
 import faiss
 
@@ -172,11 +161,11 @@ norm = np.linalg.norm(x_pca, axis=1)
 x_l2 = x_pca / norm[:, np.newaxis]
 ```
 
-Thus, we finally get a matrix of `(N, 256)` for total N images. Now, K-means clustering is applied to the pre-processed features to get image and their corresponding clusters. These clusters will act as the pseudo-labels on which the model will be trained.
+Thus, we finally get a matrix of `(N, 256)` for total N images. Now, K-means clustering is applied to the pre-processed features to get images and their corresponding clusters. These clusters will act as the pseudo-labels on which the model will be trained.
 ![](/images/deepcluster-clustering-part.png){.img-center}
-The paper use Johnson's implementation of K-means from the paper [Billion-scale similarity search with GPUs](https://arxiv.org/abs/1702.08734). It is available in the faiss library. Since clustering has to be run on all the images, it takes 1/3rd of the total training time in this method.
+The paper use Johnson's implementation of K-means from the paper ["Billion-scale similarity search with GPUs"](https://arxiv.org/abs/1702.08734). It is available in the faiss library. Since clustering has to be run on all the images, it takes one-third of the total training time.
 
-After clustering is done, new batches of images are created such that images from each cluster has equal chance of being included. Random augmentations are applied to this images.
+After clustering is done, new batches of images are created such that images from each cluster has an equal chance of being included. Random augmentations are applied to these images.
 
 **7. Representation Learning**  
 
@@ -185,7 +174,7 @@ Once we have the images and clusters, we train our ConvNet model like regular su
 
 **8. Switching between model training and clustering**  
 
-The model is trained for 500 epochs. The clustering step is run once at the start of each epoch to generate pseudo-labels for whole dataset. Then, the regular training of ConvNet using cross-entropy loss is continued for all the batches.
+The model is trained for 500 epochs. The clustering step is run once at the start of each epoch to generate pseudo-labels for the whole dataset. Then, the regular training of ConvNet using cross-entropy loss is continued for all the batches.
 The paper uses SGD optimizer with momentum of 0.9, learning rate of 0.05 and weight decay of <tt class="math">10^{-5}</tt>. They trained it on Pascal P100 GPU.
 
 ## Code Implementation of DeepCluster
