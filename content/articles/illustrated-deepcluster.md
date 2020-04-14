@@ -124,51 +124,60 @@ batch_image = aug_im.unsqueeze(dim=0)
 sobel_im = combined(batch_image)
 ```
 
-**3. Choosing Number of Clusters(Labels)**  
-10000 clusters -> 10000 classes
+**3. Decide Number of Clusters(Classes)**  
+To perform clustering, we need to decide the number of clusters. This will be the number of classes the model will be trained on.
+![](/images/deepcluster-effect-of-increasing-clusters.png){.img-center}
+By default, ImageNet has 1000 classes, but the paper uses 10,000 clusters as this gives more fine-grained grouping of the unlabeled images. For example, if you previously had grouping of cats and dogs and as you increase clusters, now groupings of breeds of the cat and dog could be created.
 
 **4. Model Architecture**  
-- AlexNet
-    - 5 conv layers: 96, 256, 384, 384, 256
-    - 3 FC layers
-    - Remove Local Response Normalization layers
-        - Instead use batch normalization
-- Alternate: VGG-16 with barch normalization
-- Dropout added
+The paper primarily uses AlexNet architecture consisting of <span style="color: #7aaf78; font-weight: bold;">5 convolutional layers</span> and 3 fully connected layers. The Local Response Normalization layers are removed and Batch Normalization is applied instead. Dropout is also added. The filter size used is from 2012 competition: 96, 256, 384, 384, 256.  
+![](/images/deepcluster-alexnet.png){.img-center}
+Alternatively, the paper has also tried replacing AlexNet by VGG-16 with batch normalization to see impact on performance.
 
-**5. The First Epoch** 
-- Remove top layer i.e. nn.Linear(4096, classes)
-- Get features upto: Linear(4096, 4096, bias=True)
-- forward pass with model.eval()
-- For each batch:
-    - model(batch) -> [256, 4096]
-    - features = [23000(len of dataset), 4096]
-    - images*features matrix is above
+**5. Generating the initial labels**  
+To generating initial labels for the model to train on, we initialize AlexNet with random weights and the last fully connected layer FC3 removed. We perform a forward pass on the model on images and take the feature vector coming from the second fully connected layer FC2 of the model on an image. This feature vector has a dimension of 4096.
+![](/images/deepcluster-alexnet-random-repr.png){.img-center}
+
+This process is repeated for all images in the batch for the whole dataset. Thus, if we have N total images, we will have a image-feature matrix of [N, 4096].
+![](/images/deepcluster-image-feature-matrix.png){.img-center}
 
 **6. Clustering**  
-- Using FAISS: PCA(4096) -> 256
-- whitened using eigen_power = -0.5
-- L2-normalized: (23000, 256) matrix
-- K-means: 
-    - Johnson [60] implementation
-    - FAISS
-    - n_iter=20
-- takes 1/3rd of the total trainign time
-- cluster update every epoch optimal for ImageNet
-- create labels and new dataset by uniformly sampling images from each cluster
 
-**7. Representation Learning** 
-- Train like regular model using cluster labels
-- batch size = 256
-- cross-entropy loss
+Before performing clustering, dimensionality reduction is applied to the image-feature matrix.
+![](/images/deepcluster-pca-l2.png){.img-center}
 
-**8. Training**  
-- epochs = 500
-- L2 penalization of the weights
-- momentum = 0.9, learning rate = 0.05, weight_decay = 10^-5
-- Pascal P100 GPU
-- constant step size
-- NMI calculated why?
+For dimensionality reduction, Principal Component Analysis(PCA) is applied to the features to reduce them from 4096 dimensions to 256 dimensions. The values are also whitened.   
+The paper uses the [faiss](https://github.com/facebookresearch/faiss/wiki/Faiss-building-blocks:-clustering,-PCA,-quantization#computing-a-pca) library to perform this at scale. Faiss provides efficient implementation of PCA which can be applied for some image-feature matrix `x` as:
+```python
+import faiss
+
+# Apply PCA with whitening
+mat = faiss.PCAMatrix(d_in=4096, d_out=256, eigen_power=-0.5)
+mat.train(x)
+x_pca = mat.apply_py(x)
+```
+
+Then, L2 normalization is applied to the values we get after PCA.
+```python
+import numpy as np
+  
+norm = np.linalg.norm(x_pca, axis=1)
+x_l2 = x_pca / norm[:, np.newaxis]
+```
+
+Thus, we finally get a matrix of `(N, 256)` for total N images. Now, K-means clustering is applied to the pre-processed features to get image and their corresponding clusters. These clusters will act as the pseudo-labels on which the model will be trained.
+![](/images/deepcluster-clustering-part.png){.img-center}
+The paper use Johnson's implementation of K-means from the paper [Billion-scale similarity search with GPUs](https://arxiv.org/abs/1702.08734). It is available in the faiss library. Since clustering has to be run on all the images, it takes 1/3rd of the total training time in this method.
+
+After clustering is done, new batches of images are created such that images from each cluster has equal chance of being included. Random augmentations are applied to this images.
+
+**7. Representation Learning**  
+Once we have the images and clusters, we train our ConvNet model like regular supervised learning. We use a batch size of 256 and use cross-entropy loss to compare model predictions to the ground truth cluster label. The model learns useful representations.
+![](/images/deepcluster-pipeline-path-2.png){.img-center}
+
+**8. Switching between model training and clustering**  
+The model is trained for 500 epochs. The clustering step is run once at the start of each epoch to generate pseudo-labels for whole dataset. Then, the regular training of ConvNet using cross-entropy loss is continued for all the batches.
+The paper uses SGD optimizer with momentum of 0.9, learning rate of 0.05 and weight decay of <tt class="math">10^{-5}</tt>. They trained it on Pascal P100 GPU.
 
 
 ## Evaluation and Results
