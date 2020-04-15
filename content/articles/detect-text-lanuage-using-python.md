@@ -1,6 +1,6 @@
 Title: Identify the Language of Text using Python
 Date: 2019-07-15 10:44
-Modified: 2019-08-03 12:44
+Modified: 2020-04-15 16:03
 Tags: fasttext, language
 Category: nlp
 Authors: Amit Chaudhary
@@ -11,36 +11,36 @@ Status: published
 
 Text Language Identification is the process of predicting the language of a given a piece of text. You might have encountered it when Chrome shows a popup to translate a webpage when it detects that the content is not in English. Behind the scenes, Chrome is using a model to predict the language of text used on a webpage.
 
-![Google Translate Popup on Chrome](/images/google_translate_popup.png)
+![Google Translate Popup on Chrome](/images/google_translate_popup.png){.img-center}
 
 When working with a dataset for NLP,  the corpus may contain a mixed set of languages. Here, language identification can be useful to either filter out a few languages or to translate the corpus to a single language and then use for your downstream tasks.
 
-In this post, I will demonstrate how to use the Fasttext library for language identification.
+In this post, I will explain the working mechanism and usage of the fasttext language detection library. 
 
 ## Facebook's Fasttext library
-![Fasttext Logo](/images/fastText_logo.png) 
+![Fasttext Logo](/images/fastText_logo.png){.img-center}
  
-[Fasttext](https://fasttext.cc/) is an open-source library in Python for word embeddings and text classification. It is built for production use rather than research and hence is optimized for performance and size. It extends the [Word2Vec](https://en.wikipedia.org/wiki/Word2vec) model with ideas such as using [subword information](https://arxiv.org/abs/1607.04606) and [model compression](https://arxiv.org/abs/1612.03651).
+[Fasttext](https://fasttext.cc/) is an open-source library in Python for word embeddings and text classification. It is built for production use case rather than research and hence is optimized for performance and size. It extends the [Word2Vec](https://en.wikipedia.org/wiki/Word2vec) model with ideas such as using [subword information](https://arxiv.org/abs/1607.04606) and [model compression](https://arxiv.org/abs/1612.03651).
 
 
-For our purpose of language identification, we can use the pre-trained models provided by fastText. The model was trained on a dataset drawn from [Wikipedia](https://www.wikipedia.org/), [Tatoeba](https://tatoeba.org/eng/), and [SETimes](http://nlp.ffzg.hr/resources/corpora/setimes/). The basic idea is to prepare a training data of (text, language) pairs and then train a classifier on it.
+For our purpose of language identification, we can use the pre-trained fasttext language identification models. The model was trained on a dataset drawn from [Wikipedia](https://www.wikipedia.org/), [Tatoeba](https://tatoeba.org/eng/), and [SETimes](http://nlp.ffzg.hr/resources/corpora/setimes/). The basic idea is to prepare a training data of (text, language) pairs and then train a classifier on it.
  
 
-![Language Training Data Example](/images/lang_training_data.png) 
+![Language Training Data Example](/images/lang_training_data.png){.img-center}
 
-The benchmark shows that the pre-trained models are better than [langid.py](https://github.com/saffsd/langid.py), another popular language identification tool. Fasttext has better accuracy and also the inference time is very fast. It supports a wide variety of languages including French, German, English, Spanish, Chinese.
+The benchmark below shows that these pre-trained language detection models are better than [langid.py](https://github.com/saffsd/langid.py), another popular python language detection library. Fasttext has better accuracy and also the inference time is very fast. It supports a wide variety of languages including French, German, English, Spanish, Chinese.
 
-![Benchmarks of Fasttext vs langid](/images/fasttext_benchmark.png)
+![Benchmarks of Fasttext vs langid](/images/fasttext_benchmark.png){.img-center}
 
-## Steps
+## Using Fasttext for Language Detection
 - Install the `Fasttext` library using pip.
-```
+```shell
 pip install fasttext
 ``` 
 
 - There are two versions of the pre-trained models. Choose the model which fits your memory and space requirements:
- - [lid.176.bin](https://dl.fbaipublicfiles.com/fasttext/supervised-models/lid.176.bin): faster and slightly more accurate but 126MB in size
- - [lid.176.ftz](https://dl.fbaipublicfiles.com/fasttext/supervised-models/lid.176.ftz): a compressed version of the model, with a file size of 917kB
+    - [lid.176.bin](https://dl.fbaipublicfiles.com/fasttext/supervised-models/lid.176.bin): faster and slightly more accurate but 126MB in size
+    - [lid.176.ftz](https://dl.fbaipublicfiles.com/fasttext/supervised-models/lid.176.ftz): a compressed version of the model, with a file size of 917kB
 
 - Download the pre-trained model from Fasttext to some location. You'll need to specify this location later in the code. In our example, we download it to the /tmp directory. 
 ```
@@ -55,7 +55,7 @@ PRETRAINED_MODEL_PATH = '/tmp/lid.176.bin'
 model = fasttext.load_model(PRETRAINED_MODEL_PATH)
 ```
 
-- Let's take an example sentence in French which means 'I eat food'. To detect it's language, just pass a list of sentences to the predict function. The sentences should be in the UTF-8 format.
+- Let's take an example sentence in French which means 'I eat food'. To detect language with fasttext, just pass a list of sentences to the predict function. The sentences should be in the UTF-8 format.
 
 ![French to English Translation Training Data](/images/french_to_english_translation.png) 
 
@@ -67,7 +67,7 @@ print(predictions)
 
 # ([['__label__fr']], array([[0.96568173]]))
 ```
-- The model returns back two tuples back. One of them is an array of language labels and the other is the confidence for each sentence. Here 'fr' is the ISO 639 code for French. The model is 96.56% confident that the language is French.
+- The model returns back two tuples back. One of them is an array of language labels and the other is the confidence for each sentence. Here `fr` is the `ISO 639` code for French. The model is 96.56% confident that the language is French.
 
 - Fasttext returns the ISO code for the most probable one among the 170 languages. You can refer to the page on [ISO 639](https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes) codes to find language for each symbol.
 ```
@@ -83,7 +83,10 @@ pip install pycountry
 ```python
 from pycountry import languages
 
-language_name = languages.get(alpha_2='fr').name
-print(language_name)
+lang_name = languages.get(alpha_2='fr').name
+print(lang_name)
 # french
 ```
+
+## Conclusion
+Thus, we saw how fasttext can be used for language detection in Python. This is very useful to filter out and deal with non-english responses in Natural Language Processing projects.
