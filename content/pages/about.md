@@ -7,7 +7,7 @@ I'm a T-shaped engineer going [wide and deep](https://github.com/amitness/learni
 
 <br>
 **Interest Areas**  
-I'm interested in areas of *Self-Supervised Learning*, *Semi-Supervised Learning* and *Natural Language Processing*.
+I'm interested in research areas of learning from limited labels (Self-Supervised Learning / Semi-Supervised Learning) and Natural Language Processing.
 <br>  
 **What I do**  
 
