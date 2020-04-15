@@ -1,6 +1,6 @@
 Title: The Illustrated Self-Supervised Learning
 Date: 2020-02-25 03:00
-Modified: 2020-04-15 12:42
+Modified: 2020-04-15 12:53
 Category: illustration
 Slug: illustrated-self-supervised-learning
 Summary: A visual introduction to the patterns of problem formulation in self-supervised learning.
