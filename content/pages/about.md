@@ -6,20 +6,17 @@ Modified: 2015-07-18 08:00
 I'm a T-shaped engineer going [wide and deep](https://github.com/amitness/learning) on the multidisciplinary fields of data science.
 
 <br>
-**Interest Areas**  
-I'm interested in research areas of learning from limited labels (Self-Supervised Learning / Semi-Supervised Learning) and Natural Language Processing.
-<br>  
 **What I do**  
 
-Currently, I work as a Machine Learning Engineer at [Fusemachines](https://fusemachines.com), where I apply state-of-the-art research to products. I've worked in domains of healthcare, education technology, logistics and marketing.
+Currently, I work as a Machine Learning Engineer at [Fusemachines](https://fusemachines.com), where I apply state-of-the-art research to solve business problems. I've worked in domains of education technology, health-care, logistics and market research.
 <br>  
-**Community**  
-I've been applying the data skills to highlight evidence-based issues for a non-profit organization [Code For Nepal](https://codefornepal.org/).  
-<br>
+**Interest Areas**  
+I'm interested in the paradigm of learning with limited labels (Self-Supervised Learning / Semi-Supervised Learning) and Natural Language Processing.
+<br>   
 **About this blog**  
-The goal of this blog is to leverage diagrams and intuitions to make machine learning concepts clear and accessible to everyone. 
+I write posts with hand-drawn diagrams and intuitions to clarify various machine learning concepts. I personally find such visual explanations very helpful to link the big picture with the actual nuts and bolts and mathematics involved for an idea.
 
 <br>
-**Contact**  
-You can get connected with me on [Twitter](https://twitter.com/amitness) or [Linkedin](https://np.linkedin.com/in/amitness).
+**Get Connected**  
+If you find my work interesting, let's get connected on [Twitter](https://twitter.com/amitness) or [Linkedin](https://np.linkedin.com/in/amitness)
 
