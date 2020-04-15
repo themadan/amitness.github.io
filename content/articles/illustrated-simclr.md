@@ -1,13 +1,13 @@
 Title: The Illustrated SimCLR Framework
 Date: 2020-03-04 10:00
-Modified: 2020-04-15 01:08
+Modified: 2020-04-15 01:19
 Category: illustration
 Slug: illustrated-simclr
 Summary: A visual guide to the SimCLR framework for contrastive learning of visual representations.
 Status: published
 Authors: Amit Chaudhary
 
-In recent years, [numerous self-supervised learning methods](https://amitness.com/2020/02/illustrated-self-supervised-learning/) have been proposed for learning image representations, each getting better than the previous. But, their performance was still below the supervised counterparts. This changed when **Chen et. al** proposed a new framework in their research paper "[SimCLR: A Simple Framework for Contrastive Learning of Visual Representations](https://arxiv.org/abs/2002.05709)". The research paper not only improves upon the previous state-of-the-art self-supervised learning methods but also beats the supervised learning method on ImageNet classification.
+In recent years, [numerous self-supervised learning methods](https://amitness.com/2020/02/illustrated-self-supervised-learning/) have been proposed for learning image representations, each getting better than the previous. But, their performance was still below the supervised counterparts. This changed when **Chen et. al** proposed a new framework in their research paper "[SimCLR: A Simple Framework for Contrastive Learning of Visual Representations](https://arxiv.org/abs/2002.05709)". The SimCLR paper not only improves upon the previous state-of-the-art self-supervised learning methods but also beats the supervised learning method on ImageNet classification.
 
 In this article, I will explain the key ideas of the framework proposed in the research paper using diagrams.
 
@@ -43,13 +43,13 @@ We need some mechanism to compute the similarity of two images.
 
 The paper proposes a framework "**SimCLR**" for modeling the above problem in a self-supervised manner. It blends the concept of *Contrastive Learning* with a few novel ideas to learn visual representations without human supervision. 
 
-## Framework
-The framework, as the full-form suggests, is very simple. An image is taken and random transformations are applied to it to get a pair of two augmented images <tt class="math">x_i</tt> and <tt class="math">x_j</tt>. Each image in that pair is passed through an encoder to get representations. Then a non-linear fully connected layer is applied to get representations z. The task is to maximize the similarity between these two representations <tt class="math">z_i</tt> and <tt class="math">z_j</tt> for the same image.
+## SimCLR Framework
+The SimCLR framework, as the full-form suggests, is very simple. An image is taken and random transformations are applied to it to get a pair of two augmented images <tt class="math">x_i</tt> and <tt class="math">x_j</tt>. Each image in that pair is passed through an encoder to get representations. Then a non-linear fully connected layer is applied to get representations z. The task is to maximize the similarity between these two representations <tt class="math">z_i</tt> and <tt class="math">z_j</tt> for the same image.
 ![General Architecture of the SimCLR Framework](/images/simclr-general-architecture.png){.img-center}
 
 
 ## Step by Step Example
-Let's explore the various components of the framework with an example. Suppose we have a training corpus of millions of unlabeled images.
+Let's explore the various components of the SimCLR framework with an example. Suppose we have a training corpus of millions of unlabeled images.
 ![Corpus of millions of images](/images/simclr-raw-data.png){.img-center}
 
 1. **Self-supervised Formulation** [Data Augmentation]  
@@ -95,7 +95,7 @@ The pairwise cosine similarity between each augmented image in a batch is calcul
 ![Pairwise cosine similarity between 4 images](/images/simclr-pairwise-similarity.png){.img-center}
 
 b. **Loss Calculation**  
-SimCLR uses a contrastive loss called "**NT-Xent**" (**Normalized Temperature-Scaled Cross-Entropy Loss**). Let see intuitively how it works.  
+SimCLR uses a contrastive loss called "**NT-Xent loss**" (**Normalized Temperature-Scaled Cross-Entropy Loss**). Let see intuitively how it works.  
   
 First, the augmented pairs in the batch are taken one by one.
 ![Example of a single batch in SimCLR](/images/simclr-augmented-pairs-batch.png){.img-center}
@@ -126,7 +126,7 @@ Based on the loss, the encoder and projection head representations improves over
 
 
 ## Downstream Tasks
-Once the model is trained on the contrastive learning task, it can be used for transfer learning. In this, the representations from the encoder are used instead of representations obtained from the projection head. These representations can be used for downstream tasks like  ImageNet Classification.
+Once the SimCLR model is trained on the contrastive learning task, it can be used for transfer learning. For this, the representations from the encoder are used instead of representations obtained from the projection head. These representations can be used for downstream tasks like  ImageNet Classification.
 ![Using SimCLR for downstream tasks](/images/simclr-downstream.png)
 
 ## Objective Results
