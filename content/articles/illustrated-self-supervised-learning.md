@@ -3,7 +3,7 @@ Date: 2020-02-25 03:00
 Modified: 2020-04-15 13:56
 Category: illustration
 Slug: illustrated-self-supervised-learning
-Summary: A visual introduction to the patterns of problem formulation in self-supervised learning.
+Summary: A visual introduction to self-supervised learning methods for visual representations.
 Status: published
 Authors: Amit Chaudhary
 Cover: /images/self-supervised-workflow.png
