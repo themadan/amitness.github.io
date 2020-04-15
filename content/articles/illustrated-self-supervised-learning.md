@@ -139,7 +139,9 @@ To solve this pre-text task, [Caron et al.](https://arxiv.org/abs/1807.05520) pr
 ![Architecture for Deep Clustering](/images/ss-deep-clustering-architecture.png){.img-center}
 
 **Papers**:  
-[Deep clustering for unsupervised learning of visual features](https://arxiv.org/abs/1807.05520)
+
+- [Deep clustering for unsupervised learning of visual features](https://amitness.com/2020/04/deepcluster/)  
+- [Self-labelling via simultaneous clustering and representation learning](https://amitness.com/2020/04/illustrated-self-labelling/)
 
 ## 8. **Synthetic Imagery**
 Formulation:   
