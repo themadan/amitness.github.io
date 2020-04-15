@@ -8,7 +8,7 @@ Status: published
 Authors: Amit Chaudhary
 Cover: /images/deepcluster-pipeline.png
 
-Many self-supervised methods use pretext tasks to generate surrogate labels and formulate an unsupervised learning problem as a supervised one. Some examples include rotation prediction, image colorization, jigsaw puzzles etc. However, such pretext tasks are domain-dependent and require expertise to design them.
+Many self-supervised methods use [pretext tasks](https://amitness.com/2020/02/illustrated-self-supervised-learning/) to generate surrogate labels and formulate an unsupervised learning problem as a supervised one. Some examples include rotation prediction, image colorization, jigsaw puzzles etc. However, such pretext tasks are domain-dependent and require expertise to design them.
 
 [DeepCluster](https://arxiv.org/abs/1807.05520) is a self-supervised method proposed by Caron et al. of Facebook AI Research that brings a different approach.
 This method doesn't require domain-specific knowledge and can be used to learn deep representations for scenarios where annotated data is scarce.
