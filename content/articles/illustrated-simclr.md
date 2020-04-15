@@ -1,6 +1,6 @@
 Title: The Illustrated SimCLR Framework
 Date: 2020-03-04 10:00
-Modified: 2020-04-15 12:58
+Modified: 2020-04-15 01:08
 Category: illustration
 Slug: illustrated-simclr
 Summary: A visual guide to the SimCLR framework for contrastive learning of visual representations.
@@ -138,6 +138,12 @@ Source: [SimCLR paper](https://arxiv.org/abs/2002.05709)
 
 - On ImageNet [ILSVRC-2012](http://image-net.org/challenges/LSVRC/2012/), it achieves 76.5% top-1 accuracy which is 7% improvement over previous SOTA self-supervised method [Contrastive Predictive Coding](https://arxiv.org/abs/1905.09272) and on-par with supervised ResNet50.  
 - When trained on 1% of labels, it achieves 85.8% top-5 accuracy outperforming AlexNet with 100x fewer labels
+
+
+## SimCLR Code
+The official implementation of SimCLR in Tensorflow by the paper authors is available on [GitHub](https://github.com/google-research/simclr). They also provide [pretrained models](https://github.com/google-research/simclr#pre-trained-models) for 1x, 2x and 3x variants of the ResNet50 architectures using Tensorflow Hub.  
+
+There are various unofficial SimCLR PyTorch implementations available which have been tested on small datasets like [CIFAR-10](https://github.com/leftthomas/SimCLR) and [STL-10](https://github.com/Spijkervet/SimCLR).
 
 ## Conclusion
 Thus, SimCLR provides a strong framework for doing further research in this direction and improve the state of self-supervised learning for Computer Vision.
