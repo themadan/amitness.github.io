@@ -21,7 +21,6 @@ GOOGLE_FONTS = [
 
 TWITTER_USERNAME = 'amitness'
 
-
 # Pelican settings
 RELATIVE_URLS = True
 SITEURL = 'http://localhost:8000'
@@ -54,7 +53,6 @@ MENUITEMS = (
     ('archive', '/archives'),
     ('about', '/about/'),
 )
-
 
 DEFAULT_PAGINATION = 4
 
@@ -108,7 +106,6 @@ MARKDOWN = {
     },
     'output_format': 'html5',
 }
-
 
 PLUGIN_PATHS = ['./pelican-plugins']
 PLUGINS = ['assets', 'neighbors', 'pelican_katex', 'sitemap', 'share_post']
