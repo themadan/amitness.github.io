@@ -38,11 +38,11 @@ JINJA_FILTERS = bulrush.FILTERS
 
 # Social widget
 SOCIAL = (
-    ('GitHub', 'https://github.com/amitness'),
-    ('Twitter', 'https://twitter.com/amitness'),
-    ('Linkedin', 'https://np.linkedin.com/in/amitness'),
     ('Email', 'mailto:meamitkc@gmail.com'),
-    ('Feed', '/atom.xml')
+    ('Feed', '/atom.xml'),
+    ('GitHub', 'https://github.com/amitness'),
+    ('Linkedin', 'https://np.linkedin.com/in/amitness'),
+    ('Twitter', 'https://twitter.com/amitness')
 )
 
 NAVBAR_LABEL = 'amitness'
@@ -136,3 +136,5 @@ SITEMAP = {
     },
     'exclude': ['author/']
 }
+
+ENABLE_COMMENTS = True
