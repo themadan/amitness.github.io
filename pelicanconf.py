@@ -72,6 +72,7 @@ MONTH_ARCHIVE_SAVE_AS = '{date:%Y}/{date:%m}/index.html'
 DIRECT_TEMPLATES = ['index', 'archives']
 CATEGORY_SAVE_AS = ''
 TAG_SAVE_AS = ''
+AUTHOR_SAVE_AS = ''
 
 # Disable Atom feed generation
 FEED_ATOM = 'atom.xml'
@@ -132,5 +133,6 @@ SITEMAP = {
         'articles': 'monthly',
         'indexes': 'daily',
         'pages': 'monthly',
-    }
+    },
+    'exclude': ['author/']
 }
