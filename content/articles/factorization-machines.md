@@ -1,15 +1,20 @@
 Title: An Illustrated Guide to Factorization Machines
-Date: 2019-12-29 04:47
-Modified: 2019-12-29 04:47
+Date: 2020-04-17 03:19
+Modified: 2020-04-17 03:19
 Category: illustration
 Slug: factorization-machines-illustrated
-Summary: Learn working mechanism of Factorization Machines with illustrated examples.
+Summary: Learn about the working mechanism of Factorization Machines with visual examples.
 Status: draft
 Authors: Amit Chaudhary
 
+Factorization machines is a popular techniques used in building recommendation systems.
+
+
+## Scenario
+
 Assume we need to build a recommendation system for a TV-series streaming service. You are provided a historical dataset of ratings by users for different series.  
 
-![](https://upload.wikimedia.org/wikipedia/en/thumb/3/33/Silicon_valley_title.png/250px-Silicon_valley_title.png)  
+![](https://upload.wikimedia.org/wikipedia/en/thumb/3/33/Silicon_valley_title.png/250px-Silicon_valley_title.png){.img-center}
 
 |User|Game of Thrones|Silicon Valley|
 |---|---|---|
@@ -148,5 +153,5 @@ Though factorization models solve the problems of polynomial regression, it is s
 
 Factorization machines solve this problem by modeling the problem like a polynomial regression but learning latent factors for the interactions instead of the weights. So, the weight
 
-### References
+## References
 - [Factorization Machines](https://cseweb.ucsd.edu/classes/fa17/cse291-b/reading/Rendle2010FM.pdf) [pdf]
