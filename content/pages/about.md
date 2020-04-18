@@ -1,6 +1,7 @@
 Title: About
 Date: 2015-07-18 08:00
-Modified: 2015-07-18 08:00
+Modified: 2020-04-18 01:59
+Summary: Learn about me, my current endeavors, interest areas in Machine Learning and the reason why I started this personal blog.
 
 **Who I am**  
 I'm a T-shaped engineer going [wide and deep](https://github.com/amitness/learning) on the multidisciplinary fields of data science.
