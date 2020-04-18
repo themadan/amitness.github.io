@@ -19,7 +19,7 @@ DeepCluster combines two pieces: unsupervised clustering and deep neural network
 
 ## Deep Cluster Pipeline
 Let's now understand how the deep cluster pipeline works with an interactive diagram.
-![](/images/deepcluster-pipeline.gif){.img-center}
+![End to End Pipeline of DeepCluster Paper](/images/deepcluster-pipeline.gif){.img-center}
 
 **Synopsis:**  
 As seen in the figure above, unlabeled images are taken and <span style="color: #996625; font-weight: bold;">augmentations</span> are applied to them. Then, an <span style="color: #30792c; font-weight: bold;">ConvNet</span> architecture such as <span style="color: #30792c; font-weight: bold;">AlexNet</span> or <span style="color: #30792c; font-weight: bold;">VGG-16</span> is used as the feature extractor. Initially, the <span style="color: #30792c; font-weight: bold;">ConvNet</span> is initialized with randomly weights and we take the <span style="color: #ff787b; font-weight: bold;">feature vector</span> from layer before the final classification head. Then, <span style="color: #34c0c7; font-weight: bold;">PCA</span> is used to reduce the dimension of the <span style="color: #ff787b; font-weight: bold;">feature vector</span> along with whitening and <span style="color: #41adda; font-weight: bold;">L2 normalization</span>. Finally, the processed features are passed to <span style="color: #9559b3; font-weight: bold;">K-means</span> to get cluster assignment for each image.  
@@ -33,7 +33,7 @@ Let's see how DeepCluster is applied in practice with a step by step example of 
 
 **1. Training Data**  
 We take unlabeled images from the ImageNet dataset which consist of 1.3 million images uniformly distributed into 1000 classes. These images are prepared in mini-batches of 256.
-![](/images/deepcluster-imagenet.png){.img-center}
+![Example of ImageNet datasets for DeepCluster](/images/deepcluster-imagenet.png){.img-center}
 
 The training set of N images can be denoted mathematically by:
 <pre class="math">
@@ -47,7 +47,7 @@ Transformations are applied to the images so that the features learned is invari
 **Case 1: Transformation when doing clustering**    
 
 When model representations are to be sent for clustering, random augmentations are not used. The image is simply resized to 256\*256 and the center crop is applied to get 224\*224 image. Then normalization is applied.  
-![](/images/deepcluster-aug-clustering.png){.img-center}
+![Augmentations done during clustering in DeepCluster](/images/deepcluster-aug-clustering.png){.img-center}
 In PyTorch, this can be implemented as:
 ```python
 from PIL import Image
@@ -65,7 +65,7 @@ aug_im = t(im)
 **Case 2: Transformation when training model**  
 
 When the model is trained on image and labels, then we use random augmentations. The image is cropped to a random size and aspect ratio and then resized to 224*224. Then, the image is horizontally flipped with a 50% chance. Finally, we normalize the image with ImageNet mean and std.
-![](/images/deepcluster-aug-model.png){.img-center}
+![Sequence of Image Augmentations Used before passing to model](/images/deepcluster-aug-model.png){.img-center}
 In PyTorch, this can be implemented as:
 ```python
 from PIL import Image
@@ -83,7 +83,7 @@ aug_im = t(im)
 **Sobel Transformation**  
 
 Once we get the normalized image, we convert it into grayscale. Then, we increase the local contrast of the image using the Sobel filters.
-![](/images/deepcluster-sobel.png){.img-center}
+![Sobel Transformation in DeepCluster](/images/deepcluster-sobel.png){.img-center}
 
 Below is a simplified snippet adapted from the author's implementation [here](https://github.com/facebookresearch/deepcluster/blob/9796a71abbfd14181a2b117d6244e60c2d94efbf/models/alexnet.py#L35). We can apply it on the augmented image `aug_im` we got above.
 ```python
@@ -120,27 +120,27 @@ sobel_im = combined(batch_image)
 **3. Decide Number of Clusters(Classes)**  
 
 To perform clustering, we need to decide the number of clusters. This will be the number of classes the model will be trained on.
-![](/images/deepcluster-effect-of-increasing-clusters.png){.img-center}
+![Impact of number of clusters on DeepCluster model](/images/deepcluster-effect-of-increasing-clusters.png){.img-center}
 By default, ImageNet has 1000 classes, but the paper uses 10,000 clusters as this gives more fine-grained grouping of the unlabeled images. For example, if you previously had a grouping of cats and dogs and you increase clusters, then groupings of breeds of the cat and dog could be created.
 
 **4. Model Architecture**  
 
 The paper primarily uses AlexNet architecture consisting of <span style="color: #7aaf78; font-weight: bold;">5 convolutional layers</span> and 3 fully connected layers. The Local Response Normalization layers are removed and Batch Normalization is applied instead. Dropout is also added. The filter size used is from 2012 competition: 96, 256, 384, 384, 256.  
-![](/images/deepcluster-alexnet.png){.img-center}
+![AlexNet Architecture Used in DeepCluster](/images/deepcluster-alexnet.png){.img-center}
 Alternatively, the paper has also tried replacing AlexNet by VGG-16 with batch normalization to see impact on performance.
 
 **5. Generating the initial labels**  
 
 To generating initial labels for the model to train on, we initialize AlexNet with random weights and the last fully connected layer FC3 removed. We perform a forward pass on the model on images and take the feature vector coming from the second fully connected layer FC2 of the model on an image. This feature vector has a dimension of 4096.
-![](/images/deepcluster-alexnet-random-repr.png){.img-center}
+![How Feature Vectors are taken from AlexNet for Clustering](/images/deepcluster-alexnet-random-repr.png){.img-center}
 
 This process is repeated for all images in the batch for the whole dataset. Thus, if we have N total images, we will have an image-feature matrix of [N, 4096].
-![](/images/deepcluster-image-feature-matrix.png){.img-center}
+![The Image-Feature Matrix Generated in DeepCluster](/images/deepcluster-image-feature-matrix.png){.img-center}
 
 **6. Clustering**  
 
 Before performing clustering, dimensionality reduction is applied to the image-feature matrix.
-![](/images/deepcluster-pca-l2.png){.img-center}
+![Preprocessing for clustering in DeepCluster](/images/deepcluster-pca-l2.png){.img-center}
 
 For dimensionality reduction, Principal Component Analysis(PCA) is applied to the features to reduce them from 4096 dimensions to 256 dimensions. The values are also whitened.   
 The paper uses the [faiss](https://github.com/facebookresearch/faiss/wiki/Faiss-building-blocks:-clustering,-PCA,-quantization#computing-a-pca) library to perform this at scale. Faiss provides an efficient implementation of PCA which can be applied for some image-feature matrix `x` as:
@@ -162,7 +162,7 @@ x_l2 = x_pca / norm[:, np.newaxis]
 ```
 
 Thus, we finally get a matrix of `(N, 256)` for total N images. Now, K-means clustering is applied to the pre-processed features to get images and their corresponding clusters. These clusters will act as the pseudo-labels on which the model will be trained.
-![](/images/deepcluster-clustering-part.png){.img-center}
+![Complete Pipeline from Image to Clustering in DeepCluster](/images/deepcluster-clustering-part.png){.img-center}
 The paper use Johnson's implementation of K-means from the paper ["Billion-scale similarity search with GPUs"](https://arxiv.org/abs/1702.08734). It is available in the faiss library. Since clustering has to be run on all the images, it takes one-third of the total training time.
 
 After clustering is done, new batches of images are created such that images from each cluster has an equal chance of being included. Random augmentations are applied to these images.
@@ -170,7 +170,7 @@ After clustering is done, new batches of images are created such that images fro
 **7. Representation Learning**  
 
 Once we have the images and clusters, we train our ConvNet model like regular supervised learning. We use a batch size of 256 and use cross-entropy loss to compare model predictions to the ground truth cluster label. The model learns useful representations.
-![](/images/deepcluster-pipeline-path-2.png){.img-center}
+![Representation Learning Part of the DeepCluster Pipeline](/images/deepcluster-pipeline-path-2.png){.img-center}
 
 **8. Switching between model training and clustering**  
 
