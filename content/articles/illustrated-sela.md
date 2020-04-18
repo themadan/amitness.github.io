@@ -1,6 +1,6 @@
 Title: A Visual Guide to Self-Labelling Images
 Date: 2020-04-10 14:11
-Modified: 2020-04-10 14:11
+Modified: 2020-04-18 12:40
 Category: illustration
 Slug: illustrated-self-labelling
 Summary: A self-supervised method to generate labels via simultaneous clustering and representation learning
@@ -14,7 +14,7 @@ However, as we had seen in our [survey](https://amitness.com/2020/02/illustrated
 > Combine clustering and representation learning together to learn both features and labels simultaneously.
 
 A paper **[Self-Labelling(SeLa)](https://arxiv.org/abs/1911.05371)** presented at ICLR 2020 by Asano et al. of the Visual Geometry Group(VGG), University of Oxford has a new take on this approach and achieved the state of the art results in various benchmarks.  
-![](/images/sela-intro.png){.img-center}
+![Example of Clusters from Self Labelling](/images/sela-intro.png){.img-center}
 The most interesting part is that we can *auto-generate labels for images in some new domain* with this method and then use those labels independently with any model architecture and regular supervised learning methods. Self-Labelling is a very practical idea for industries and domains with scarce labeled data. Let's understand how it works.
 
 ## Solving The Chicken and Egg Problem
@@ -24,20 +24,20 @@ At a very high level, the Self-Labelling method works as follows:
 - Generate new labels from the trained model
 - Repeat the process
 
-![](/images/sela-chicken-egg-problem.png){.img-center}
+![The Chicken and Egg Problem in Self-Labelling](/images/sela-chicken-egg-problem.png){.img-center}
 
 > But, how will you generate labels for images in the first place without a trained model? This sounds like the chicken-and-egg problem where if the chicken came first, what did it hatch from and if the egg came first, who laid the egg?
 
 The solution to the problem is to use a randomly initialized network to bootstrap the first set of image labels. This has been shown to work empirically in the [DeepCluster](https://arxiv.org/abs/1807.05520) paper.  
 
 The authors of DeepCluster used a randomly initialized <span style="color: #51677d;">AlexNet</span> and evaluated it on ImageNet. Since the ImageNet dataset has 1000 classes, if we randomly guessed the classes, we would get an baseline accuracy of <span style="color: #c91212;">1/1000</span> = <span style="color: #c91212;">0.1%</span>. But, a randomly initialized AlexNet was shown to achieve <span style="color: #3fb536;">12%</span> accuracy on ImageNet. This means that a randomly-initialized network possesses some faint signal in its weights.
-![](/images/sela-faint-signal.png){.img-center}
+![Faint Signal Present in ConvNets](/images/sela-faint-signal.png){.img-center}
 
 Thus, we can use labels obtained from a randomly initialized network to kick start the process which can be refined later.
 
 ## Self-Labelling Pipeline
 Let's now understand how the self-labelling pipeline works.
-![](/images/sela-pipeline.gif){.img-center}
+![End to End Pipeline for Self Labelling](/images/sela-pipeline.gif){.img-center}
 
 **Synopsis:**  
 As seen in the figure above, we first generate labels for <span style="color: #935d19;">augmented</span> unlabeled images using a randomly initialized model. Then, the <span style="color: #9559b3">Sinkhorn-Knopp</span> algorithm is applied to cluster the unlabeled images and get a new set of labels. The <span style="color: #30792c">model</span> is again trained on these new set of labels and optimized with cross-entropy loss. <span style="color: #9559b3">Sinkhorn-Knopp</span> algorithm is run once in a while during the course of training to optimize and get new set of labels. This process is repeated for a number of epochs and we get the final labels and a <span style="color: #30792c">trained model</span>.
@@ -50,11 +50,11 @@ Let's see how this method is implemented in practice with a step by step example
 **1. Training Data**  
 
 First of all, we get N unlabeled images <tt class="math">I_1, ..., I_N</tt> and take batches of them from some dataset. In the paper, batches of 256 unlabeled images are prepared from the ImageNet dataset.
-![](/images/sela-batch-size.png){.img-center}
+![A single batch from ImageNet](/images/sela-batch-size.png){.img-center}
 
 **2. Data Augmentation**  
 We apply augmentations to the unlabeled images so that the self-labelling function learned is transformation invariant. The paper first randomly crops the image into size `224*224`. Then, the image is converted into grayscale with a probability of 20%. Color Jitter is applied to this image. Finally, the horizontal flip is applied 50% of the time. After the transformations are applied, the image is normalized with a mean of`[0.485, 0.456, 0.406]` and a standard deviation of `[0.229, 0.224, 0.225]`.
-![](/images/sela-augmentations.png){.img-center}
+![Image Augmentations applied in Self-Labelling](/images/sela-augmentations.png){.img-center}
 
 This can be implemented in PyTorch for some image as:
 ```python
@@ -82,16 +82,16 @@ We then need to choose the number of clusters(K) we want to group our data in. B
 y_1, ..., y_N \in {1, ..., K}
 </pre>
 
-![](/images/sela-clusters-numbers.png){.img-center}
+![Illustration of each cluster in self-labelling](/images/sela-clusters-numbers.png){.img-center}
 The paper experimented with the number of clusters ranging from 1000(1k) to 10,000(10k) and found the ImageNet performance improves till 3000 but slightly degrades when using more clusters than that. So the papers use 3000 clusters and as a result 3000 classes for the model.
-![](/images/sela-best-cluster.png){.img-center}
+![Impact of changing number of clusters to downstream performance](/images/sela-best-cluster.png){.img-center}
 
 
 **4. Model Architecture**  
 A ConvNet architecture such as <span style="color: #885e9c;">AlexNet</span> or <span style="color: #885e9c;">ResNet-50</span> is used as the feature extractor. This <span style="color: #885e9c;">network</span> is denoted by <tt class="math">\textcolor{#885e9c}{\phi(} I \textcolor{#885e9c}{)}</tt>
 and maps an image I to <span style="color: #348e00">feature vector</span> <tt class="math">m \in R^D</tt> with dimension D. 
 
-![](/images/sela-model-architecture.png){.img-center}
+![Example of model predictions from AlexNet](/images/sela-model-architecture.png){.img-center}
 
 Then, a <span style="color: #3b6eb5;">classification head</span> is used which is simply a single <span style="color: #3b6eb5;">linear layer</span> that converts the feature vectors into class scores. These scores are converted into probabilities using the softmax operator.
 <pre class="math">
@@ -100,7 +100,7 @@ p(y=.|x_i) = softmax( \textcolor{#3b6eb5}{h\ o\ \phi(}x_i \textcolor{#3b6eb5}{)}
 
 **5. Initial Random Label Assignment**  
 The above model is initialized with random weights and we do a forward pass through the model to get class predictions for each image in the batch. These predicted classes are assumed as the initial labels.
-![](/images/sela-random-labels.png){.img-center}
+![Initial Random Label Assignment in Self-Labelling](/images/sela-random-labels.png){.img-center}
 
 **6. Self Labelling with Optimal Transport**  
 Using these initial labels, we want to find a better distribution of images into clusters. To do that, the paper uses a novel approach quite different than K-means clustering that was used in DeepCluster. The authors apply the concept of optimal transport from operations research to tackle this problem.
@@ -108,18 +108,18 @@ Using these initial labels, we want to find a better distribution of images into
 Let's first understand the optimal transport problem with a simple real-world example:  
 
 - Suppose a company has two warehouses A and B and each has 25 laptops in stock. Two shops in the company require 25 laptops each. You need to decide on an optimal way to transport the laptops from the warehouse to the shops.
-![](/images/sela-optimal-transport-real.png){.img-center}
+![Example usecase of supply and demand between warehouse and shops](/images/sela-optimal-transport-real.png){.img-center}
 - There are multiple possible ways to solve this problem. We could either assign all laptops from warehouse A to shop 1 and all laptops from warehouse B to shop 2. Or we could switch the shops. Or we could transfer 15 laptops from warehouse A and remaining 10 from warehouse B. The only constraint is that the number of laptops allocated from a warehouse cannot exceed their current limit i.e. 25.
-![](/images/sela-optimal-transport-possibilities.png){.img-center}
+![Ways to allocate items from warehouse to shops](/images/sela-optimal-transport-possibilities.png){.img-center}
 
 - But, if we know the distance from each warehouse to the shops, then we can find an optimal allocation with minimal travel. Here, we can see intuitively that the best allocation would be to deliver all 25 laptops from warehouse B to shop 2 since the distance is less than warehouse A. And we can deliver the 25 laptops from warehouse A to shop 1. Such optimal allocation can be found out using the Sinkhorn-Knopp algorithm.
-![](/images/sela-optimal-transport-best.png){.img-center}
+![Example of optimal allocation with optimal transport](/images/sela-optimal-transport-best.png){.img-center}
 
 Now, that we understand the problem, let's see how it applies in our case of cluster allocation. The authors have formulated the problem of assigning the unlabeled images into clusters as an optimal transport problem in this way:  
 
 1. **Problem**:  
 Generate an optimal matrix Q that allocates N unlabeled images into K clusters. 
-![](/images/sela-q-matrix.png){.img-center}
+![Clustering as a optimal transport problem](/images/sela-q-matrix.png){.img-center}
 
 2. **Constraint**:  
 The unlabeled images should be divided equally into the K clusters. This is referred to as the equipartition condition in the paper.
@@ -137,7 +137,7 @@ E(p|y_1, ..., y_N) = -\frac{1}{N} \sum_{i=1}^{N} logp(y_i \mid x_i)
 
 **8. Scheduling Cluster Updates**  
 The optimization of labels at step 6 is scheduled to occur at most once an epoch. The authors experimented with not using self-labelling algorithm at all to doing the Sinkhorn-Knopp optimization once per epoch. The best result was achieved at 80.
-![](/images/sela-optimal-schedule.png){.img-center}
+![Impact of doing self-labelling steps more](/images/sela-optimal-schedule.png){.img-center}
 
 This shows that self-labeling is giving us a significant increase in performance compared to <span style="color: #c61411;">no self-labeling</span> (only random-initialization and augmentation).
 
@@ -147,7 +147,7 @@ The labels obtained for images from self-labelling can be used to train another 
 In the paper, they took labels assigned by SeLa with AlexNet and retrained another AlexNet network from scratch with those labels using only 90-epochs to get the same accuracy.  
 
 They did another interesting experiment where 3000 labels obtained by applying SeLa to ResNet-50 was used to train AlexNet model from scratch. They got <span style="color:#6d983b;">48.4%</span> accuracy which was higher than <span style="color: #6e3d84;">46.5%</span> accuracy obtained by training AlexNet from scratch directly. This shows how labels can be transferred between architectures.
-![](/images/sela-label-transfer.png){.img-center}
+![Using labels from ResNet-50 to train AlexNet](/images/sela-label-transfer.png){.img-center}
 
 The authors have published their generated labels for the ImageNet dataset. These can be used to train a supervised model from scratch.
 
@@ -160,9 +160,9 @@ The author have also setup an interactive demo [here](http://www.robots.ox.ac.uk
 ## Insights and Results
 **1. Small Datasets: CIFAR-10/CIFAR-100/SVHN**  
 The paper got state of the art results on CIFAR-10, CIFAR-100 and SVHN datasets beating best previous method [<span style="color: #009688; font-weight: bold;">AND</span>](https://arxiv.org/abs/1904.11567). An interesting result is very small improvement(<span style="color: #8BC34A">+0.8%</span>) on SVHN, which the authors say is because the difference between supervised baseline of 96.1 and AND's 93.7 is already small (<3%).
-![](/images/sela-small-linear-classifier.png){.img-center}
+![SOTA Results with SeLA using Linear Classifier](/images/sela-small-linear-classifier.png){.img-center}
 The authors also evaluated it using weighted KNN and an embedding size of 128 and outperformed previous methods by 2%.
-![](/images/sela-small-data-knn.png){.img-center}
+![SOTA Results with weighted KNN](/images/sela-small-data-knn.png){.img-center}
 
 **2. What happens to equipartition assumption if the dataset is imbalanced?**   
 The paper has an assumption that images are equally distributed over classes. So, to test the impact on the algorithm when it's trained on unbalanced datasets, the authors prepared three datasets out of CIFAR-10:  
@@ -170,7 +170,7 @@ The paper has an assumption that images are equally distributed over classes. So
 - **Full**: Original CIFAR-10 dataset with 5000 images per class 
 - **Light Imbalance**: Remove 50% of images in the truck class of CIFAR-10
 - **Heavy Imbalance**: Remove 10% of first class, 20% of second class and so on from CIFAR-10
-![](/images/sela-imbalanced-results.png){.img-center}  
+![Impact of Imbalanced Dataset over Self-Labelling](/images/sela-imbalanced-results.png){.img-center}  
 When evaluated using linear probing and kNN classification, <span style="color:#6d983b;">SK(Sinkhorn-Knopp)</span> method beat K-means on all three conditions. In light imbalance, no method was affected much. For heavy imbalance, all methods dropped in performance but the performance decrease was lower for self-supervised methods using k-means and self-labelling than supervised ones. The self-labelling method beat even <span style="color: #009688;">supervised method on CIFAR-100</span>. Thus, this method is robust and can be applied for an imbalanced dataset as well.
 
 ## Code Implementation
