@@ -27,7 +27,7 @@ This is where self-supervised learning comes into play. Self supervised learning
 
 ![Automating manual labeling with Self Supervised Learning](/images/supervised-automated.png){.img-center}
 
-In self-supervised learning, we replace the human annotation block by creatively exploiting some property of data to set up a pseudo-supervised task. For example, here instead of labeling images as cat/dog, we could instead rotate them by 0/90/180/270 degrees and train a model to predict rotation. We can generate virtually unlimited training data from millions of images we have freely available.  
+In self-supervised learning, we replace the human annotation block by creatively exploiting some property of data to set up a pseudo-supervised task. For example, here instead of labeling images as cat/dog, we could instead rotate them by 0/90/180/270 degrees and train a model to predict rotation. We can generate virtually unlimited training data from millions of images we have freely available on the internet.  
 
 Once we learn representations from these millions of images, we can use transfer learning to fine-tune it on some supervised task like image classification of cats vs dogs with very few examples.
 ![Self-supervised Learning Workflow Diagram](/images/self-supervised-workflow.png){.img-center}
