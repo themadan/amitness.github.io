@@ -38,6 +38,7 @@ Figure: End to End Workflow of Self-Supervised Learning
 Let's now understand the various approaches researchers have proposed to exploit image and video properties and apply self-supervised learning for representation learning.
 
 <h2 class="subtitle is-4">A. Self-Supervised Learning from Image</h2>
+<h2 class="subtitle is-4">Pattern 1: Reconstruction</h2>
 ## 1. **Image Colorization**
 Formulation:   
 > What if we prepared pairs of (grayscale, colorized) images by applying grayscale to millions of images we have freely available?  
@@ -85,7 +86,8 @@ For downstream tasks, [Pathak et al.](https://arxiv.org/abs/1604.07379) have sho
 **Papers**:  
 [Context encoders: Feature learning by inpainting](https://arxiv.org/abs/1604.07379)
 
-## 4. **Image Jigsaw Puzzle**
+<h2 class="subtitle is-4">Pattern 2: Common Sense Tasks</h2>
+## 1. **Image Jigsaw Puzzle**
 Formulation:   
 > What if we prepared training pairs of (shuffled, ordered) puzzles by randomly shuffling patches of images?  
 
@@ -106,7 +108,7 @@ To solve the Jigsaw puzzle, the model needs to learn to identify how parts are a
 **Papers**:  
 [Unsupervised learning of visual representations by solving jigsaw puzzles](https://arxiv.org/abs/1603.09246)
 
-## 5. **Context Prediction**
+## 2. **Context Prediction**
 Formulation:   
 > What if we prepared training pairs of (image-patch, neighbor) by randomly taking an image patch and one of its neighbors around it from large, unlabeled image collection?  
 
@@ -118,7 +120,7 @@ To solve this pre-text task, [Doersch et al.](https://arxiv.org/abs/1505.05192) 
 **Papers**:  
 [Unsupervised Visual Representation Learning by Context Prediction](https://arxiv.org/abs/1505.05192)
 
-## 6. **Geometric Transformation Recognition**
+## 3. **Geometric Transformation Recognition**
 Formulation:   
 > What if we prepared training pairs of (rotated-image, rotation-angle) by randomly rotating images by (0, 90, 180, 270) from large, unlabeled image collection?  
 
@@ -133,7 +135,9 @@ Though a very simple idea, the model has to understand location, types and pose 
 **Papers**:  
 [Unsupervised Representation Learning by Predicting Image Rotations](https://arxiv.org/abs/1803.07728)
 
-## 7. **Image Clustering**
+
+<h2 class="subtitle is-4">Pattern 3: Automatic Label Generation</h2>
+## 1. **Image Clustering**
 Formulation:   
 > What if we prepared training pairs of (image, cluster-number) by performing clustering on large, unlabeled image collection?  
 
@@ -148,7 +152,7 @@ To solve this pre-text task, [Caron et al.](https://arxiv.org/abs/1807.05520) pr
 - [Deep clustering for unsupervised learning of visual features](https://amitness.com/2020/04/deepcluster/)  
 - [Self-labelling via simultaneous clustering and representation learning](https://amitness.com/2020/04/illustrated-self-labelling/)
 
-## 8. **Synthetic Imagery**
+## 2. **Synthetic Imagery**
 Formulation:   
 > What if we prepared training pairs of (image, properties) by generating synthetic images using game engines and adapting it to real images?  
 
