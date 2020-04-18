@@ -1,6 +1,6 @@
 Title: The Python Magic Behind PyTorch
 Date: 2020-03-23 10:00
-Modified: 2020-03-23 10:00
+Modified: 2020-04-18 12:52
 Category: python
 Slug: python-magic-behind-pytorch
 Summary: Learn about the advanced python native features behind PyTorch
@@ -8,7 +8,7 @@ Status: published
 Authors: Amit Chaudhary
 
 PyTorch has emerged as one of the go-to deep learning frameworks in recent years. This popularity can be attributed to its easy to use API and it being more "pythonic".  
-![](/images/python-behind-pytorch.png){.img-center}
+![Python and PyTorch combined Logo](/images/python-behind-pytorch.png){.img-center}
 PyTorch leverages numerous native features of Python to give us a consistent and clean API. In this article, I will explain those native features in detail. Learning these will help you better understand why you do things a certain way in PyTorch and make better use of what it has to offer.
 
 ## Magic Methods in Layers
