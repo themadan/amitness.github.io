@@ -1,6 +1,6 @@
 Title: The Illustrated FixMatch for Semi-Supervised Learning
 Date: 2020-03-31 10:00
-Modified: 2020-03-31 10:00
+Modified: 2020-04-18 12:46
 Category: illustration
 Slug: fixmatch-semi-supervised
 Summary: Learn how to leverage unlabeled data using FixMatch for semi-supervised learning
@@ -17,20 +17,20 @@ FixMatch is a recent semi-supervised approach by *Sohn et al.* from Google Brain
 
 ## Intuition behind FixMatch
 Let's say we're doing a cat vs dog classification where we have limited labeled data and a lot of unlabelled images of cats and dogs.
-![](/images/fixmatch-labeled-vs-unlabeled.png){.img-center}  
+![Example of Labeled vs Unlabeled Images](/images/fixmatch-labeled-vs-unlabeled.png){.img-center}  
 
 Our usual *supervised learning* approach would be to just train a classifier on labeled images and ignore the unlabelled images.
-![](/images/fixmatch-supervised-part.png){.img-center}
+![Usual Supervised Learning Approach](/images/fixmatch-supervised-part.png){.img-center}
 
 Instead of ignoring unlabeled images, we could instead apply the below approach. We know that a model should be able to handle perturbations of an image as well to improve generalization.  
 >> What if we create augmented versions of unlabeled images and make the supervised model predict those images. Since it's the same image, the predicted labels should be the same for both.
 
-![](/images/fixmatch-unlabeled-augment-concept.png){.img-center}
+![Concept of FixMatch](/images/fixmatch-unlabeled-augment-concept.png){.img-center}
 Thus, even without knowing their correct labels, we can use the unlabeled images as a part of our training pipeline. This is the core idea behind FixMatch and many preceding papers it builds upon.
 
 ## The FixMatch Pipeline
 With the intuition clear, let's see how FixMatch is actually applied in practice. The overall pipeline is summarized by the following figure:
-![](/images/fixmatch-pipeline.png){.img-center}
+![End to End Pipeline of FixMatch paper](/images/fixmatch-pipeline.png){.img-center}
 
 **Synopsis:**  
 
@@ -45,7 +45,7 @@ FixMatch borrows this idea from UDA and ReMixMatch to apply different augmentati
 For weak augmentation, the paper uses a standard flip-and-shift strategy. It includes two simple augmentations:
 
 - **Random Horizontal Flip**  
-![](/images/fixmatch-horizontal-flip-gif){.img-center}
+![Example of Random Horizontal Flip](/images/fixmatch-horizontal-flip-gif){.img-center}
 This augmentation is applied with a probability of 50%. This is skipped for the SVHN dataset since those images contain digits for which horizontal flip is not relevant. In PyTorch, this can be performed using [transforms](https://pytorch.org/docs/stable/torchvision/transforms.html) as:  
 
 ```python
@@ -57,7 +57,7 @@ weak_im = transforms.RandomHorizontalFlip(p=0.5)(im)
 ```
 
 - **Random Vertical and Horizontal Translation**  
-![](/images/fixmatch-translate.gif){.img-center}
+![Example of Random Vertical and Horizontal Translation](/images/fixmatch-translate.gif){.img-center}
 This augmentation is applied up to 12.5%. In PyTorch, this can be implemented using the following code where 32 is the size of the image needed:
 ```python
 import torchvision.transforms as transforms
@@ -74,7 +74,7 @@ translated = transforms.RandomCrop(size=32,
 These include augmentations that output heavily distorted versions of the input images. FixMatch applies either RandAugment or CTAugment and then applies CutOut augmentation.
 
 **1. Cutout**  
-![](/images/fixmatch-cutout.gif){.img-center}
+![Example of Cutout Augmentation](/images/fixmatch-cutout.gif){.img-center}
 This augmentation randomly removes a square part of the image and fills it with gray or black color. PyTorch doesn't have a built-in implementation of Cutout but we can reuse its `RandomErasing` transformation to apply CutOut effect.
 ```python
 import torch
@@ -106,15 +106,15 @@ So, FixMatch uses one among two variants of AutoAugment:
 The idea of Random Augmentation(RandAugment) is very simple.
 
 - First, you have a list of 14 possible augmentations with a range of their possible magnitudes.
-![](/images/fixmatch-randaug-pool.png){.img-center}
+![Pool of Augmentations in RandAugment](/images/fixmatch-randaug-pool.png){.img-center}
 - You select random N augmentations from this list. Here, we are selecting any two from the list.
-![](/images/fixmatch-randaug-random-N.png){.img-center}
+![Random Selection of Augmentations in RandAugment](/images/fixmatch-randaug-random-N.png){.img-center}
 - Then you select a random magnitude M ranging from 1 to 10. We can select a magnitude of 5. This means a magnitude of 50% in terms of percentage as maximum possible M is 10 and so percentage = 5/10 = 50%.
-![](/images/fixmatch-randaug-mag-calculation.png){.img-center}
+![Random Magnitude Selection in RandAugment](/images/fixmatch-randaug-mag-calculation.png){.img-center}
 - Now, the selected augmentations are applied to an image in the sequence. Each augmentation has a 50% probability of being applied.
-![](/images/fixmatch-randaugment-sequence.png){.img-center}  
+![Applying RandAugment to Images](/images/fixmatch-randaugment-sequence.png){.img-center}  
 - The values of N and M can be found by hyper-parameter optimization on a validation set with a grid search. In the paper, they use random magnitude from a pre-defined range at each training step instead of fixed magnitude.
-![](/images/fixmatch-randaugment-grid-search.png){.img-center}
+![Grid Search to Find Optimal Configuration in RandAugment](/images/fixmatch-randaugment-grid-search.png){.img-center}
 
 **b. CTAugment**  
 CTAugment was an augmentation technique introduced in the ReMixMatch paper and uses ideas from control theory to remove the need for Reinforcement Learning in AutoAugment. Here's how it works: 
@@ -136,19 +136,19 @@ The paper uses wider and shallower variants of ResNet called [Wide Residual Netw
 ### 3. Model Training and Loss Function
 - **Step 1: Preparing batches**  
 We prepare batches of the labeled images of size B and unlabeled images of batch size <tt class="math">\textcolor{#774cc3}{\mu} B</tt>. Here <tt class="math">\textcolor{#774cc3}{\mu}</tt> is a hyperparameter that decides the relative size of labeled:unlabeled images in a batch. For example, <tt class="math">\textcolor{#774cc3}{\mu}=2</tt> means that we use twice the number of unlabeled images compared to labeled images.
-![](/images/fixmatch-batch-sizes.png){.img-center}
+![Ratio of Labeled to Unlabeled Images](/images/fixmatch-batch-sizes.png){.img-center}
  The paper tried increasing values of <tt class="math">\textcolor{#774cc3}{\mu}</tt> and found that as we increased the number of unlabeled images, the error rate decreases. The paper uses <tt class="math">\textcolor{#774cc3}{\mu} = 7</tt> for evaluation datasets.
-![](/images/fixmatch-effect-of-mu.png){.img-center}
+![Impact of increasing unlabeled data on error rate](/images/fixmatch-effect-of-mu.png){.img-center}
 <p class="has-text-centered">Source: FixMatch paper</p>
 - **Step 2: Supervised Learning**  
 For the supervised part of the pipeline which is trained on <span style="color: #8c5914">labeled image</span>s, we use the regular <span style="color:#9A0007">cross-entropy loss H()</span> for classification task. The total loss for a batch is defined by <tt class="math">l_s</tt> and is calculated by taking average of <span style="color:#9A0007">cross-entropy loss</span> for <span style="color: #8c5914">each image</span> in the batch.
-![](/images/fixmatch-supervised-loss.png){.img-center}
+![Supervised Part of FixMatch](/images/fixmatch-supervised-loss.png){.img-center}
 <pre class="math">
 l_s = \frac{1}{B} \sum_{b=1}^{B} \textcolor{#9A0007}{H(}\ \textcolor{#7ead16}{p_{b}}, \textcolor{#5CABFD}{p_m(\}y\ | \textcolor{#FF8A50}{\alpha(} \textcolor{#8c5914}{x_b}  \textcolor{#FF8A50}{)}\ \textcolor{#5CABFD}{)} \textcolor{#9A0007}{)}
 </pre>
 - **Step 3: Pseudolabeling**  
 For the unlabeled images, first we apply <span style="color: #8C5914">weak augmentation</span> to the <span style="color: #007C91">unlabeled image</span> and get the <span style="color: #866694">highest predicted class</span> by applying <span style="color: #48A999">argmax</span>. This is the <span style="color: #866694">pseudo-label</span> that will be compared with output of model on strongly augmented image.
-![](/images/fixmatch-pseudolabel.png){.img-center}
+![Generating Pseudolabels in FixMatch](/images/fixmatch-pseudolabel.png){.img-center}
 <pre class="math">
 \textcolor{#5CABFD}{q_b} = p_m(y | \textcolor{#8C5914}{\alpha(} \textcolor{#007C91}{u_b} \textcolor{#8C5914}{)} )
 </pre>
@@ -157,7 +157,7 @@ For the unlabeled images, first we apply <span style="color: #8C5914">weak augme
 </pre>
 - **Step 4: Consistency Regularization**  
 Now, the same <span style="color: #007C91">unlabeled image</span> is <span style="color: #25561F">strongly augmented</span> and it's output is compared to our <span style="color: #866694">pseudolabel</span> to compute <span style="color: #9A0007;">cross-entropy loss H()</span>. The total unlabeled batch loss is denoted by <tt class="math">l_u</tt> and given by:
-![](/images/fixmatch-strong-aug-loss.png){.img-center}
+![Consistency Regularization in FixMatch](/images/fixmatch-strong-aug-loss.png){.img-center}
 <pre class="math">
 l_u = \frac{1}{\mu B} \sum_{b=1}^{\mu B} 1(max(q_b) >= \textcolor{#d11e77}{\tau})\ \textcolor{#9A0007}{H(} \textcolor{#866694}{\hat{q_b}}, p_m(y | \textcolor{#25561F}{A(} \textcolor{#007C91}{u_b} \textcolor{#25561F}{)} \ \textcolor{#9A0007}{)}
 </pre>
@@ -167,7 +167,7 @@ We finally combine these two losses to get total loss that we optimize to improv
 <pre class="math">
 loss = l_s + \lambda_u l_u
 </pre>
-![](/images/fixmatch-curriculum-learning.png){.img-center}
+![Free Curriculum Learning in FixMatch](/images/fixmatch-curriculum-learning.png){.img-center}
 An interesting result comes from <tt class="math">\lambda_u</tt>. Previous works have shown that increasing weight during course of training is good. 
 But, in FixMatch, this is builtin automatically. Since initially, the model is not confident on labeled data, so its output predictions on unlabeled data will be below threshold. As such, the model will be trained only on labeled data. But as the training progress, the model becomes more confident on labeled data and as such, predictions on unlabeled data will also start to cross threshold. As such, the loss will soon start incorporating predictions on unlabeled images as well. This gives us a free form of curriculum learning.  
 Intuitively, this is similar to how we're taught in childhood. In early years, we learn easy concepts such as alphabets and what they represent before moving on to complex topics like word formation, sentence formation and then essays.
@@ -177,7 +177,7 @@ Intuitively, this is similar to how we're taught in childhood. In early years, w
 The authors performed a really interesting experiment on the CIFAR-10 dataset. They trained a model on CIFAR-10 using only 10 labeled images i.e. 1 labeled example of each class.  
 
 - They created 4 datasets by randomly selecting 1 example per class from the dataset and trained on each dataset 4 times. They reached a test accuracy between 48.58% to 85.32% with a median accuracy of 64.28%. This variability in the accuracy was caused due to the quality of labeled examples. It is difficult for a model to learn each class effectively when provided with low quality examples.
-![](/images/fixmatch-1-label-example.png){.img-center}
+![Learning with just 1 image per class](/images/fixmatch-1-label-example.png){.img-center}
 - To test this, they created 8 training datasets with examples ranging from most representative to the least representative. They followed the ordering from this [paper](https://arxiv.org/abs/1910.13427) and divided the ordering into 8 buckets. The first bucket would contain the most representative images while the last bucket would contain outliers. Then, they took one example of each class randomly from each bucket to create 8 labeled training sets and trained the FixMatch model. Results were:
     - **Most representative bucket**: 78% median accuracy with a maximum accuracy of 84%
     - **Middle bucket**: 65% accuracy
@@ -188,16 +188,16 @@ The authors ran evaluations on datasets commonly used for SSL such as CIFAR-10, 
 
 - **CIFAR-10 and SVHN:**  
 FixMatch achieves the state of the art results on CIFAR-10 and SVHN benchmarks. They use 5 different folds for each dataset.
-![](/images/fixmatch-cifar-10-svhn.png){.img-center}
+![FixMatch SOTA on CIFAR-10 and SVHN](/images/fixmatch-cifar-10-svhn.png){.img-center}
 
 - **CIFAR-100**  
 On CIFAR-100, ReMixMatch is a bit superior to FixMatch. To understand why, the authors borrowed various components from ReMixMatch to FixMatch and measured their impact on performance. They found that the *Distribution Alignment(DA)* component which encourages the model to emit all classes with equal probability was the cause. So, when they combined FixMatch with DA, they achieved a 40.14% error rate compared to a 44.28% error rate of ReMixMatch.
-![](/images/fixmatch-cifar-100.png){.img-center}
+![ReMixMatch is better than FixMatch on CIFAR-100](/images/fixmatch-cifar-100.png){.img-center}
 
 - **STL-10:**  
 STL-10 dataset consists of 100,000 unlabeled images and 5000 labeled images. We need to predict 10 classes(airplane, bird, car, cat, deer, dog, horse, monkey, ship, truck.). It is a more representative evaluation for semi-supervised learning because its unlabeled set has out-of-distribution images.  
 FixMatch achieves the lowest error rate with CTAugment when evaluated on 5-folds of 1000 labeled images each among all methods.
-![](/images/fixmatch-stl-10.png){.img-center}
+![FixMatch gets SOTA on STL-10 dataset](/images/fixmatch-stl-10.png){.img-center}
 
 - **ImageNet**  
 The author also evaluate model on ImageNet to verify if it works on large and complex datasets. They take 10% of the training data as labeled images and all remaining 90% as unlabeled. Also, the architecture used is ResNet-50 instead of WideResNet and RandAugment is used as strong augmentation. They achieve a top-1 error rate of <tt class="math">28.54\pm0.52%</tt> which is <tt class="math">2.68\%</tt> better than UDA. The top-5 error rate is <tt class="math">10.87\pm0.28\%</tt>.
