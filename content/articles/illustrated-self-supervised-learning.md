@@ -175,7 +175,8 @@ To solve this pre-text task, [Misra et al.](https://arxiv.org/pdf/1711.09082.pdf
 
 
 **Papers**:  
-[Shuffle and Learn: Unsupervised Learning using Temporal Order Verification](https://arxiv.org/abs/1603.08561)
+- [Shuffle and Learn: Unsupervised Learning using Temporal Order Verification](https://arxiv.org/abs/1603.08561)
+- [Self-Supervised Video Representation Learning With Odd-One-Out Networks](https://arxiv.org/abs/1611.06646)
 
 ## Citation Info (BibTex)
 If you found this blog post useful, please consider citing it as:
