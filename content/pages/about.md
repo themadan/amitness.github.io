@@ -15,7 +15,7 @@ Currently, I work as a Machine Learning Engineer at [Fusemachines](https://fusem
 I'm interested in the paradigm of learning with limited labels (Self-Supervised Learning / Semi-Supervised Learning) and Natural Language Processing.
 <br>   
 **About this blog**  
-I write posts with hand-drawn diagrams and intuitions to clarify various machine learning concepts. I personally find such visual explanations very helpful to link the big picture with the actual nuts and bolts and mathematics involved for an idea.
+I write posts with hand-drawn diagrams and intuitions to clarify various machine learning concepts. I personally find such visual explanations very helpful to link the big picture with the actual details and mathematics involved.
 
 <br>
 **Get Connected**  
