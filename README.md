@@ -60,7 +60,7 @@ If you're interested in writing a blog post for the website, you need to:
 
 ## Hosting
 
-This blog is hosted by [GitHub Pages](https://pages.github.com/) and uses [CloudFlare](https://www.cloudflare.com) for CDN and HTTPS. A Custom domain is used. Continuous integration with [Travis](https://travis-ci.org) builds the site everytime the source is updated.
+This blog is hosted by [GitHub Pages](https://pages.github.com/) and uses [CloudFlare](https://www.cloudflare.com) for CDN and HTTPS. A Custom domain is used. Continuous integration with [Github Actions](https://github.com/amitness/amitness.github.io/actions) builds the site everytime the source is updated.
 
 ## License
 The source code for generation of the blog is under MIT License. Content is copyrighted.
