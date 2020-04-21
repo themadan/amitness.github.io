@@ -1,0 +1,45 @@
+name: Release
+on:
+  push:
+    branches:
+      - source
+
+jobs:
+  release:
+    name: Deploy release to PyPI
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout source
+        uses: actions/checkout@v2
+      - name: Set up Python
+        uses: actions/setup-python@v1
+        with:
+          python-version: 3.5
+      - name: Set up Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: 2.6
+      - name: Setup Node
+        uses: actions/setup-node@v1
+        with:
+          node-version: '10.x'
+      - name: Install dependencies
+        run: |
+          gem install sass
+          npm i -g katex
+          python -m pip install --upgrade pip wheel
+          pip install -r requirements.txt
+      - name: Build package
+        run: echo "nice"
+      - name: "Setup Git"
+        run: |
+          git config --global user.email "${{ secrets.GIT_EMAIL }}"
+          git config --global user.name "Amit Chaudhary"
+          git clone https://github.com/amitness/bulrush themes/bulrush
+          git clone https://github.com/getpelican/pelican-plugins
+          git clone https://github.com/sahands/pelican_katex pelican-plugins/pelican_katex
+      - name: "Push to GitHub pages"
+        run: fab publish:"Build site"
+        env:
+          TRAVIS_REPO_SLUG: ${{ secrets.TRAVIS_REPO_SLUG }}
+          GH_TOKEN: ${{ secrets.GH_TOKEN }}
