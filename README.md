@@ -1,4 +1,4 @@
-# Personal Blog [![Build Status](https://travis-ci.org/amitness/amitness.github.io.svg?branch=source)](https://travis-ci.org/amitness/amitness.github.io)
+# Personal Blog ![Release](https://github.com/amitness/amitness.github.io/workflows/Release/badge.svg?branch=source)
 
 This repository hosts the code for my personal [blog](https://amitness.com).
 
