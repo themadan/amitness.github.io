@@ -6,7 +6,7 @@ on:
 
 jobs:
   release:
-    name: Deploy release to PyPI
+    name: Build GitHub pages
     runs-on: ubuntu-latest
     steps:
       - name: Checkout source
