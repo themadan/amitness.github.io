@@ -33,12 +33,12 @@ Status: draft
 def purge_cloudflare_cache():
     zone_id = os.getenv('CLOUDFLARE_ZONE_ID')
     cloudflare_token = os.getenv('CLOUDFLARE_TOKEN')
-    url = f'https://api.cloudflare.com/client/v4/zones/{zone_id}/purge_cache'
+    url = 'https://api.cloudflare.com/client/v4/zones/{}/purge_cache'.format(zone_id)
 
     payload = "{\"purge_everything\":true}"
 
     headers = {
-        'Authorization': f'Bearer {cloudflare_token}',
+        'Authorization': 'Bearer {}'.format(cloudflare_token),
         'Content-Type': 'application/json',
     }
 
