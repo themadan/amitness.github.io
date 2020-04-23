@@ -4,6 +4,7 @@ import sys
 import webbrowser
 from datetime import datetime
 
+import requests
 from fabric.api import env, local, hide
 from pelican.server import ComplexHTTPRequestHandler, socketserver
 
@@ -27,6 +28,22 @@ Slug: {slug}
 Summary:
 Status: draft
 """
+
+
+def purge_cloudflare_cache():
+    zone_id = os.getenv('CLOUDFLARE_ZONE_ID')
+    cloudflare_token = os.getenv('CLOUDFLARE_TOKEN')
+    url = f'https://api.cloudflare.com/client/v4/zones/{zone_id}/purge_cache'
+
+    payload = "{\"purge_everything\":true}"
+
+    headers = {
+        'Authorization': f'Bearer {cloudflare_token}',
+        'Content-Type': 'application/json',
+    }
+
+    response = requests.request('POST', url, data=payload, headers=headers)
+    assert response.json()['success'], 'Failed to clear cache'
 
 
 def newpost(title):
@@ -66,6 +83,7 @@ def rebuild():
 def regenerate():
     """Automatically regenerate site upon file modification"""
     local('pelican -r -s pelicanconf.py')
+
 
 def serve():
     """Serve site at http://localhost:8000/"""
