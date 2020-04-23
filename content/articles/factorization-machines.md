@@ -155,3 +155,67 @@ Factorization machines solve this problem by modeling the problem like a polynom
 
 ## References
 - [Factorization Machines](https://cseweb.ucsd.edu/classes/fa17/cse291-b/reading/Rendle2010FM.pdf) [pdf]
+
+
+--- Paper reading notes ---
+Factorization Machines (September 6, 2019)
+
+Abstract:
+
+Motivation:
+- Parameter interaction capture, sparse data
+- Drawback of other models: specific data, 
+- Difference from collaborative: ALS, extra features hard to specify, 
+- SVM can't work for sparse data
+
+Introduction:
+- Criticized SVM but haven't shown empirically
+
+Advantage:
+- SVM fail it works, also has to store support vector, FM doesn't have to
+- Scalable: linear time complexity
+- General predictors
+
+Problem formulation:
+- Figure
+- To imporve upon matrix form, switched to feature vector approach to be able to add domain knowledge
+- Normalized other movies in feature vector to indicate activity
+- Equation (1) -> weight factorized into factors
+- Why j=i+1 -> take above diagonal
+
+Expressiveness:
+- How to choose k: more sparse, lower 'k' gives dimension of v
+- lower k -> limit expressiveness, more generalization
+
+estimation under sparsity:
+
+
+positive definite matrix: -> symmetric, 
+- <vi, vj> -> figure for weights of polynomial vs FM
+- 
+
+Reducing complexity from O(kn**2) to O(p*k) with linear in k
+
+
+O(k*n) this is not O(n**2) because k is constant, e.g. O(2*n) ~= O(n) so linear
+
+Model:
+- Each column -> converted to k size vector
+- 
+
+Error:
+- Regression: MSE
+- Binary classification: sign used and hinge/logit loss
+- Ranking: sort by score of y(x)
+
+Optimizer:
+- SGD
+Later: bayesian
+
+
+
+- Future work:
+
+# References
+https://www.jefkine.com/recsys/2017/03/27/factorization-machines/
+https://www.slideshare.net/SessionsEvents/steffen-rendle-research-scientist-google-at-mlconf-sf
