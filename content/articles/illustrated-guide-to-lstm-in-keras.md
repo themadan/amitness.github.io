@@ -1,35 +1,26 @@
-Title: Illustrated Guide to Recurrent Layers in Keras
-Date: 2020-03-07 03:00
-Modified: 2020-03-07 03:00
+Title: A Visual Guide to Recurrent Layers in Keras
+Date: 2020-04-23 02:22
+Modified: 2020-04-23 02:22
 Category: nlp
-Slug: illustrated-lstm-keras
+Slug: recurrent-layers-keras
 Summary: Understand how to use Recurrent Layers in Keras with diagrams.
 Status: draft
 Authors: Amit Chaudhary
+Cover: /images/rnn-default-keras.png
 
+Keras provides a powerful abstraction for recurrent layers such as RNN, GRU and LSTM for Natural Language Processing. When I first started learning about them from the documentation, I couldn't clearly understand how to prepare input data shape, how various attributes of the layers affect the outputs and how to compose these layers with the provided abstraction.
 
-From the realm of simple feed-forward networks, when I first came across sequence modeling architectures such as RNN, GRU and LSTM, I was intrigued by how simple but powerful they were.
+Having learned it through experimentation, I wanted to share my understanding of the API with visualizations so that it's helpful for anyone else having troubles.
 
-However, when it came to leveraging them using frameworks like Keras, there were many roadblocks ranging from not understanding how to formulate a problem using the available layers to input shape issues. 
-
-Having learnt these things the hard way, I've built a mental model now to design architectures with sequence model on various problems. This post is an attempt to make these mental model concrete for others. The mental model rests on this idea of being able to visualize how the inputs and outputs pass from these units.
-
-In this post, I will be explaining the mental model through the lens of Natural Language Processing to make the examples intuitive.
-
-## The Core Purpose
-Let's say we have some text and you want to apply machine learning on it. We know models only understand numeric data, so we need some way to convert it into numeric form. We can leverage word vector technique to get the numeric form (embeddings) for the words.
-![Necessity of RNN](/images/rnn-necessity.png){.img-center}    
-We see above how the sentence as a whole is negative because of the presence of the word "**not**" before "**good**". We would want our ML models such that previous words are taken into account when processing the current word. Thus, we need a concept of state/memory. That's where RNN shines.
-
-## RNNs in Keras
-Let's take a simple example of encoding a sentence using RNN layer in Keras.
+## Single Output
+Let's take a simple example of encoding the meaning of a whole sentence using a RNN layer in Keras.
 
 ![I am Groot Sentence](/images/i-am-groot-sentence.png){.img-center}
 <p class="has-text-centered">
 Credits: Marvel Studios
 </p>
 
-To use this sentence in a RNN, we need to convert it into numeric form. Let's consider we have a simplified embedding algorithm that takes a word and convert each word into 2 numbers.
+To use this sentence in a RNN, we need to first convert it into numeric form. We could either use one-hot encoding, pretrained word vectors or learn word embeddings from scratch. For simplicity, let's assume we used some word embedding to convert each word into 2 numbers.
 
 ![](/images/i-am-groot-embedding.png){.img-center}
 
@@ -39,18 +30,69 @@ model = Sequential()
 model.add(SimpleRNN(4, input_shape=(3, 2)))
 ```
 
-To understand what each parameter means, refer to the figure below and how each parameter is linked to that.
-![](/images/rnn-default-keras.png)  
+![](/images/rnn-default-keras.png){.img-center}  
+As seen above, here is what the various parameters means and why they were set as such:  
 
-- **input_shape=(3, 2)**:  
-    - We have 3 words "**I**", "**am**", "**groot**". Thus, number(time-steps) = number(words) = 3. The RNN block unfolds 3 times, and so we see 3 blocks in the figure.
-    - Each word is represented by embedding of size 2
-    - So input_shape=(3, 2).
-- **SimpleRNN(`4, ...`)**:  
-    - This denotes the number of units in the hidden layer
-    - Here we set 4 hidden units
-    - So, in the figure, we see how a hidden state of size 4 is passed between the RNN blocks
+- **input_shape=(<span style="color: #9e74b3;">3</span>, <span style="color: #5aa397;">2</span>)**:  
+    - We have <span style="color: #9e74b3;font-weight: bold;">3</span> words: <span style="color: #9e74b3;font-weight: bold;">I</span>, <span style="color: #9e74b3;font-weight: bold;">am</span>, <span style="color: #9e74b3;font-weight: bold;">groot</span>. So, number of time-steps is 3. The RNN block unfolds 3 times, and so we see 3 blocks in the figure.
+    - For each word, we pass the <span style="color: #5aa397;font-weight: bold;">word embedding</span> of size <span style="color: #5aa397;font-weight: bold;">2</span> to the network.
+- **SimpleRNN(<span style="color: #84b469;">4</span>, ...)**:  
+    - This means we have <span style="color: #84b469; font-weight: bold;">4 units</span> in the hidden layer.
+    - So, in the figure, we see how a <span style="color: #84b469; font-weight: bold;">hidden state of size 4</span> is passed between the RNN blocks
     - For the first block, since there is no previous output, so previous hidden state is set to **[0, 0, 0, 0]**
+
+Thus for a whole sentence, we get a vector of size 4 as output from the RNN layer as shown in the figure. You can verify this by printing the shape of output from the layer.
+```python
+import tensorflow as tf
+from tensorflow.keras.layers import SimpleRNN
+
+x = tf.random.normal((1, 3, 2))
+
+layer = SimpleRNN(4, input_shape=(3, 2))
+output = layer(x)
+
+print(output.shape)
+# (1, 4)
+```
+As seen, we create a random batch of input data with 1 sentence having 3 words and each word having an embedding of size 2. After passing through the LSTM layer, we get back representation of size 4 for that one sentence.
+
+<article class="message is-info">
+  <div class="message-body">
+This can be combined with a Dense layer to build an architecture for something like sentiment analysis or text classification.
+<div class="highlight"><pre><span></span><span class="n">model</span> <span class="o">=</span> <span class="n">Sequential</span><span class="p">()</span>
+<span class="n">model</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">SimpleRNN</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="n">input_shape</span><span class="o">=</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">2</span><span class="p">)))</span>
+<span class="n">model</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">Dense</span><span class="p">(</span><span class="mi">1</span><span class="p">))</span>
+</pre></div>
+  </div>
+</article>
+
+
+## Multiple Output
+Keras provides a `return_sequences` parameter to control output from the RNN cell. If we set it to `True`, what it means is that the output from each unfolded RNN cell is returned instead of only the last cell.
+```python 
+model = Sequential()
+model.add(SimpleRNN(4, input_shape=(3, 2), 
+                    return_sequences=True))
+```
+
+![](/images/rnn-return-sequences.png){.img-center}
+
+As seen above, we get an <span style="color: #49a4aa; font-weight: bold;">output vector</span> of size  <span style="color: #49a4aa; font-weight: bold;">4</span> for each word in the sentence. 
+
+This can be verified by the below code where we send one sentence with 3 words and embedding of size 2 for each word. As seen, the layer gives us back 3 outputs with a vector of size 4 for each word.
+
+```python
+import tensorflow as tf
+from tensorflow.keras.layers import SimpleRNN
+
+x = tf.random.normal((1, 3, 2))
+
+layer = SimpleRNN(4, input_shape=(3, 2), return_sequences=True)
+output = layer(x)
+
+print(output.shape)
+# (1, 3, 4)
+```
 
 ## Stacking Layers
 ```python
