@@ -3,8 +3,8 @@ Date: 2020-04-23 02:22
 Modified: 2020-04-23 02:22
 Category: nlp
 Slug: recurrent-layers-keras
-Summary: Understand how to use Recurrent Layers in Keras with diagrams.
-Status: draft
+Summary: Understand how to use Recurrent Layers like RNN, GRU and LSTM in Keras with diagrams.
+Status: published
 Authors: Amit Chaudhary
 Cover: /images/rnn-default-keras.png
 
@@ -94,14 +94,46 @@ print(output.shape)
 # (1, 3, 4)
 ```
 
+## TimeDistributed Layer
+Suppose we want to recognize entities in a text. For example, in our text "I am <span style="color: #4a820d;">Groot</span>", we want to identify <span style="color: #4a820d;">"Groot"</span> as a <span style="color: #4a820d;">name</span>.
+![](/images/keras-groot-ner.png){.img-center}
+
+We have already seen how to get output for each word in the sentence in previous section. Now, we need some way to apply classification on the output vector from the RNN cell on each word. For simple cases such as text classification, you know how we use `Dense()` layer with `softmax` activation as the last layer.  
+
+Similar to that, we can apply <span style="color: #5fb9e0; font-weight: bold;">Dense()</span> layer on <span style="color: #49a4aa; font-weight: bold;">multiple outputs</span> from the RNN layer through a wrapper layer called TimeDistributed(). It will apply the <span style="color: #5fb9e0; font-weight: bold;">Dense</span> layer on <span style="color: #49a4aa; font-weight: bold;">each output</span> and give us class probability scores for the entities. 
+
+```python 
+model = Sequential()
+model.add(SimpleRNN(4, input_shape=(3, 2), 
+                    return_sequences=True))
+model.add(TimeDistributed(Dense(4, activation='softmax')))
+```
+
+![](/images/keras-time-distributed.png){.img-center}
+
+
+As seen, we take a 3 word sentence and classify output of RNN for each word into 4 classes using <span style="color: #5fb9e0; font-weight: bold;">Dense layer</span>. These classes can be the entities like name, person, location etc.
+
 ## Stacking Layers
+We can also stack multiple recurrent layers one after another in Keras.
 ```python
 model = Sequential()
 model.add(SimpleRNN(4, input_shape=(3, 2), return_sequences=True))
 model.add(SimpleRNN(4))
 ```
 
+We can understand the behavior of the code with the following figure:
 ![](/images/rnn-stacked.png){.img-center}
+
+<article class="message is-info">
+  <div class="message-header">
+    <p>Insight: Why do we usually set return_sequences to True for all layers except the final?</p>  
+  </div>
+  <div class="message-body">
+<p>Since the second layer needs inputs from the first layer, we set return_sequence=True for the first SimpleRNN layer. For the second layer, we usually set it to False if we are going to just be doing text classification. If out task is NER prediction, we can set it to True in the final layer as well.</p>
+  </div>
+</article>
+
 
 ## References
 - [Recurrent Layers - Keras Documentation](https://keras.io/layers/recurrent/)
