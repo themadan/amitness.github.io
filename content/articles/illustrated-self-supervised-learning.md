@@ -20,7 +20,7 @@ In this post, I will explain what is self-supervised learning and summarize the 
 # Why Self-Supervised Learning?
 To apply supervised learning with deep neural networks, we need enough labeled data. To acquire that, human annotators manually label data which is both a time consuming and expensive process. There are also fields such as the medical field where getting enough data is a challenge itself. Thus, a major bottleneck in current supervised learning paradigm is the label generation part.
 
-![Manual Annotation in Supervised Learning](/images/supervised-manual-annotation.png)
+![Manual Annotation in Supervised Learning](/images/supervised-manual-annotation.png){.img-center}
 
 This is where self-supervised learning comes into play. Self supervised learning is a method that poses the following question to formulate an unsupervised learning problem as a supervised one:
 > Can we design the task in such a way that we can generate virtually unlimited labels from our existing images and use that to learn the representations?  
@@ -28,12 +28,12 @@ This is where self-supervised learning comes into play. Self supervised learning
 ![Automating manual labeling with Self Supervised Learning](/images/supervised-automated.png){.img-center}
 
 In self-supervised learning, we replace the human annotation block by creatively exploiting some property of data to set up a pseudo-supervised task. For example, here instead of labeling images as cat/dog, we could instead rotate them by 0/90/180/270 degrees and train a model to predict rotation. We can generate virtually unlimited training data from millions of images we have freely available on the internet.  
-
-Once we learn representations from these millions of images, we can use transfer learning to fine-tune it on some supervised task like image classification of cats vs dogs with very few examples.
 ![Self-supervised Learning Workflow Diagram](/images/self-supervised-workflow.png){.img-center}
 <p class="has-text-centered has-text-grey">
 Figure: End to End Workflow of Self-Supervised Learning
 </p>
+Once we learn representations from these millions of images, we can use transfer learning to fine-tune it on some supervised task like image classification of cats vs dogs with very few examples.
+
 # Survey of Self-Supervised Learning
 Let's now understand the various approaches researchers have proposed to exploit image and video properties and apply self-supervised learning for representation learning.
 
