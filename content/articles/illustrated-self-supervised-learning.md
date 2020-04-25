@@ -1,44 +1,46 @@
 Title: The Illustrated Self-Supervised Learning
 Date: 2020-02-25 03:00
 Modified: 2020-04-25 15:13
-Category: illustration
+Category: computer-vision
 Slug: illustrated-self-supervised-learning
 Summary: A visual introduction to self-supervised learning methods for visual representations.
 Status: published
 Authors: Amit Chaudhary
 Cover: /images/self-supervised-workflow.png
 
-
-Yann Lecun, in his [talk](https://www.youtube.com/watch?v=7I0Qt7GALVk&t=2639s), introduced the "cake analogy" to illustrate the importance of self-supervised learning. Though the analogy is [debated](https://orfe.princeton.edu/~alaink/SmartDrivingCars/PDFs/2017_12_xx_NIPS-keynote-final.pdf "Slide 96, Deep Learning for Robotics, Pieter Abbeel"), we have seen the impact of self-supervised learning in the Natural Language Processing field where recent developments (Word2Vec, Glove, ELMO, BERT) have embraced self-supervision and achieved state of the art results.
-> “If intelligence is a cake, the bulk of the cake is self-supervised learning, the icing on the cake is supervised learning, and the cherry on the cake is reinforcement learning (RL).”  
+I first got introduced to self-supervised learning in a [talk](https://www.youtube.com/watch?v=7I0Qt7GALVk&t=2639s) by Yann Lecun, where he introduced the "cake analogy" to illustrate the importance of self-supervised learning. In the talk, he said:
+> “If intelligence is a cake, the bulk of the cake is self-supervised learning, the icing on the cake is supervised learning, and the cherry on the cake is reinforcement learning (RL).”
   
+Though the analogy is [debated](https://orfe.princeton.edu/~alaink/SmartDrivingCars/PDFs/2017_12_xx_NIPS-keynote-final.pdf "Slide 96, Deep Learning for Robotics, Pieter Abbeel"), we have seen the impact of self-supervised learning in the Natural Language Processing field where recent developments (Word2Vec, Glove, ELMO, BERT) have embraced self-supervision and achieved state of the art results.  
   
 Curious to know the current state of self-supervised learning in the Computer Vision field, I read up on existing literature on self-supervised learning applied to computer vision through a [recent survey paper](https://arxiv.org/abs/1902.06162) by Jing et. al. 
 
 In this post, I will explain what is self-supervised learning and summarize the patterns of problem formulation being used in self-supervised learning with visualizations.
 
-# Why Self-Supervised Learning?
+<h2 class="subtitle is-4">Why Self-Supervised Learning?</h2>
 To apply supervised learning with deep neural networks, we need enough labeled data. To acquire that, human annotators manually label data which is both a time consuming and expensive process. There are also fields such as the medical field where getting enough data is a challenge itself. Thus, a major bottleneck in current supervised learning paradigm is the label generation part.
 
 ![Manual Annotation in Supervised Learning](/images/supervised-manual-annotation.png){.img-center}
 
-This is where self-supervised learning comes into play. Self supervised learning is a method that poses the following question to formulate an unsupervised learning problem as a supervised one:
+<h2 class="subtitle is-4">What is Self-Supervised Learning?</h2>
+Self supervised learning is a method that poses the following question to formulate an unsupervised learning problem as a supervised one:
 > Can we design the task in such a way that we can generate virtually unlimited labels from our existing images and use that to learn the representations?  
 
 ![Automating manual labeling with Self Supervised Learning](/images/supervised-automated.png){.img-center}
 
-In self-supervised learning, we replace the human annotation block by creatively exploiting some property of data to set up a pseudo-supervised task. For example, here instead of labeling images as cat/dog, we could instead rotate them by 0/90/180/270 degrees and train a model to predict rotation. We can generate virtually unlimited training data from millions of images we have freely available on the internet.  
+In self-supervised learning, we replace the human annotation block by <span style="color: #1d6633;">creatively exploiting</span> some property of data to set up a pseudo-supervised task. For example, here instead of labeling images as cat/dog, we could instead rotate them by 0/90/180/270 degrees and train a model to predict rotation. We can generate virtually unlimited training data from millions of images we have freely available on the internet.  
 ![Self-supervised Learning Workflow Diagram](/images/self-supervised-workflow.png){.img-center}
 <p class="has-text-centered has-text-grey">
 Figure: End to End Workflow of Self-Supervised Learning
 </p>
 Once we learn representations from these millions of images, we can use transfer learning to fine-tune it on some supervised task like image classification of cats vs dogs with very few examples.
+![](/images/self-supervised-finetuning.png){.img-center}
 
-# Survey of Self-Supervised Learning
+<h2 class="subtitle is-4">Survey of Self-Supervised Learning Methods</h2>
 Let's now understand the various approaches researchers have proposed to exploit image and video properties and apply self-supervised learning for representation learning.
 
-<h2 class="subtitle is-4">A. Self-Supervised Learning from Image</h2>
-<h2 class="subtitle is-4">Pattern 1: Reconstruction</h2>
+<h3 class="subtitle is-4">A. Self-Supervised Learning from Image</h3>
+<h4 class="subtitle is-4">Pattern 1: Reconstruction</h4>
 ## 1. **Image Colorization**
 Formulation:   
 > What if we prepared pairs of (grayscale, colorized) images by applying grayscale to millions of images we have freely available?  
@@ -86,7 +88,7 @@ For downstream tasks, [Pathak et al.](https://arxiv.org/abs/1604.07379) have sho
 **Papers**:  
 [Context encoders: Feature learning by inpainting](https://arxiv.org/abs/1604.07379)
 
-<h2 class="subtitle is-4">Pattern 2: Common Sense Tasks</h2>
+<h4 class="subtitle is-4">Pattern 2: Common Sense Tasks</h4>
 ## 1. **Image Jigsaw Puzzle**
 Formulation:   
 > What if we prepared training pairs of (shuffled, ordered) puzzles by randomly shuffling patches of images?  
@@ -133,10 +135,10 @@ To solve this pre-text task, [Gidaris et al.](https://arxiv.org/abs/1505.05192) 
 Though a very simple idea, the model has to understand location, types and pose of objects in an image to solve this task and as such, the representations learned are useful for downstream tasks.
 
 **Papers**:  
-[Unsupervised Representation Learning by Predicting Image Rotations](https://arxiv.org/abs/1803.07728)
+[Unsupervised Representation Learning by Predicting Image Rotations](https://arxiv.org/abs/1803.07728)  
+  
 
-
-<h2 class="subtitle is-4">Pattern 3: Automatic Label Generation</h2>
+<h4 class="subtitle is-4">Pattern 3: Automatic Label Generation</h4>
 ## 1. **Image Clustering**
 Formulation:   
 > What if we prepared training pairs of (image, cluster-number) by performing clustering on large, unlabeled image collection?  
@@ -162,7 +164,7 @@ Formulation:
 To solve this pre-text task, [Ren et al.](https://arxiv.org/pdf/1711.09082.pdf) propose an architecture where weight-shared ConvNets are trained on both synthetic and real images and then a discriminator learns to classify whether ConvNet features fed to it is of a synthetic image or a real image. Due to adversarial nature, the shared representations between real and synthetic images get better.
 ![Architecture for Synthetic Image Training](/images/ss-synthetic-image-architecture.png){.img-center}
 
-<h2 class="subtitle is-4">B. Self-Supervised Learning From Video</h2>
+<h3 class="subtitle is-4">B. Self-Supervised Learning From Video</h3>
 ## 1. **Frame Order Verification**
 Formulation:   
 > What if we prepared training pairs of (video frames, correct/incorrect order) by shuffling frames from videos of objects in motion?   
