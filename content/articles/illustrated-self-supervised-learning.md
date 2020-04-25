@@ -1,6 +1,6 @@
 Title: The Illustrated Self-Supervised Learning
 Date: 2020-02-25 03:00
-Modified: 2020-04-25 15:13
+Modified: 2020-04-25 18:31
 Category: computer-vision
 Slug: illustrated-self-supervised-learning
 Summary: A visual introduction to self-supervised learning methods for visual representations.
@@ -87,6 +87,25 @@ For downstream tasks, [Pathak et al.](https://arxiv.org/abs/1604.07379) have sho
 
 **Papers**:  
 [Context encoders: Feature learning by inpainting](https://arxiv.org/abs/1604.07379)
+
+## 4. **Cross-Channel Prediction**
+Formulation:   
+> What if we predict one channel of the image from the other channel and combine them to reconstruct the original image?  
+
+Zhang et al. used this idea in their paper called "Split-Brain Autoencoder". To understand the idea of the paper, let's take an example of a color image of tomato.
+![](/images/split-brain-autoencoder.png){.img-center}
+<p class="has-text-centered has-text-grey">
+Example adapted from "Split-Brain Autoencoder" paper
+</p>
+For this color image, we can split it into grayscale and color channels. Then, for the grayscale channel, we predict the color channel and for the color channel part, we predict the grayscale channel. The two predicted channels <tt class="math">X_1</tt> and <tt class="math">X_2</tt> are combined to get back a reconstruction of the original image. We can compare this reconstruction to the original color image to get a loss and improve the model.  
+
+This same setup can be applied for images with depth as well where we use the color channels and the depth channels from a RGB-HHA image to predict each other and compare output image and original image.
+![](/images/split-brain-autoencoder-rgbhha.png){.img-center}
+<p class="has-text-centered has-text-grey">
+Example adapted from "Split-Brain Autoencoder" paper
+</p>
+**Papers**:  
+[Split-Brain Autoencoders: Unsupervised Learning by Cross-Channel Prediction](https://arxiv.org/abs/1611.09842)
 
 <h4 class="subtitle is-4">Pattern 2: Common Sense Tasks</h4>
 ## 1. **Image Jigsaw Puzzle**
