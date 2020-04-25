@@ -1,6 +1,6 @@
 Title: The Illustrated Self-Supervised Learning
 Date: 2020-02-25 03:00
-Modified: 2020-04-15 13:56
+Modified: 2020-04-25 15:13
 Category: illustration
 Slug: illustrated-self-supervised-learning
 Summary: A visual introduction to self-supervised learning methods for visual representations.
