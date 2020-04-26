@@ -183,7 +183,7 @@ The official implementation of Deep Cluster in PyTorch by the paper authors is a
 ## Citation Info (BibTex)
 If you found this blog post useful, please consider citing it as:
 ```
-@misc{chaudhary2020SeLa,
+@misc{chaudhary2020DeepCluster,
   title   = {A Visual Exploration of DeepCluster},
   author  = {Amit Chaudhary},
   year    = 2020,
