@@ -14,6 +14,7 @@ I recently came across an interesting thread on Twitter discussing a hypothetica
 </div>
 <br>
 This post is a fun experiment showcasing how the commit history could look like for the BERT paper and some of its subsequent variants.
+![](/images/research-paper-as-forks.png){.img-center}
 <br>
 
 <article class="message is-dark">
