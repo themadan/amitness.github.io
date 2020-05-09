@@ -3,7 +3,7 @@ Date: 2020-05-09 17:18
 Modified: 2020-05-09 17:18
 Category: nlp
 Slug: git-log-of-bert
-Summary: What a commit history of version controlled research papers could look like?
+Summary: What a commit history of version-controlled research papers could look like?
 Authors: Amit Chaudhary
 
 I recently came across an interesting thread on Twitter discussing a hypothetical scenario where research papers are published on GitHub and subsequent papers are diffs over the original paper. Information overload has been a real problem in ML with so many new papers coming every month.  
