@@ -4,6 +4,7 @@ Modified: 2020-05-09 17:18
 Category: nlp
 Slug: git-log-of-bert
 Summary: What a commit history of version-controlled research papers could look like?
+Status: published
 Authors: Amit Chaudhary
 Cover: /images/research-paper-as-forks.png
 
