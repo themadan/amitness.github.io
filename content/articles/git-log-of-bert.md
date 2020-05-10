@@ -35,7 +35,7 @@ Initial Commit: BERT
 <article class="message is-dark">
 <div class="message-body">
 <p style="color: #A57705;">commit <a href="https://arxiv.org/abs/1901.07291">arXiv:1901.07291</a></p>   
-<p>Author: Martin et al.</p>  
+<p>Author: Lample et al.</p>  
 <p>Date:   Sun Nov 10 10:46:37 2019 +0000</p>
 <h2 style="padding-left: 1rem;">  
 Cross-lingual Language Model Pretraining
