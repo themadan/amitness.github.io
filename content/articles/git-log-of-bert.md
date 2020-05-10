@@ -100,6 +100,19 @@ RoBERTa: A Robustly Optimized BERT Pretraining Approach
 
 <article class="message is-dark">
 <div class="message-body">
+<p style="color: #A57705;">commit <a href="https://arxiv.org/abs/1908.10084">arXiv:1908.10084</a></p>   
+<p>Author: Reimers et al.</p>  
+<p>Date:   Tue Aug 27 08:50:17 2019 +0000</p>
+<h2 style="padding-left: 1rem;">  
+Sentence-BERT: Sentence Embeddings using Siamese BERT-Networks
+</h2>  
+<p style="color: #7a942e;">+Siamese Network Structure</p>
+<p style="color: #7a942e;">+Finetuning on SNLI and MNLI</p>
+  </div>
+</article>
+
+<article class="message is-dark">
+<div class="message-body">
 <p style="color: #A57705;">commit <a href="https://arxiv.org/abs/1909.11942">arXiv:1909.11942</a></p>   
 <p>Author: Lan et al.</p>  
 <p>Date:   Thu Sep 26 07:06:13 2019 +0000</p>
