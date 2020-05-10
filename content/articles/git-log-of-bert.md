@@ -171,6 +171,7 @@ FlauBERT: Unsupervised Language Model Pre-training for French
 <p style="color: #aa3131;">-BERT</p>    
 <p style="color: #aa3131;">-English</p>   
 <p style="color: #7a942e;">+ROBERTA</p>  
+<p style="color: #7a942e;">+fastBPE</p>  
 <p style="color: #7a942e;">+French dataset(71GB)</p>  
 <p style="color: #7a942e;">+FLUE(French Language Understanding Evaluation) benchmark</p>  
   </div>
