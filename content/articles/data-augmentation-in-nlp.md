@@ -1,30 +1,30 @@
 Title: A Visual Survey of Data Augmentation in NLP
-Date: 2020-05-16 14:06
-Modified: 2020-05-16 14:06
+Date: 2020-05-16 22:22
+Modified: 2020-05-16 22:22
 Category: nlp
 Slug: data-augmentation-for-nlp
 Summary: An overview of data augmentation techniques for NLP
-Status: draft
+Status: published
 Authors: Amit Chaudhary
 
-Unlike Computer Vision where using image data augmentation is a standard practice, augmentation of text data in NLP is pretty rare. This is because trivial operations for images like rotating an image a few degrees or converting it into grayscale doesn't change its semantics. This presence of semantically invariant transformation is what made augmentation an essential toolkit in Computer Vision research.
+Unlike Computer Vision where using image data augmentation is standard practice, augmentation of text data in NLP is pretty rare. This is because trivial operations for images like rotating an image a few degrees or converting it into grayscale doesn't change its semantics. This presence of semantically invariant transformation is what made augmentation an essential toolkit in Computer Vision research.
 ![](/images/semantic-invariance-nlp.png){.img-center}
 
-I was curious if there were attempts at developing augmentation techniques for NLP and explored the the existing literature. In this post, I will share my findings and give an overview of current approaches being used for augmenting text data.
+I was curious if there were attempts at developing augmentation techniques for NLP and explored the existing literature. In this post, I will share my findings and give an overview of the current approaches being used for augmenting text data.
 
 ## Approaches
 ## 1. Lexical Substitution
 This approach tries to substitute words present in a text without changing the gist of the sentence.
 
-- **Thesarus-based substitution**  
-In this technique, we take a random word from the sentence and replace it with its synonym using a thesarus. For example, we could use the [WordNet](https://wordnet.princeton.edu/) lexical database for English to look up the synonyms and then perform the replacement. It is a manually curated database with relations between words.
+- **Thesaurus-based substitution**  
+In this technique, we take a random word from the sentence and replace it with its synonym using a Thesaurus. For example, we could use the [WordNet](https://wordnet.princeton.edu/) lexical database for English to look up the synonyms and then perform the replacement. It is a manually curated database with relations between words.
 ![](/images/nlp-aug-wordnet.png){.img-center}
 NLTK provides a programmatic [access](https://www.nltk.org/howto/wordnet.html) to WordNet. You can also use [TextBlob API](https://textblob.readthedocs.io/en/dev/quickstart.html#wordnet-integration).
 
 - **Word-Embeddings Substitution**  
-In this approach, we take pre-trained word embeddings such as Word2Vec, GloVe, FastText, Sent2Vec and use the nearest neighbor words in the embedding space as the replacement for some word in the sentence.
+In this approach, we take pre-trained word embeddings such as Word2Vec, GloVe, FastText, Sent2Vec, and use the nearest neighbor words in the embedding space as the replacement for some word in the sentence.
 ![](/images/nlp-aug-embedding.png){.img-center}  
-For example, you can replace with the 3-most similar words and get three variations of the text.
+For example, you can replace the word with the 3-most similar words and get three variations of the text.
 ![](/images/nlp-aug-embedding-example.png){.img-center}  
 It's easy to use packages like Gensim to access pre-trained word vectors and get the nearest neighbors. For example, here we find the synonyms for the word 'awesome' using word vectors trained on tweets.  
 ```python
@@ -44,11 +44,11 @@ You will get back the 5 most similar words along with the cosine similarities.
 ```  
   
 - **Masked Language Model**  
-Transformer models such as BERT, ROBERTA and ALBERT have been trained on large amount of text based on a pretext task called "Masked Language Modeling" where the model has to predict masked words based on the context.  
+Transformer models such as BERT, ROBERTA and ALBERT have been trained on a large amount of text using a pretext task called "Masked Language Modeling" where the model has to predict masked words based on the context.  
 <br>
-This can be used to augment some text. For example, we could use a pre-trained BERT model and mask some part of the text. Then, we use the BERT model to predict the token for the mask.  
+This can be used to augment some text. For example, we could use a pre-trained BERT model and mask some parts of the text. Then, we use the BERT model to predict the token for the mask.  
 ![](/images/nlp-aug-bert-mlm.png){.img-center}
-Thus, we can generate variations of a text using the mask predictions. Compared to previous approaches, the generated text is more gramatically consistent as the model takes context into account when making predictions.
+Thus, we can generate variations of a text using the mask predictions. Compared to previous approaches, the generated text is more grammatically coherent as the model takes context into account when making predictions.
 ![](/images/nlp-aug-bert-augmentations.png){.img-center}  
 This is easy to implement with open-source libraries such as transformers by Hugging Face. You can set the token you want to replace with `<mask>` and generate predictions.  
 ```python
@@ -77,19 +77,31 @@ nlp('This is <mask> cool')
 However one caveat of this method is that deciding which part of the text to mask is not trivial. You will have to use heuristics to decide the mask, otherwise the generated text will not retain the meaning of original sentence.
 
 ## 2. Back Translation
-In this approach, we leverage machine translation to paraphrase a text while retraining the meaning. It has been used by [Xie et al.](https://arxiv.org/abs/1904.12848) to augment unlabeled text and learn a semi-supervised model on IMDB dataset with only 20 labeled examples. The method outperformed the previous state-of-the-art model trained on 25,000 labeled example.
+In this approach, we leverage machine translation to paraphrase a text while retraining the meaning. It has been used by [Xie et al.](https://arxiv.org/abs/1904.12848) to augment the unlabeled text and learn a semi-supervised model on IMDB dataset with only 20 labeled examples. The method outperformed the previous state-of-the-art model trained on 25,000 labeled examples.
 
-The back translation process is as follows:  
+The back-translation process is as follows:  
 
 - Take some sentence (e.g. in English) and translate to another Language e.g. French  
 - Translate the french sentence back into English sentence  
-- Check if the new sentence is different from our original sentence. If it is, then we use this new sentence as augmented version of original text.  
+- Check if the new sentence is different from our original sentence. If it is, then we use this new sentence as an augmented version of the original text.  
 ![](/images/nlp-aug-back-translation.png){.img-center}  
 
-You can also run back-translation for multiple languages at once to generate many variations. As shown below, we translate English sentence to a target language and back again to English for 3 target languages: French, Mandarin and Italian.  
+You can also run back-translation using different languages at once to generate more variations. As shown below, we translate an English sentence to a target language and back again to English for three target languages: French, Mandarin and Italian.  
 ![](/images/nlp-aug-backtranslation-multi.png){.img-center}  
 
 For implementation, you can use TextBlob. You can use Google Sheets and follow the instructions given [here](https://amitness.com/2020/02/back-translation-in-google-sheets/) to apply Google Translate for free.  
 
+## 3. Text Surface Transformation
+These are simple pattern matching transformations applied using regex and was introduced by [Claude Coulombe](https://arxiv.org/abs/1812.04718) in his paper.
+
+In the paper, he gives an example of transforming verbal forms from contraction to expansion and vice versa. We can generate augmented texts by applying this.  
+![](/images/nlp-aug-contraction.png){.img-center}  
+Since the transformation should not change the meaning of the sentence, we can see this can fail in case of expanding ambiguous verbal forms like:
+![](/images/nlp-aug-contraction-ambiguity.png){.img-center}  
+To resolve this, the paper proposes that we allow ambiguous contractions but skip ambiguous expansion.  
+![](/images/nlp-aug-contraction-solution.png){.img-center}  
+You can find a list of contractions for the English language [here](https://en.wikipedia.org/wiki/Wikipedia%3aList_of_English_contractions).
+
 ## References
 - Qizhe Xie, et al. ["Unsupervised Data Augmentation for Consistency Training"](https://arxiv.org/abs/1904.12848)  
+- Claude Coulombe ["Text Data Augmentation Made Simple By Leveraging NLP Cloud APIs"](https://arxiv.org/abs/1812.04718)
