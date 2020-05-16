@@ -1,4 +1,4 @@
-Title: A Visual Overview of Data Augmentation in NLP
+Title: A Visual Survey of Data Augmentation in NLP
 Date: 2020-05-16 14:06
 Modified: 2020-05-16 14:06
 Category: nlp
@@ -41,8 +41,50 @@ You will get back the 5 most similar words along with the cosine similarities.
  ('fun', 0.9331520795822144),
  ('fantastic', 0.9313924312591553),
  ('perfect', 0.9243415594100952)]
-
+```  
+  
+- **Masked Language Model**  
+Transformer models such as BERT, ROBERTA and ALBERT have been trained on large amount of text based on a pretext task called "Masked Language Modeling" where the model has to predict masked words based on the context.  
+<br>
+This can be used to augment some text. For example, we could use a pre-trained BERT model and mask some part of the text. Then, we use the BERT model to predict the token for the mask.  
+![](/images/nlp-aug-bert-mlm.png){.img-center}
+Thus, we can generate variations of a text using the mask predictions. Compared to previous approaches, the generated text is more gramatically consistent as the model takes context into account when making predictions.
+![](/images/nlp-aug-bert-augmentations.png){.img-center}  
+This is easy to implement with open-source libraries such as transformers by Hugging Face. You can set the token you want to replace with `<mask>` and generate predictions.  
+```python
+from transformers import pipeline
+nlp = pipeline('fill-mask')
+nlp('This is <mask> cool')
 ```
 
-## References
-- []()  
+```python
+[{'score': 0.515411913394928,
+  'sequence': '<s> This is pretty cool</s>',
+  'token': 1256},
+ {'score': 0.1166248694062233,
+  'sequence': '<s> This is really cool</s>',
+  'token': 269},
+ {'score': 0.07387523353099823,
+  'sequence': '<s> This is super cool</s>',
+  'token': 2422},
+ {'score': 0.04272908344864845,
+  'sequence': '<s> This is kinda cool</s>',
+  'token': 24282},
+ {'score': 0.034715913236141205,
+  'sequence': '<s> This is very cool</s>',
+  'token': 182}]
+```
+However one caveat of this method is that deciding which part of the text to mask is not trivial. You will have to use heuristics to decide the mask, otherwise the generated text will not retain the meaning of original sentence.
+
+## 2. Back Translation
+In this approach, we leverage machine translation to paraphrase a text while retraining the meaning. The way it works is:  
+
+- Take some sentence (e.g. in English) and translate to another Language e.g. French  
+- Translate the french sentence back into English sentence  
+- Check if the new sentence is different from our original sentence. If it is, then we use this new sentence as augmented version of original text.  
+![](/images/nlp-aug-back-translation.png){.img-center}  
+
+You can also run back-translation for multiple languages at once to generate many variations. As shown below, we translate English sentence to a target language and back again to English for 3 target languages: French, Mandarin and Italian.  
+![](/images/nlp-aug-backtranslation-multi.png){.img-center}  
+
+For implementation, you can use TextBlob. For free translation, you can use Google Sheets and follow the instructions given [here](https://amitness.com/2020/02/back-translation-in-google-sheets/).
