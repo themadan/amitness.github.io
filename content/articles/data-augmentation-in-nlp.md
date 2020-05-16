@@ -77,7 +77,9 @@ nlp('This is <mask> cool')
 However one caveat of this method is that deciding which part of the text to mask is not trivial. You will have to use heuristics to decide the mask, otherwise the generated text will not retain the meaning of original sentence.
 
 ## 2. Back Translation
-In this approach, we leverage machine translation to paraphrase a text while retraining the meaning. The way it works is:  
+In this approach, we leverage machine translation to paraphrase a text while retraining the meaning. It has been used by [Xie et al.](https://arxiv.org/abs/1904.12848) to augment unlabeled text and learn a semi-supervised model on IMDB dataset with only 20 labeled examples. The method outperformed the previous state-of-the-art model trained on 25,000 labeled example.
+
+The back translation process is as follows:  
 
 - Take some sentence (e.g. in English) and translate to another Language e.g. French  
 - Translate the french sentence back into English sentence  
@@ -87,4 +89,7 @@ In this approach, we leverage machine translation to paraphrase a text while ret
 You can also run back-translation for multiple languages at once to generate many variations. As shown below, we translate English sentence to a target language and back again to English for 3 target languages: French, Mandarin and Italian.  
 ![](/images/nlp-aug-backtranslation-multi.png){.img-center}  
 
-For implementation, you can use TextBlob. For free translation, you can use Google Sheets and follow the instructions given [here](https://amitness.com/2020/02/back-translation-in-google-sheets/).
+For implementation, you can use TextBlob. You can use Google Sheets and follow the instructions given [here](https://amitness.com/2020/02/back-translation-in-google-sheets/) to apply Google Translate for free.  
+
+## References
+- Qizhe Xie, et al. ["Unsupervised Data Augmentation for Consistency Training"](https://arxiv.org/abs/1904.12848)  
