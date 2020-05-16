@@ -23,7 +23,7 @@ In this technique, we take a random word from the sentence and replace it with i
 NLTK provides a programmatic [access](https://www.nltk.org/howto/wordnet.html) to WordNet. You can also use [TextBlob API](https://textblob.readthedocs.io/en/dev/quickstart.html#wordnet-integration).
 
 - **Word-Embeddings Substitution**  
-In this approach, we take pre-trained word embeddings such as Word2Vec, GloVe, FastText, Sent2Vec, and use the nearest neighbor words in the embedding space as the replacement for some word in the sentence.
+In this approach, we take pre-trained word embeddings such as Word2Vec, GloVe, FastText, Sent2Vec, and use the nearest neighbor words in the embedding space as the replacement for some word in the sentence. [Jiao et al.](https://arxiv.org/abs/1909.10351) have used this technique with GloVe embeddings in their paper "*TinyBert*" to improve generalization of their language model on downstream tasks.  
 ![](/images/nlp-aug-embedding.png){.img-center}  
 For example, you can replace the word with the 3-most similar words and get three variations of the text.
 ![](/images/nlp-aug-embedding-example.png){.img-center}  
@@ -106,3 +106,4 @@ You can find a list of contractions for the English language [here](https://en.w
 ## References
 - Qizhe Xie, et al. ["Unsupervised Data Augmentation for Consistency Training"](https://arxiv.org/abs/1904.12848)  
 - Claude Coulombe ["Text Data Augmentation Made Simple By Leveraging NLP Cloud APIs"](https://arxiv.org/abs/1812.04718)
+- Xiaoqi Jiao, et al. ["TinyBERT: Distilling BERT for Natural Language Understanding"](https://arxiv.org/abs/1909.10351)
