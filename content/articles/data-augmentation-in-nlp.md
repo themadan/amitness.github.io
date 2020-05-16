@@ -3,9 +3,10 @@ Date: 2020-05-16 22:22
 Modified: 2020-05-16 22:22
 Category: nlp
 Slug: data-augmentation-for-nlp
-Summary: An overview of data augmentation techniques for NLP
+Summary: An extensive overview of text data augmentation techniques for Natural Language Processing
 Status: published
 Authors: Amit Chaudhary
+Cover: /images/semantic-invariance-nlp.png
 
 Unlike Computer Vision where using image data augmentation is standard practice, augmentation of text data in NLP is pretty rare. This is because trivial operations for images like rotating an image a few degrees or converting it into grayscale doesn't change its semantics. This presence of semantically invariant transformation is what made augmentation an essential toolkit in Computer Vision research.
 ![](/images/semantic-invariance-nlp.png){.img-center}
