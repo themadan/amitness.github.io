@@ -144,3 +144,4 @@ My takeaway from the literature review is that many of these augmentation method
 - Claude Coulombe ["Text Data Augmentation Made Simple By Leveraging NLP Cloud APIs"](https://arxiv.org/abs/1812.04718)
 - Xiaoqi Jiao, et al. ["TinyBERT: Distilling BERT for Natural Language Understanding"](https://arxiv.org/abs/1909.10351)
 - Xiang Zhang, et al. ["Character-level Convolutional Networks for Text Classification"](https://arxiv.org/abs/1509.01626)
+- Franco M. Luque ["Atalaya at TASS 2019: Data Augmentation and Robust Embeddings for Sentiment Analysis"](https://arxiv.org/abs/1909.11241)
