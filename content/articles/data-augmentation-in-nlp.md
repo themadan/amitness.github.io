@@ -146,6 +146,11 @@ In the method, tweets are divided into two halves and two random tweets of same 
 This technique had no impact on the accuracy but helped with the F1 score in the paper showing its impact for minority classes such as Neutral class with less tweets.    
 ![](/images/nlp-aug-instance-crossover-result.png){.img-center}  
 
+## 6. Syntax-tree Manipulation
+This technique has been used in the paper by [Coulombe](https://arxiv.org/abs/1812.04718). The idea is to parse and generate the dependency tree of the original sentence, transform it using rules and generate a paraphrased sentence.  
+For example, one transformation that doesn't change meaning of the sentence is transformation from active voice to passive voice of sentence and vice versa.  
+![](/images/nlp-aug-syntax-tree-manipulation.png){.img-center}  
+
 ## Implementation
 To apply all the above methods, you can use the python library called [nlpaug](https://github.com/makcedward/nlpaug). It provides a simple and consistent API to apply these techniques.  
 
