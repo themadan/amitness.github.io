@@ -118,7 +118,7 @@ You can find a list of contractions for the English language [here](https://en.w
 The idea of these methods is to inject noise in the text so that the model trained is robust to perturbations.  
 
 - **Spelling error injection**  
-In this method, we add spelling error to some random in the sentence. These spelling errors can be added programatically or using a mapping of common spelling errors such as [this list](https://github.com/makcedward/nlpaug/blob/master/model/spelling_en.txt) for English.  
+In this method, we add spelling error to some random word in the sentence. These spelling errors can be added programatically or using a mapping of common spelling errors such as [this list](https://github.com/makcedward/nlpaug/blob/master/model/spelling_en.txt) for English.  
 ![](/images/nlp-aug-spelling-example.png){.img-center}  
 
 - **QWERTY Keyboard Error Injection**    
