@@ -25,7 +25,7 @@ In this technique, we take a random word from the sentence and replace it with i
 NLTK provides a programmatic [access](https://www.nltk.org/howto/wordnet.html) to WordNet. You can also use [TextBlob API](https://textblob.readthedocs.io/en/dev/quickstart.html#wordnet-integration). There is also a database called [PPDB](http://paraphrase.org/#/download) containing millions of paraphrases that you can download and access programmatically.  
 
 - **Word-Embeddings Substitution**  
-In this approach, we take pre-trained word embeddings such as Word2Vec, GloVe, FastText, Sent2Vec, and use the nearest neighbor words in the embedding space as the replacement for some word in the sentence. [Jiao et al.](https://arxiv.org/abs/1909.10351) have used this technique with GloVe embeddings in their paper "*TinyBert*" to improve generalization of their language model on downstream tasks.  
+In this approach, we take pre-trained word embeddings such as Word2Vec, GloVe, FastText, Sent2Vec, and use the nearest neighbor words in the embedding space as the replacement for some word in the sentence. [Jiao et al.](https://arxiv.org/abs/1909.10351) have used this technique with GloVe embeddings in their paper "*TinyBert*" to improve generalization of their language model on downstream tasks.  [Wang et al.](https://www.aclweb.org/anthology/D15-1306.pdf) used it to generate new training instances by replacing each word in the Tweet with its nearest neighbor in embedding space.  
 ![](/images/nlp-aug-embedding.png){.img-center}  
 For example, you can replace the word with the 3-most similar words and get three variations of the text.
 ![](/images/nlp-aug-embedding-example.png){.img-center}  
