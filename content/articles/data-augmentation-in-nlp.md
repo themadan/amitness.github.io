@@ -125,6 +125,14 @@ In this method, we add spelling errors to some random word in the sentence. Thes
 This method tries to simulate common errors that happen when typing on a QWERTY layout keyboard due to keys that are very near to each other. The errors are injected based on keyboard distance.  
 ![](/images/nlp-aug-keyboard-error-example.png){.img-center}  
 
+## 5. Instance Crossover Augmentation  
+This technique was introduced by [Luque](https://arxiv.org/abs/1909.11241) in his paper on sentiment analysis for TASS 2019. This technique takes its inspiration from the chromosome crossover operation that happens in genetics.    
+In the method, tweets are divided into two halves and two random tweets of same polarity(i.e. positive/negative) have their halves swapped. The hypothesis is that the even though the result will be ungrammatical and semantically unsound, the new text will still preserve the sentiment polarity.  
+![](/images/nlp-aug-instance-crossover.png){.img-center}  
+
+This technique had no impact on the accuracy but helped with the F1 score in the paper showing its impact for minority classes such as Neutral class with less tweets.    
+![](/images/nlp-aug-instance-crossover-result.png){.img-center}  
+
 ## Implementation
 To apply all the above methods, you can use the python library called [nlpaug](https://github.com/makcedward/nlpaug). It provides a simple and consistent API to apply these techniques.  
 
