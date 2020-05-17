@@ -125,6 +125,9 @@ In this method, we add spelling error to some random in the sentence. These spel
 This method tries to simulate common errors that happens when typing on a QWERTY layout keyboard due to keys that are very near to each other. The errors are injected based on keyboard distance.  
 ![](/images/nlp-aug-keyboard-error-example.png){.img-center}  
 
+## Conclusion  
+My takeaway from the literature review is that many of these augmentation methods are very task-specific and their impact on performance have been studied for some particular use-cases only. It would be an interesting research to systematically compare them and analyze their impact on performance.  
+
 ## References
 - Qizhe Xie, et al. ["Unsupervised Data Augmentation for Consistency Training"](https://arxiv.org/abs/1904.12848)  
 - Claude Coulombe ["Text Data Augmentation Made Simple By Leveraging NLP Cloud APIs"](https://arxiv.org/abs/1812.04718)
