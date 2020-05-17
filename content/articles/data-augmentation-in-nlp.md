@@ -74,8 +74,16 @@ nlp('This is <mask> cool')
  {'score': 0.034715913236141205,
   'sequence': '<s> This is very cool</s>',
   'token': 182}]
-```
-However one caveat of this method is that deciding which part of the text to mask is not trivial. You will have to use heuristics to decide the mask, otherwise the generated text will not retain the meaning of original sentence.
+```  
+However one caveat of this method is that deciding which part of the text to mask is not trivial. You will have to use heuristics to decide the mask, otherwise the generated text will not retain the meaning of original sentence.  
+
+
+- **TF-IDF based word replacement**  
+This augmentation method was proposed by [Xie et al.](https://arxiv.org/abs/1904.12848) in the Unsupervised Data Augmentation paper. The basic idea is that words that have <span style="color: #d52f2f;">low TF-IDF scores</span> are uninformative and thus can be replaced without affecting the ground-truth labels of the sentence.
+![](/images/nlp-aug-tf-idf-word-replacement.png){.img-center}  
+The words to replace with are chosen from the whole vocabulary that have low TF-IDF scores in the whole document. You can refer to the implementation in the original paper from [here](https://github.com/google-research/uda/blob/master/text/augmentation/word_level_augment.py).
+
+
 
 ## 2. Back Translation
 In this approach, we leverage machine translation to paraphrase a text while retraining the meaning. It has been used by [Xie et al.](https://arxiv.org/abs/1904.12848) to augment the unlabeled text and learn a semi-supervised model on IMDB dataset with only 20 labeled examples. The method outperformed the previous state-of-the-art model trained on 25,000 labeled examples.
