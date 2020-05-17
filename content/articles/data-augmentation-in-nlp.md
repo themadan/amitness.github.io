@@ -99,9 +99,9 @@ The back-translation process is as follows:
 
 You can also run back-translation using different languages at once to generate more variations. As shown below, we translate an English sentence to a target language and back again to English for three target languages: French, Mandarin and Italian. 
 ![](/images/nlp-aug-backtranslation-multi.png){.img-center}  
-This technique was also used in the [1st place solution](https://www.kaggle.com/c/jigsaw-toxic-comment-classification-challenge/discussion/52557) for the "Toxic Comment Classification Challenge" on Kaggle. The winner used it for both training-data augmentation as well as during test-time where the predicted probabilities for English sentence along with back-translation using three languages(French, German, Spanish) were averaged to get the final prediction.    
+This technique was also used in the [1st place solution](https://www.kaggle.com/c/jigsaw-toxic-comment-classification-challenge/discussion/52557) for the "Toxic Comment Classification Challenge" on Kaggle. The winner used it for both training-data augmentations as well as during test-time where the predicted probabilities for English sentence along with back-translation using three languages(French, German, Spanish) were averaged to get the final prediction.    
 
-For implementation of back-translation, you can use TextBlob. Alternatively, you can also use Google Sheets and follow the instructions given [here](https://amitness.com/2020/02/back-translation-in-google-sheets/) to apply Google Translate for free.  
+For the implementation of back-translation, you can use TextBlob. Alternatively, you can also use Google Sheets and follow the instructions given [here](https://amitness.com/2020/02/back-translation-in-google-sheets/) to apply Google Translate for free.  
 
 ## 3. Text Surface Transformation
 These are simple pattern matching transformations applied using regex and was introduced by [Claude Coulombe](https://arxiv.org/abs/1812.04718) in his paper.
@@ -118,18 +118,18 @@ You can find a list of contractions for the English language [here](https://en.w
 The idea of these methods is to inject noise in the text so that the model trained is robust to perturbations.  
 
 - **Spelling error injection**  
-In this method, we add spelling error to some random word in the sentence. These spelling errors can be added programatically or using a mapping of common spelling errors such as [this list](https://github.com/makcedward/nlpaug/blob/master/model/spelling_en.txt) for English.  
+In this method, we add spelling errors to some random word in the sentence. These spelling errors can be added programmatically or using a mapping of common spelling errors such as [this list](https://github.com/makcedward/nlpaug/blob/master/model/spelling_en.txt) for English.  
 ![](/images/nlp-aug-spelling-example.png){.img-center}  
 
 - **QWERTY Keyboard Error Injection**    
-This method tries to simulate common errors that happens when typing on a QWERTY layout keyboard due to keys that are very near to each other. The errors are injected based on keyboard distance.  
+This method tries to simulate common errors that happen when typing on a QWERTY layout keyboard due to keys that are very near to each other. The errors are injected based on keyboard distance.  
 ![](/images/nlp-aug-keyboard-error-example.png){.img-center}  
 
 ## Implementation
 To apply all the above methods, you can use the python library called [nlpaug](https://github.com/makcedward/nlpaug). It provides a simple and consistent API to apply these techniques.  
 
 ## Conclusion  
-My takeaway from the literature review is that many of these augmentation methods are very task-specific and their impact on performance have been studied for some particular use-cases only. It would be an interesting research to systematically compare these methods and analyze their impact on performance for many tasks.    
+My takeaway from the literature review is that many of these augmentation methods are very task-specific and their impact on performance has been studied for some particular use-cases only. It would be an interesting research to systematically compare these methods and analyze their impact on performance for many tasks.    
 
 ## References
 - Qizhe Xie, et al. ["Unsupervised Data Augmentation for Consistency Training"](https://arxiv.org/abs/1904.12848)  
