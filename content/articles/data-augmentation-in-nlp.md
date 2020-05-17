@@ -129,6 +129,11 @@ This method tries to simulate common errors that happen when typing on a QWERTY 
 This method has been used by [Xie et al.](https://arxiv.org/abs/1703.02573) and also the [UDA](https://arxiv.org/abs/1904.12848) paper. The idea is to perform replacement with words sampled from the unigram frequency distribution. This frequency is basically how many times each word occurs in the training corpus.    
 ![](/images/nlp-aug-unigram-noise.png){.img-center}  
 
+
+- **Blank Noising**    
+This method has been proposed by [Xie et al.](https://arxiv.org/abs/1703.02573) in their paper. The idea is to replace some random word with a placeholder token. The paper uses "_" as the placeholder token. In the paper, they use it as a way to avoid overfitting on specific contexts as well as a smoothing mechanism for the language model. The technique helped improve perplexity and BLEU scores in the paper.   
+![](/images/nlp-aug-blank-noising.png){.img-center}  
+
 - **Sentence Shuffling**    
 This is a naive technique where we shuffle sentences present in a training text to create an augmented version.  
 ![](/images/nlp-aug-sentence-shuffle.png){.img-center}  
