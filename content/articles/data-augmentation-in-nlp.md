@@ -125,6 +125,10 @@ In this method, we add spelling errors to some random word in the sentence. Thes
 This method tries to simulate common errors that happen when typing on a QWERTY layout keyboard due to keys that are very near to each other. The errors are injected based on keyboard distance.  
 ![](/images/nlp-aug-keyboard-error-example.png){.img-center}  
 
+- **Unigram Noising**    
+This method has been used by [Xie et al.](https://arxiv.org/abs/1703.02573) and also the [UDA](https://arxiv.org/abs/1904.12848) paper. The idea is to perform replacement with words sampled from the unigram frequency distribution. This frequency is basically how many times each word occurs in the training corpus.    
+![](/images/nlp-aug-unigram-noise.png){.img-center}  
+
 ## 5. Instance Crossover Augmentation  
 This technique was introduced by [Luque](https://arxiv.org/abs/1909.11241) in his paper on sentiment analysis for TASS 2019. This technique takes its inspiration from the chromosome crossover operation that happens in genetics.    
 In the method, tweets are divided into two halves and two random tweets of same polarity(i.e. positive/negative) have their halves swapped. The hypothesis is that the even though the result will be ungrammatical and semantically unsound, the new text will still preserve the sentiment polarity.  
@@ -145,3 +149,4 @@ My takeaway from the literature review is that many of these augmentation method
 - Xiaoqi Jiao, et al. ["TinyBERT: Distilling BERT for Natural Language Understanding"](https://arxiv.org/abs/1909.10351)
 - Xiang Zhang, et al. ["Character-level Convolutional Networks for Text Classification"](https://arxiv.org/abs/1509.01626)
 - Franco M. Luque ["Atalaya at TASS 2019: Data Augmentation and Robust Embeddings for Sentiment Analysis"](https://arxiv.org/abs/1909.11241)
+- Ziang Xie, et al. ["Data Noising as Smoothing in Neural Network Language Models"](https://arxiv.org/abs/1703.02573)
