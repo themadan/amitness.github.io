@@ -129,6 +129,10 @@ This method tries to simulate common errors that happen when typing on a QWERTY 
 This method has been used by [Xie et al.](https://arxiv.org/abs/1703.02573) and also the [UDA](https://arxiv.org/abs/1904.12848) paper. The idea is to perform replacement with words sampled from the unigram frequency distribution. This frequency is basically how many times each word occurs in the training corpus.    
 ![](/images/nlp-aug-unigram-noise.png){.img-center}  
 
+- **Sentence Shuffling**    
+This is a naive technique where we shuffle sentences present in a training text to create an augmented version.  
+![](/images/nlp-aug-sentence-shuffle.png){.img-center}  
+
 ## 5. Instance Crossover Augmentation  
 This technique was introduced by [Luque](https://arxiv.org/abs/1909.11241) in his paper on sentiment analysis for TASS 2019. This technique takes its inspiration from the chromosome crossover operation that happens in genetics.    
 In the method, tweets are divided into two halves and two random tweets of same polarity(i.e. positive/negative) have their halves swapped. The hypothesis is that the even though the result will be ungrammatical and semantically unsound, the new text will still preserve the sentiment polarity.  
