@@ -114,6 +114,17 @@ To resolve this, the paper proposes that we allow ambiguous contractions but ski
 ![](/images/nlp-aug-contraction-solution.png){.img-center}  
 You can find a list of contractions for the English language [here](https://en.wikipedia.org/wiki/Wikipedia%3aList_of_English_contractions).
 
+## 4. Random Noise Injection
+The idea of these methods is to inject noise in the text so that the model trained is robust to perturbations.  
+
+- **Spelling error injection**  
+In this method, we add spelling error to some random in the sentence. These spelling errors can be added programatically or using a mapping of common spelling errors such as [this list](https://github.com/makcedward/nlpaug/blob/master/model/spelling_en.txt) for English.  
+![](/images/nlp-aug-spelling-example.png){.img-center}  
+
+- **QWERTY Keyboard Error Injection**    
+This method tries to simulate common errors that happens when typing on a QWERTY layout keyboard due to keys that are very near to each other. The errors are injected based on keyboard distance.  
+![](/images/nlp-aug-keyboard-error-example.png){.img-center}  
+
 ## References
 - Qizhe Xie, et al. ["Unsupervised Data Augmentation for Consistency Training"](https://arxiv.org/abs/1904.12848)  
 - Claude Coulombe ["Text Data Augmentation Made Simple By Leveraging NLP Cloud APIs"](https://arxiv.org/abs/1812.04718)
