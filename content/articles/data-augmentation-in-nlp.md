@@ -151,6 +151,20 @@ This technique has been used in the paper by [Coulombe](https://arxiv.org/abs/18
 For example, one transformation that doesn't change meaning of the sentence is transformation from active voice to passive voice of sentence and vice versa.  
 ![](/images/nlp-aug-syntax-tree-manipulation.png){.img-center}  
 
+## 7. MixUp for Text      
+Mixup is an simple yet effective image augmentation technique introduced by [Zhang et al.](https://arxiv.org/abs/1710.09412) in 2017. The idea is to combine two random images in a mini-batch in some proportion to generate synthetic examples for training. For images, this means combining image pixels together. The method acts as a form of regularization.   
+![](/images/nlp-aug-mixup-image.png){.img-center}  
+
+Bringing this idea to NLP, [Guo et al.](https://arxiv.org/abs/1905.08941) modified Mixup to work with text. They propose two novel approaches for applying Mixup to text:  
+
+- **wordMixup**:  
+In this method, two random sentences in a mini-batch are taken and they are zero-padded to the same length. Then, their word embeddings are combined in some proportion. The resulting word embedding is passed to the usual flow for text classification. The cross-entropy loss is calculated for both the labels of original text in given proportion.  
+![](/images/nlp-aug-wordmixup.png){.img-center}  
+
+- **sentMixup**:  
+In this method, two sentences are taken and they are zero-padded to the same length. Then, their word embeddings are passed through LSTM/CNN encoder and we take the last hidden state as sentence embedding. These embeddings are combined in certain proportion and then passed for final classification layer. The cross-entropy loss is calculated based on both the labels of original sentences in given proportion.  
+![](/images/nlp-aug-sentmixup.png){.img-center}  
+
 ## Implementation
 Python libraries like [nlpaug](https://github.com/makcedward/nlpaug) and [textattack](https://github.com/QData/TextAttack) provide simple and consistent API to apply the above methods. They are framework agnostic and can be easily integrated in your pipeline.  
 
@@ -175,4 +189,5 @@ If you found this blog post useful, please consider citing it as:
 - Xiang Zhang, et al. ["Character-level Convolutional Networks for Text Classification"](https://arxiv.org/abs/1509.01626)
 - Franco M. Luque ["Atalaya at TASS 2019: Data Augmentation and Robust Embeddings for Sentiment Analysis"](https://arxiv.org/abs/1909.11241)
 - Ziang Xie, et al. ["Data Noising as Smoothing in Neural Network Language Models"](https://arxiv.org/abs/1703.02573)
-- Hongyu Guo et al. ["Augmenting Data with Mixup for Sentence Classification: An Empirical Study"](https://arxiv.org/abs/1905.08941)
+- Hongyu Guo, et al. ["Augmenting Data with Mixup for Sentence Classification: An Empirical Study"](https://arxiv.org/abs/1905.08941)
+- Hongyi Zhang, et al. ["mixup: Beyond Empirical Risk Minimization"](https://arxiv.org/abs/1710.09412)
