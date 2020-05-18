@@ -139,34 +139,34 @@ This is a naive technique where we shuffle sentences present in a training text 
 ![](/images/nlp-aug-sentence-shuffle.png){.img-center}  
 
 ## 5. Instance Crossover Augmentation  
-This technique was introduced by [Luque](https://arxiv.org/abs/1909.11241) in his paper on sentiment analysis for TASS 2019. This technique takes its inspiration from the chromosome crossover operation that happens in genetics.    
-In the method, tweets are divided into two halves and two random tweets of same polarity(i.e. positive/negative) have their halves swapped. The hypothesis is that the even though the result will be ungrammatical and semantically unsound, the new text will still preserve the sentiment polarity.  
+This technique was introduced by [Luque](https://arxiv.org/abs/1909.11241) in his paper on sentiment analysis for TASS 2019. It is inspired by the chromosome crossover operation that happens in genetics.    
+In the method, tweets are divided into two halves and two random tweets of the same polarity(i.e. positive/negative) have their halves swapped. The hypothesis is that even though the result will be ungrammatical and semantically unsound, the new text will still preserve the sentiment polarity.  
 ![](/images/nlp-aug-instance-crossover.png){.img-center}  
 
-This technique had no impact on the accuracy but helped with the F1 score in the paper showing its impact for minority classes such as Neutral class with less tweets.    
+This technique had no impact on the accuracy but helped with the F1 score in the paper showing its impact on minority classes such as Neutral class with fewer tweets.    
 ![](/images/nlp-aug-instance-crossover-result.png){.img-center}  
 
 ## 6. Syntax-tree Manipulation
 This technique has been used in the paper by [Coulombe](https://arxiv.org/abs/1812.04718). The idea is to parse and generate the dependency tree of the original sentence, transform it using rules and generate a paraphrased sentence.  
-For example, one transformation that doesn't change meaning of the sentence is transformation from active voice to passive voice of sentence and vice versa.  
+For example, one transformation that doesn't change the meaning of the sentence is the transformation from active voice to the passive voice of sentence and vice versa.  
 ![](/images/nlp-aug-syntax-tree-manipulation.png){.img-center}  
 
 ## 7. MixUp for Text      
-Mixup is an simple yet effective image augmentation technique introduced by [Zhang et al.](https://arxiv.org/abs/1710.09412) in 2017. The idea is to combine two random images in a mini-batch in some proportion to generate synthetic examples for training. For images, this means combining image pixels together. The method acts as a form of regularization.   
+Mixup is a simple yet effective image augmentation technique introduced by [Zhang et al.](https://arxiv.org/abs/1710.09412) in 2017. The idea is to combine two random images in a mini-batch in some proportion to generate synthetic examples for training. For images, this means combining image pixels. The method acts as a form of regularization.   
 ![](/images/nlp-aug-mixup-image.png){.img-center}  
 
 Bringing this idea to NLP, [Guo et al.](https://arxiv.org/abs/1905.08941) modified Mixup to work with text. They propose two novel approaches for applying Mixup to text:  
 
 - **wordMixup**:  
-In this method, two random sentences in a mini-batch are taken and they are zero-padded to the same length. Then, their word embeddings are combined in some proportion. The resulting word embedding is passed to the usual flow for text classification. The cross-entropy loss is calculated for both the labels of original text in given proportion.  
+In this method, two random sentences in a mini-batch are taken and they are zero-padded to the same length. Then, their word embeddings are combined in some proportion. The resulting word embedding is passed to the usual flow for text classification. The cross-entropy loss is calculated for both the labels of the original text in the given proportion.  
 ![](/images/nlp-aug-wordmixup.png){.img-center}  
 
 - **sentMixup**:  
-In this method, two sentences are taken and they are zero-padded to the same length. Then, their word embeddings are passed through LSTM/CNN encoder and we take the last hidden state as sentence embedding. These embeddings are combined in certain proportion and then passed for final classification layer. The cross-entropy loss is calculated based on both the labels of original sentences in given proportion.  
+In this method, two sentences are taken and they are zero-padded to the same length. Then, their word embeddings are passed through LSTM/CNN encoder and we take the last hidden state as sentence embedding. These embeddings are combined in a certain proportion and then passed to the final classification layer. The cross-entropy loss is calculated based on both the labels of original sentences in the given proportion.  
 ![](/images/nlp-aug-sentmixup.png){.img-center}  
 
 ## Implementation
-Python libraries like [nlpaug](https://github.com/makcedward/nlpaug) and [textattack](https://github.com/QData/TextAttack) provide simple and consistent API to apply the above methods. They are framework agnostic and can be easily integrated in your pipeline.  
+Python libraries like [nlpaug](https://github.com/makcedward/nlpaug) and [textattack](https://github.com/QData/TextAttack) provide simple and consistent API to apply the above methods. They are framework agnostic and can be easily integrated into your pipeline.  
 
 ## Conclusion  
 My takeaway from the literature review is that many of these augmentation methods are very task-specific and their impact on performance has been studied for some particular use-cases only. It would be an interesting research to systematically compare these methods and analyze their impact on performance for many tasks.    
