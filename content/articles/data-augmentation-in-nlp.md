@@ -152,7 +152,7 @@ For example, one transformation that doesn't change meaning of the sentence is t
 ![](/images/nlp-aug-syntax-tree-manipulation.png){.img-center}  
 
 ## Implementation
-To apply all the above methods, you can use the python library called [nlpaug](https://github.com/makcedward/nlpaug). It provides a simple and consistent API to apply these techniques.  
+Python libraries like [nlpaug](https://github.com/makcedward/nlpaug) and [textattack](https://github.com/QData/TextAttack) provide simple and consistent API to apply the above methods. They are framework agnostic and can be easily integrated in your pipeline.  
 
 ## Conclusion  
 My takeaway from the literature review is that many of these augmentation methods are very task-specific and their impact on performance has been studied for some particular use-cases only. It would be an interesting research to systematically compare these methods and analyze their impact on performance for many tasks.    
