@@ -157,6 +157,17 @@ Python libraries like [nlpaug](https://github.com/makcedward/nlpaug) and [textat
 ## Conclusion  
 My takeaway from the literature review is that many of these augmentation methods are very task-specific and their impact on performance has been studied for some particular use-cases only. It would be an interesting research to systematically compare these methods and analyze their impact on performance for many tasks.    
 
+## Citation Info (BibTex)
+If you found this blog post useful, please consider citing it as:
+```
+@misc{chaudhary2020nlpaugment,
+  title   = {A Visual Survey of Data Augmentation in NLP},
+  author  = {Amit Chaudhary},
+  year    = 2020,
+  note    = {\url{https://amitness.com/2020/05/data-augmentation-for-nlp}
+}
+```
+
 ## References
 - Qizhe Xie, et al. ["Unsupervised Data Augmentation for Consistency Training"](https://arxiv.org/abs/1904.12848)  
 - Claude Coulombe ["Text Data Augmentation Made Simple By Leveraging NLP Cloud APIs"](https://arxiv.org/abs/1812.04718)
@@ -164,3 +175,4 @@ My takeaway from the literature review is that many of these augmentation method
 - Xiang Zhang, et al. ["Character-level Convolutional Networks for Text Classification"](https://arxiv.org/abs/1509.01626)
 - Franco M. Luque ["Atalaya at TASS 2019: Data Augmentation and Robust Embeddings for Sentiment Analysis"](https://arxiv.org/abs/1909.11241)
 - Ziang Xie, et al. ["Data Noising as Smoothing in Neural Network Language Models"](https://arxiv.org/abs/1703.02573)
+- Hongyu Guo et al. ["Augmenting Data with Mixup for Sentence Classification: An Empirical Study"](https://arxiv.org/abs/1905.08941)
