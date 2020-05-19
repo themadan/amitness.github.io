@@ -169,7 +169,7 @@ In this method, two sentences are taken and they are zero-padded to the same len
 These line of work tries to generate additional training data while preserving the class label.  
 
 - **Conditional Pre-trained Language Models**  
-This technique was proposed by [Kumar et al.](https://arxiv.org/abs/2003.02245) in their paper which uses transformers models to expand the training data. The process is as follows:  
+This technique was proposed by [Kumar et al.](https://arxiv.org/abs/2003.02245) in their paper which uses transformers models to expand the training data. The problem formulation is as follows:   
 
     - Prepend the class label to each text in your training data  
     ![](/images/nlp-aug-generation-training.png){.img-center}  
