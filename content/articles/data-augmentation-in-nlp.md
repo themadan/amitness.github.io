@@ -8,21 +8,21 @@ Status: published
 Authors: Amit Chaudhary
 Cover: /images/semantic-invariance-nlp.png
 
-Unlike Computer Vision where using image data augmentation is standard practice, augmentation of text data in NLP is pretty rare. This is because trivial operations for images like rotating an image a few degrees or converting it into grayscale doesn't change its semantics. This presence of semantically invariant transformation is what made augmentation an essential toolkit in Computer Vision research.
+Unlike Computer Vision where using image data augmentation is a standard practice, augmentation of text data in NLP is pretty rare. This is because trivial operations for images like rotating an image a few degrees or converting it into grayscale doesn't change its semantics. This presence of semantically invariant transformation is what made augmentation an essential toolkit in Computer Vision research.
 ![](/images/semantic-invariance-nlp.png){.img-center}
 
-I was curious if there were attempts at developing augmentation techniques for NLP and explored the existing literature. In this post, I will share my findings of the current approaches being used for augmenting text data.  
+I was curious if there were attempts at developing augmentation techniques for NLP and explored the existing literature. In this post, I will give an overview of the current approaches being used for augmenting text data based on my findings.    
 
-## Approaches
+## Augmentation Techniques
 ## 1. Lexical Substitution
-This approach tries to substitute words present in a text without changing the gist of the sentence.
+This line of work tries to substitute words present in a text without changing the meaning of the sentence.
 
 - **Thesaurus-based substitution**  
-In this technique, we take a random word from the sentence and replace it with its synonym using a Thesaurus. For example, we could use the [WordNet](https://wordnet.princeton.edu/) lexical database for English to look up the synonyms and then perform the replacement. It is a manually curated database with relations between words.
+In this technique, we take a random word from the sentence and replace it with its synonym using a Thesaurus. For example, we could use the [WordNet](https://wordnet.princeton.edu/) database for English to look up the synonyms and then perform the replacement. It is a manually curated database with relations between words.
 ![](/images/nlp-aug-wordnet.png){.img-center}  
 [Zhang et al.](https://arxiv.org/abs/1509.01626) used this technique in their 2015 paper "Character-level Convolutional Networks for Text Classification". [Mueller et al.](https://www.aaai.org/ocs/index.php/AAAI/AAAI16/paper/download/12195/12023) used a similar strategy to generate additional 10K training examples for their sentence similarity model.  
 <br>
-NLTK provides a programmatic [access](https://www.nltk.org/howto/wordnet.html) to WordNet. You can also use [TextBlob API](https://textblob.readthedocs.io/en/dev/quickstart.html#wordnet-integration). There is also a database called [PPDB](http://paraphrase.org/#/download) containing millions of paraphrases that you can download and access programmatically.  
+For implementation, NLTK provides a programmatic [access](https://www.nltk.org/howto/wordnet.html) to WordNet. You can also use the [TextBlob API](https://textblob.readthedocs.io/en/dev/quickstart.html#wordnet-integration). Additionally, there is a database called [PPDB](http://paraphrase.org/#/download) containing millions of paraphrases that you can download and use programmatically.  
 
 - **Word-Embeddings Substitution**  
 In this approach, we take pre-trained word embeddings such as Word2Vec, GloVe, FastText, Sent2Vec, and use the nearest neighbor words in the embedding space as the replacement for some word in the sentence. [Jiao et al.](https://arxiv.org/abs/1909.10351) have used this technique with GloVe embeddings in their paper "*TinyBert*" to improve generalization of their language model on downstream tasks. [Wang et al.](https://www.aclweb.org/anthology/D15-1306.pdf) used it to augment tweets needed to learn a topic model.  
@@ -49,11 +49,11 @@ You will get back the 5 most similar words along with the cosine similarities.
 - **Masked Language Model**  
 Transformer models such as BERT, ROBERTA and ALBERT have been trained on a large amount of text using a pretext task called "Masked Language Modeling" where the model has to predict masked words based on the context.  
 <br>
-This can be used to augment some text. For example, we could use a pre-trained BERT model and mask some parts of the text. Then, we use the BERT model to predict the token for the mask.  
+This can be used to augment some text. For example, we could use a pre-trained BERT model, mask some parts of the text and ask the BERT model to predict the token for the mask.    
 ![](/images/nlp-aug-bert-mlm.png){.img-center}
 Thus, we can generate variations of a text using the mask predictions. Compared to previous approaches, the generated text is more grammatically coherent as the model takes context into account when making predictions.
 ![](/images/nlp-aug-bert-augmentations.png){.img-center}  
-This is easy to implement with open-source libraries such as transformers by Hugging Face. You can set the token you want to replace with `<mask>` and generate predictions.  
+This is easy to implement with open-source libraries such as [transformers](https://huggingface.co/transformers/) by Hugging Face. You can set the token you want to replace with `<mask>` and generate predictions.  
 ```python
 from transformers import pipeline
 nlp = pipeline('fill-mask')
@@ -77,23 +77,23 @@ nlp('This is <mask> cool')
   'sequence': '<s> This is very cool</s>',
   'token': 182}]
 ```  
-However one caveat of this method is that deciding which part of the text to mask is not trivial. You will have to use heuristics to decide the mask, otherwise the generated text will not retain the meaning of original sentence.  
+However one caveat of this method is that deciding which part of the text to mask is not trivial. You will have to use heuristics to decide the mask, otherwise the generated text might not retain the meaning of original sentence.  
 
 
 - **TF-IDF based word replacement**  
 This augmentation method was proposed by [Xie et al.](https://arxiv.org/abs/1904.12848) in the Unsupervised Data Augmentation paper. The basic idea is that words that have <span style="color: #d52f2f;">low TF-IDF scores</span> are uninformative and thus can be replaced without affecting the ground-truth labels of the sentence.
 ![](/images/nlp-aug-tf-idf-word-replacement.png){.img-center}  
-The words to replace with are chosen from the whole vocabulary that have low TF-IDF scores in the whole document. You can refer to the implementation in the original paper from [here](https://github.com/google-research/uda/blob/master/text/augmentation/word_level_augment.py).
+The words that replaces the original word are chosen by calculating TF-IDF scores of words over the whole document and taking the lowest ones. You can refer to the code implementation for this in the original paper [here](https://github.com/google-research/uda/blob/master/text/augmentation/word_level_augment.py).  
 
 
 
 ## 2. Back Translation
-In this approach, we leverage machine translation to paraphrase a text while retraining the meaning. [Xie et al.](https://arxiv.org/abs/1904.12848) used this method to augment the unlabeled text and learn a semi-supervised model on IMDB dataset with only 20 labeled examples. The method outperformed the previous state-of-the-art model trained on 25,000 labeled examples.
+In this approach, we leverage machine translation to paraphrase a text while retraining the meaning. [Xie et al.](https://arxiv.org/abs/1904.12848) used this method to augment the unlabeled text and learn a semi-supervised model on IMDB dataset with only 20 labeled examples. Their model outperformed the previous state-of-the-art model trained on 25,000 labeled examples.
 
 The back-translation process is as follows:  
 
 - Take some sentence (e.g. in English) and translate to another Language e.g. French  
-- Translate the french sentence back into English sentence  
+- Translate the French sentence back into English sentence  
 - Check if the new sentence is different from our original sentence. If it is, then we use this new sentence as an augmented version of the original text.  
 ![](/images/nlp-aug-back-translation.png){.img-center}  
 
@@ -108,11 +108,11 @@ These are simple pattern matching transformations applied using regex and was in
 
 In the paper, he gives an example of transforming verbal forms from contraction to expansion and vice versa. We can generate augmented texts by applying this.  
 ![](/images/nlp-aug-contraction.png){.img-center}  
-Since the transformation should not change the meaning of the sentence, we can see this can fail in case of expanding ambiguous verbal forms like:
+Since the transformation should not change the meaning of the sentence, we can see that this can fail in case of expanding ambiguous verbal forms like:
 ![](/images/nlp-aug-contraction-ambiguity.png){.img-center}  
 To resolve this, the paper proposes that we allow ambiguous contractions but skip ambiguous expansion.  
 ![](/images/nlp-aug-contraction-solution.png){.img-center}  
-You can find a list of contractions for the English language [here](https://en.wikipedia.org/wiki/Wikipedia%3aList_of_English_contractions).
+You can find a list of contractions for the English language [here](https://en.wikipedia.org/wiki/Wikipedia%3aList_of_English_contractions). For expansion, you can use the [contractions](https://github.com/kootenpv/contractions) library in Python.  
 
 ## 4. Random Noise Injection
 The idea of these methods is to inject noise in the text so that the model trained is robust to perturbations.  
@@ -126,12 +126,12 @@ This method tries to simulate common errors that happen when typing on a QWERTY 
 ![](/images/nlp-aug-keyboard-error-example.png){.img-center}  
 
 - **Unigram Noising**    
-This method has been used by [Xie et al.](https://arxiv.org/abs/1703.02573) and also the [UDA](https://arxiv.org/abs/1904.12848) paper. The idea is to perform replacement with words sampled from the unigram frequency distribution. This frequency is basically how many times each word occurs in the training corpus.    
+This method has been used by [Xie et al.](https://arxiv.org/abs/1703.02573) and the [UDA](https://arxiv.org/abs/1904.12848) paper. The idea is to perform replacement with words sampled from the unigram frequency distribution. This frequency is basically how many times each word occurs in the training corpus.    
 ![](/images/nlp-aug-unigram-noise.png){.img-center}  
 
 
 - **Blank Noising**    
-This method has been proposed by [Xie et al.](https://arxiv.org/abs/1703.02573) in their paper. The idea is to replace some random word with a placeholder token. The paper uses "_" as the placeholder token. In the paper, they use it as a way to avoid overfitting on specific contexts as well as a smoothing mechanism for the language model. The technique helped improve perplexity and BLEU scores in the paper.   
+This method has been proposed by [Xie et al.](https://arxiv.org/abs/1703.02573) in their paper. The idea is to replace some random word with a placeholder token. The paper uses "_" as the placeholder token. In the paper, they use it as a way to avoid overfitting on specific contexts as well as a smoothing mechanism for the language model. The technique helped improve perplexity and BLEU scores.   
 ![](/images/nlp-aug-blank-noising.png){.img-center}  
 
 - **Sentence Shuffling**    
@@ -140,10 +140,10 @@ This is a naive technique where we shuffle sentences present in a training text 
 
 ## 5. Instance Crossover Augmentation  
 This technique was introduced by [Luque](https://arxiv.org/abs/1909.11241) in his paper on sentiment analysis for TASS 2019. It is inspired by the chromosome crossover operation that happens in genetics.    
-In the method, tweets are divided into two halves and two random tweets of the same polarity(i.e. positive/negative) have their halves swapped. The hypothesis is that even though the result will be ungrammatical and semantically unsound, the new text will still preserve the sentiment polarity.  
+In the method, a tweet are divided into two halves and two random tweets of the same polarity(i.e. positive/negative) have their halves swapped. The hypothesis is that even though the result will be ungrammatical and semantically unsound, the new text will still preserve the sentiment.    
 ![](/images/nlp-aug-instance-crossover.png){.img-center}  
 
-This technique had no impact on the accuracy but helped with the F1 score in the paper showing its impact on minority classes such as Neutral class with fewer tweets.    
+This technique had no impact on the accuracy but helped with the F1 score in the paper showing that it helps minority classes such as Neutral class with fewer tweets.      
 ![](/images/nlp-aug-instance-crossover-result.png){.img-center}  
 
 ## 6. Syntax-tree Manipulation
@@ -152,7 +152,7 @@ For example, one transformation that doesn't change the meaning of the sentence 
 ![](/images/nlp-aug-syntax-tree-manipulation.png){.img-center}  
 
 ## 7. MixUp for Text      
-Mixup is a simple yet effective image augmentation technique introduced by [Zhang et al.](https://arxiv.org/abs/1710.09412) in 2017. The idea is to combine two random images in a mini-batch in some proportion to generate synthetic examples for training. For images, this means combining image pixels. The method acts as a form of regularization.   
+Mixup is a simple yet effective image augmentation technique introduced by [Zhang et al.](https://arxiv.org/abs/1710.09412) in 2017. The idea is to combine two random images in a mini-batch in some proportion to generate synthetic examples for training. For images, this means combining image pixels of two different classes. It acts as a form of regularization during training.     
 ![](/images/nlp-aug-mixup-image.png){.img-center}  
 
 Bringing this idea to NLP, [Guo et al.](https://arxiv.org/abs/1905.08941) modified Mixup to work with text. They propose two novel approaches for applying Mixup to text:  
