@@ -1,6 +1,6 @@
 Title: A Visual Survey of Data Augmentation in NLP
 Date: 2020-05-16 22:22
-Modified: 2020-05-16 22:22
+Modified: 2020-05-20 14:12
 Category: nlp
 Slug: data-augmentation-for-nlp
 Summary: An extensive overview of text data augmentation techniques for Natural Language Processing
