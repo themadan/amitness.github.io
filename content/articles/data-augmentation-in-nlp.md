@@ -20,7 +20,7 @@ This line of work tries to substitute words present in a text without changing t
 - **Thesaurus-based substitution**  
 In this technique, we take a random word from the sentence and replace it with its synonym using a Thesaurus. For example, we could use the [WordNet](https://wordnet.princeton.edu/) database for English to look up the synonyms and then perform the replacement. It is a manually curated database with relations between words.
 ![](/images/nlp-aug-wordnet.png){.img-center}  
-[Zhang et al.](https://arxiv.org/abs/1509.01626) used this technique in their 2015 paper "Character-level Convolutional Networks for Text Classification". [Mueller et al.](https://www.aaai.org/ocs/index.php/AAAI/AAAI16/paper/download/12195/12023) used a similar strategy to generate additional 10K training examples for their sentence similarity model.  
+[Zhang et al.](https://arxiv.org/abs/1509.01626) used this technique in their 2015 paper "Character-level Convolutional Networks for Text Classification". [Mueller et al.](https://www.aaai.org/ocs/index.php/AAAI/AAAI16/paper/download/12195/12023) used a similar strategy to generate additional 10K training examples for their sentence similarity model. This technique was also used by [Wei et al.](https://arxiv.org/abs/1901.11196) as one of the techniques in their pool of four random augmentations in the "Easy Data Augmentation" paper.  
 <br>
 For implementation, NLTK provides a programmatic [access](https://www.nltk.org/howto/wordnet.html) to WordNet. You can also use the [TextBlob API](https://textblob.readthedocs.io/en/dev/quickstart.html#wordnet-integration). Additionally, there is a database called [PPDB](http://paraphrase.org/#/download) containing millions of paraphrases that you can download and use programmatically.  
 
@@ -129,7 +129,6 @@ This method tries to simulate common errors that happen when typing on a QWERTY 
 This method has been used by [Xie et al.](https://arxiv.org/abs/1703.02573) and the [UDA](https://arxiv.org/abs/1904.12848) paper. The idea is to perform replacement with words sampled from the unigram frequency distribution. This frequency is basically how many times each word occurs in the training corpus.    
 ![](/images/nlp-aug-unigram-noise.png){.img-center}  
 
-
 - **Blank Noising**    
 This method has been proposed by [Xie et al.](https://arxiv.org/abs/1703.02573) in their paper. The idea is to replace some random word with a placeholder token. The paper uses "_" as the placeholder token. In the paper, they use it as a way to avoid overfitting on specific contexts as well as a smoothing mechanism for the language model. The technique helped improve perplexity and BLEU scores.   
 ![](/images/nlp-aug-blank-noising.png){.img-center}  
@@ -137,6 +136,18 @@ This method has been proposed by [Xie et al.](https://arxiv.org/abs/1703.02573) 
 - **Sentence Shuffling**    
 This is a naive technique where we shuffle sentences present in a training text to create an augmented version.  
 ![](/images/nlp-aug-sentence-shuffle.png){.img-center}  
+
+- **Random Insertion**  
+This technique was proposed by [Wei et al.](https://arxiv.org/abs/1901.11196) in their paper "Easy Data Augmentation". In this technique, we first choose a random word from the sentence that is not a stop word. Then, we find its synonym and insert that into a random position in the sentence. 
+![](/images/nlp-aug-random-insertion.png){.img-center}  
+
+- **Random Swap**  
+This technique was also proposed by [Wei et al.](https://arxiv.org/abs/1901.11196) in their paper "Easy Data Augmentation". The idea is to randomly swap any two words in the sentence.  
+![](/images/nlp-aug-random-swap.png){.img-center}  
+
+- **Random Deletion**  
+This technique was also proposed by [Wei et al.](https://arxiv.org/abs/1901.11196) in their paper "Easy Data Augmentation".  In this, we randomly remove each word in the sentence with some probability p.  
+![](/images/nlp-aug-random-deletion.png){.img-center}  
 
 ## 5. Instance Crossover Augmentation  
 This technique was introduced by [Luque](https://arxiv.org/abs/1909.11241) in his paper on sentiment analysis for TASS 2019. It is inspired by the chromosome crossover operation that happens in genetics.    
@@ -206,3 +217,4 @@ If you found this blog post useful, please consider citing it as:
 - Hongyu Guo, et al. ["Augmenting Data with Mixup for Sentence Classification: An Empirical Study"](https://arxiv.org/abs/1905.08941)
 - Hongyi Zhang, et al. ["mixup: Beyond Empirical Risk Minimization"](https://arxiv.org/abs/1710.09412)
 - Varun Kumar, et al. ["Data Augmentation using Pre-trained Transformer Models"](https://arxiv.org/abs/2003.02245)
+- Jason Wei, et al. ["EDA: Easy Data Augmentation Techniques for Boosting Performance on Text Classification Tasks"](https://arxiv.org/abs/1901.11196)
