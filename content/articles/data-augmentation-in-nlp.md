@@ -1,6 +1,6 @@
 Title: A Visual Survey of Data Augmentation in NLP
 Date: 2020-05-16 22:22
-Modified: 2020-05-20 14:12
+Modified: 2020-05-20 22:43
 Category: nlp
 Slug: data-augmentation-for-nlp
 Summary: An extensive overview of text data augmentation techniques for Natural Language Processing
@@ -11,10 +11,10 @@ Cover: /images/semantic-invariance-nlp.png
 Unlike Computer Vision where using image data augmentation is a standard practice, augmentation of text data in NLP is pretty rare. This is because trivial operations for images like rotating an image a few degrees or converting it into grayscale doesn't change its semantics. This presence of semantically invariant transformation is what made augmentation an essential toolkit in Computer Vision research.
 ![](/images/semantic-invariance-nlp.png){.img-center}
 
-I was curious if there were attempts at developing augmentation techniques for NLP and explored the existing literature. In this post, I will give an overview of the current approaches being used for augmenting text data based on my findings.    
+I was curious if there were attempts at developing augmentation techniques for NLP and explored the existing literature. In this post, I will give an overview of the current approaches being used for text data augmentation based on my findings.    
 
-## Augmentation Techniques
-## 1. Lexical Substitution
+## NLP Data Augmentation Techniques
+## 1. Lexical Substitution  
 This line of work tries to substitute words present in a text without changing the meaning of the sentence.
 
 - **Thesaurus-based substitution**  
@@ -191,10 +191,10 @@ This technique was proposed by [Kumar et al.](https://arxiv.org/abs/2003.02245) 
   
 
 ## Implementation
-Python libraries like [nlpaug](https://github.com/makcedward/nlpaug) and [textattack](https://github.com/QData/TextAttack) provide simple and consistent API to apply the above methods. They are framework agnostic and can be easily integrated into your pipeline.  
+Libraries like [nlpaug](https://github.com/makcedward/nlpaug) and [textattack](https://github.com/QData/TextAttack) provide simple and consistent API to apply the above NLP data augmentation methods in Python. They are framework agnostic and can be easily integrated into your pipeline.   
 
 ## Conclusion  
-My takeaway from the literature review is that many of these augmentation methods are very task-specific and their impact on performance has been studied for some particular use-cases only. It would be an interesting research to systematically compare these methods and analyze their impact on performance for many tasks.    
+My takeaway from the literature review is that many of these NLP augmentation methods are very task-specific and their impact on performance has been studied for some particular use-cases only. It would be an interesting research to systematically compare these methods and analyze their impact on performance for many tasks.    
 
 ## Citation Info (BibTex)
 If you found this blog post useful, please consider citing it as:
