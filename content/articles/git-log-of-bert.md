@@ -59,6 +59,7 @@ XLNet: Generalized Autoregressive Pretraining for Language Understanding
 <p style="color: #7a942e;">+Permutation Language Modeling</p>  
 <p style="color: #7a942e;">+Transformer-XL</p>  
 <p style="color: #7a942e;">+Two-stream self-attention</p>  
+<p style="color: #7a942e;">+SentencePiece Tokenizer</p>  
   </div>
 </article>
 
@@ -123,6 +124,7 @@ ALBERT: A Lite BERT for Self-supervised Learning of Language Representations
 <p style="color: #7a942e;">+Sentence Order Prediction</p>  
 <p style="color: #7a942e;">+Cross-layer Parameter Sharing</p>  
 <p style="color: #7a942e;">+Factorized Embeddings</p>  
+<p style="color: #7a942e;">+SentencePiece Tokenizer</p>  
   </div>
 </article>
 
