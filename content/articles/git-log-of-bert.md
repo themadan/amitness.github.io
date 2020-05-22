@@ -1,6 +1,6 @@
 Title: A Commit History of BERT and its Forks
 Date: 2020-05-09 17:18
-Modified: 2020-05-22 18:31
+Modified: 2020-05-22 19:13
 Category: nlp
 Slug: git-log-of-bert
 Summary: What a commit history of version-controlled research papers could look like?
@@ -36,7 +36,7 @@ Initial Commit: BERT
 <div class="message-body">
 <p style="color: #A57705;">commit <a href="https://arxiv.org/abs/1901.07291">arXiv:1901.07291</a></p>   
 <p>Author: Lample et al.</p>  
-<p>Date:   Sun Nov 10 10:46:37 2019 +0000</p>
+<p>Date:   Tue Jan 22 13:22:34 2019 +0000</p>
 <h2 style="padding-left: 1rem;">  
 Cross-lingual Language Model Pretraining
 </h2>  
@@ -45,6 +45,36 @@ Cross-lingual Language Model Pretraining
   </div>
 </article>
 
+
+<article class="message is-dark">
+<div class="message-body">
+<p style="color: #A57705;">commit <a href="https://arxiv.org/abs/1901.08746">arXiv:1901.08746</a></p>   
+<p>Author: Lee et al.</p>  
+<p>Date:   Fri Jan 25 05:57:24 2019 +0000</p>
+<h2 style="padding-left: 1rem;">  
+BioBERT: a pre-trained biomedical language representation model for biomedical text mining
+</h2>  
+<p style="color: #7a942e;">+PubMed Abstracts data</p>  
+<p style="color: #7a942e;">+PubMed Central Full Texts data</p>  
+  </div>
+</article>
+
+<article class="message is-dark">
+<div class="message-body">
+<p style="color: #A57705;">commit <a href="https://arxiv.org/abs/1903.10676">arXiv:1903.10676</a></p>   
+<p>Author: Beltagy et al.</p>  
+<p>Date:   Tue Mar 26 05:11:46 2019 +0000</p>
+<h2 style="padding-left: 1rem;">  
+SciBERT: A Pretrained Language Model for Scientific Text
+</h2>  
+<p style="color: #aa3131;">-BERT WordPiece Vocabulary</p>    
+<p style="color: #aa3131;">-English Wikipedia</p>    
+<p style="color: #aa3131;">-BookCorpus</p>    
+<p style="color: #7a942e;">+1.14M Semantic Scholar Papers(Biomedial + Computer Science)</p>  
+<p style="color: #7a942e;">+ScispaCy segmentation</p>  
+<p style="color: #7a942e;">+SciVOCAB WordPiece Vocabulary</p>  
+  </div>
+</article>
 
 <article class="message is-dark">
 <div class="message-body">
