@@ -1,6 +1,6 @@
 Title: A Commit History of BERT and its Forks
 Date: 2020-05-09 17:18
-Modified: 2020-05-09 17:18
+Modified: 2020-05-22 18:31
 Category: nlp
 Slug: git-log-of-bert
 Summary: What a commit history of version-controlled research papers could look like?
@@ -95,7 +95,9 @@ RoBERTa: A Robustly Optimized BERT Pretraining Approach
 <p style="color: #7a942e;">+Dynamic Masking of Tokens</p>  
 <p style="color: #7a942e;">+Byte Pair Encoding(BPE) 50K</p>  
 <p style="color: #7a942e;">+Large batch size</p>  
-<p style="color: #7a942e;">+CC-NEWS dataset</p>  
+<p style="color: #7a942e;">+CC-NEWS(76G) dataset</p>  
+<p style="color: #7a942e;">+OpenWebText(38G) dataset</p>  
+<p style="color: #7a942e;">+Stories(31G) dataset</p>  
   </div>
 </article>
 
