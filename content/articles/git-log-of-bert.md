@@ -1,6 +1,6 @@
 Title: A Commit History of BERT and its Forks
 Date: 2020-05-09 17:18
-Modified: 2020-05-22 19:13
+Modified: 2020-05-22 19:46
 Category: nlp
 Slug: git-log-of-bert
 Summary: What a commit history of version-controlled research papers could look like?
@@ -58,6 +58,19 @@ BioBERT: a pre-trained biomedical language representation model for biomedical t
 <p style="color: #7a942e;">+PubMed Central Full Texts data</p>  
   </div>
 </article>
+
+<article class="message is-dark">
+<div class="message-body">
+<p style="color: #A57705;">commit <a href="https://arxiv.org/abs/1901.11504">arXiv:1901.11504</a></p>   
+<p>Author: Liu et al.</p>  
+<p>Date:   Thu Jan 31 18:07:25 2019 +0000</p>
+<h2 style="padding-left: 1rem;">  
+Multi-Task Deep Neural Networks for Natural Language Understanding
+</h2>  
+<p style="color: #7a942e;">+Multi-task Learning</p>  
+  </div>
+</article>
+
 
 <article class="message is-dark">
 <div class="message-body">
