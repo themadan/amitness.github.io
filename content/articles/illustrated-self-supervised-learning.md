@@ -1,6 +1,6 @@
 Title: The Illustrated Self-Supervised Learning
 Date: 2020-02-25 03:00
-Modified: 2020-04-25 18:31
+Modified: 2020-05-23 12:53
 Category: computer-vision
 Slug: illustrated-self-supervised-learning
 Summary: A visual introduction to self-supervised learning methods for visual representations.
@@ -172,6 +172,7 @@ To solve this pre-text task, [Caron et al.](https://arxiv.org/abs/1807.05520) pr
 
 - [Deep clustering for unsupervised learning of visual features](https://amitness.com/2020/04/deepcluster/)  
 - [Self-labelling via simultaneous clustering and representation learning](https://amitness.com/2020/04/illustrated-self-labelling/)
+- [CliqueCNN: Deep Unsupervised Exemplar Learning](https://arxiv.org/abs/1608.08792)
 
 ## 2. **Synthetic Imagery**
 Formulation:   
