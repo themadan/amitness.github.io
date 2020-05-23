@@ -14,19 +14,24 @@ At the core of these self-supervised methods lies a framing called "**pretext ta
 
 In this post, I will provide an overview of the various problem formulations that researchers have designed to learn representations from text corpus in the wild without explicit data labeling. The focus will be on the formulation rather than the architecture.  
 
-## Problem Formulations  
+## Problem Formulations for NLP    
 ## 1. Auto-regressive Language Modeling  
 In this formulation, we take large corpus of unlabeled text and setup a task to predict the next word given the previous words. Since we already know what word should come next from the corpus, we don't need manually-annotated labels.  
-![](/images/nlp-ssl-causal-language-modeling-steps.png){.img-center}  
-For example, we could setup the task as left-to-right language modeling by predicting next words given the previous words.  
 ![](/images/nlp-ssl-causal-language-modeling.gif){.img-center}   
+For example, we could setup the task as left-to-right language modeling by predicting next words given the previous words.  
+![](/images/nlp-ssl-causal-language-modeling-steps.png){.img-center}  
 We can also formulate this as predicting the previous words given the future words. 
 ![](/images/nlp-ssl-causal-rtl.png){.img-center}  
 
 This formulation has been used in many papers ranging from n-gram models to neural network models like GPT.
 
 ## 2. Masked Language Modeling  
+In this formulation, words in a text are randomly masked and the task is to predict them. Compared to auto-regressive formulation, we can use context from both previous and next words when predicting the masked word.      
+![](/images/nlp-ssl-masked-lm.png){.img-center}  
 
+## 3. Next Sentence Prediction  
+![](/images/nlp-ssl-nsp-sampling.png){.img-center}  
+![](/images/nlp-ssl-next-sentence-prediction.png){.img-center}  
 
 ## Citation Info (BibTex)
 If you found this blog post useful, please consider citing it as:
