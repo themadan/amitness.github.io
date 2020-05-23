@@ -12,7 +12,7 @@ While Computer Vision is making [amazing progress](https://amitness.com/2020/02/
 
 At the core of these self-supervised methods lies a framing called "**pretext task**" that allows us to use the data itself to generate labels and use supervised methods to solve unsupervised problems. These are also referred to as "**auxiliary tasks**" or "**pre-training tasks**".
 
-In this post, I will provide an overview of the various problem formulations that researchers have designed to learn representations from text corpus in the wild without explicit data labeling. The focus will be on the formulation rather than the architecture.  
+In this post, I will provide an overview of the various problem formulations that researchers have designed to learn representations from text corpus without explicit data labeling. The focus will be on the formulation rather than the architecture.  
 
 ## Problem Formulations for NLP    
 ## 1. Auto-regressive Language Modeling  
@@ -32,6 +32,12 @@ In this formulation, words in a text are randomly masked and the task is to pred
 ## 3. Next Sentence Prediction  
 ![](/images/nlp-ssl-nsp-sampling.png){.img-center}  
 ![](/images/nlp-ssl-next-sentence-prediction.png){.img-center}  
+
+
+## 4. Sentence Order Prediction    
+![](/images/nlp-ssl-sop-sampling.png){.img-center}  
+![](/images/nlp-ssl-sop-example.png){.img-center}  
+
 
 ## Citation Info (BibTex)
 If you found this blog post useful, please consider citing it as:
