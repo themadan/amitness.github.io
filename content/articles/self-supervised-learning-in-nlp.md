@@ -1,4 +1,4 @@
-Title: Self Supervised Learning in NLP
+Title: Self Supervised Representation Learning in NLP
 Date: 2020-05-23 16:53
 Modified: 2020-05-23 16:53
 Category: nlp
@@ -8,12 +8,24 @@ Status: draft
 Authors: Amit Chaudhary
 Cover: /images/semantic-invariance-nlp.png
 
-While Computer Vision has had some [amazing progress](https://amitness.com/2020/02/illustrated-self-supervised-learning/) on self-supervised learning only in the last few years, it has been a first-class citizen in NLP research for quite a while. Language Models have existed since the 90's even before the phrase "self-supervised learning" was termed and popularized. The Word2Vec paper from 2013 popularized this paradigm and the field has rapidly progressed applying these self-supervised methods across many problems.  
+While Computer Vision is making [amazing progress](https://amitness.com/2020/02/illustrated-self-supervised-learning/) on self-supervised learning only in the last few years, self-supervised learning has been a first-class citizen in NLP research for quite a while. Language Models have existed since the 90's even before the phrase "self-supervised learning" was termed. The Word2Vec paper from 2013 really popularized this paradigm and the field has rapidly progressed applying these self-supervised methods across many problems.  
 
-At the core of these self-supervised methods lies a framing called "**pretext task**" that allows us to use the data itself to generate labels and use supervised methods to solve unsupervised problems. These are also known as "**auxiliary tasks**" and "**pre-training tasks**".
+At the core of these self-supervised methods lies a framing called "**pretext task**" that allows us to use the data itself to generate labels and use supervised methods to solve unsupervised problems. These are also referred to as "**auxiliary tasks**" or "**pre-training tasks**".
 
-In this post, I will provide an overview of the various pretext tasks that researchers have designed to learn representations from text corpus in the wild without explicit data labeling.  
- 
+In this post, I will provide an overview of the various problem formulations that researchers have designed to learn representations from text corpus in the wild without explicit data labeling. The focus will be on the formulation rather than the architecture.  
+
+## Problem Formulations  
+## 1. Auto-regressive Language Modeling  
+In this formulation, we take large corpus of unlabeled text and setup a task to predict the next word given the previous words. Since we already know what word should come next from the corpus, we don't need manually-annotated labels.  
+![](/images/nlp-ssl-causal-language-modeling-steps.png){.img-center}  
+For example, we could setup the task as left-to-right language modeling by predicting next words given the previous words.  
+![](/images/nlp-ssl-causal-language-modeling.gif){.img-center}   
+We can also formulate this as predicting the previous words given the future words. 
+![](/images/nlp-ssl-causal-rtl.png){.img-center}  
+
+This formulation has been used in many papers ranging from n-gram models to neural network models like GPT.
+
+## 2. Masked Language Modeling  
 
 
 ## Citation Info (BibTex)
