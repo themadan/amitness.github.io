@@ -65,9 +65,9 @@ The goal is to classify if a pair of sentences are in the correct order or not.
 It was used in the [ALBERT](https://arxiv.org/abs/1909.11942) paper to replace the "Next Sentence Prediction" task.  
 
 ## 8. Emoji Prediction  
-This formulation was used in the DeepMoji paper and exploits the idea that we use emoji to express the emotion of the thing we are tweeting. As shown below, we can use the emoji present in the tweet as the label and formulate a supervised task to predict the emoji when given the text.  
+This formulation was used in the [DeepMoji](https://arxiv.org/abs/1708.00524) paper and exploits the idea that we use emoji to express the emotion of the thing we are tweeting. As shown below, we can use the emoji present in the tweet as the label and formulate a supervised task to predict the emoji when given the text.  
 ![](/images/nlp-ssl-deepmoji.gif){.img-center}   
-Authors of DeepMoji used this concept to perform pre-training of a model on 1.2 billion tweets and then fine-tuned it on emotion-related downstream tasks like sentiment analysis, hate speech detection and insult detection.  
+Authors of [DeepMoji](https://arxiv.org/abs/1708.00524) used this concept to perform pre-training of a model on 1.2 billion tweets and then fine-tuned it on emotion-related downstream tasks like sentiment analysis, hate speech detection and insult detection.  
 
 ## Citation Info (BibTex)
 If you found this blog post useful, please consider citing it as:
