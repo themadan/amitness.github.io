@@ -10,53 +10,69 @@ Cover: /images/semantic-invariance-nlp.png
 
 While Computer Vision is making [amazing progress](https://amitness.com/2020/02/illustrated-self-supervised-learning/) on self-supervised learning only in the last few years, self-supervised learning has been a first-class citizen in NLP research for quite a while. Language Models have existed since the 90's even before the phrase "self-supervised learning" was termed. The Word2Vec paper from 2013 really popularized this paradigm and the field has rapidly progressed applying these self-supervised methods across many problems.  
 
-At the core of these self-supervised methods lies a framing called "**pretext task**" that allows us to use the data itself to generate labels and use supervised methods to solve unsupervised problems. These are also referred to as "**auxiliary tasks**" or "**pre-training tasks**".
+At the core of these self-supervised methods lies a framing called "**pretext task**" that allows us to use the data itself to generate labels and use supervised methods to solve unsupervised problems. These are also referred to as "**auxiliary task**" or "**pre-training task**".
 
-In this post, I will provide an overview of the various problem formulations that researchers have designed to learn representations from text corpus without explicit data labeling. The focus of the article will be more on the formulation than the individual architectures.    
+In this post, I will provide an overview of the various pretext tasks that researchers have designed to learn representations from text corpus without explicit data labeling. The focus of the article will be on the task formulation rather than the architectures implementing them.      
 
 ## Problem Formulations for NLP    
-## 1. Auto-regressive Language Modeling  
+## 1. Center Word Prediction  
+In this formulation, we take a certain span of text of certain window size and our goal is to predict the center word given the surrounding words.  
+![](/images/nlp-ssl-center-word-prediction.gif){.img-center}  
+For example, in below image, we have a window of size of one and so we have one word each on both sides of the center word. Using these neighboring words, we need to predict the center word.    
+![](/images/nlp-ssl-cbow-explained.png){.img-center}  
+This formulation has been used in the famous "Continous Bag of Words" approach of the Word2Vec paper.  
+
+## 2. Neighbor Word Prediction  
+In this formulation, we take a certain span of text of certain window size and our goal is to predict the surrounding words given the center word.  
+![](/images/nlp-ssl-neighbor-word-prediction.gif){.img-center}  
+This formulation has been implemented in the famous "skip-gram" approach of the Word2Vec paper.  
+
+
+## 3. Neighbor Sentence Prediction  
+In this formulation, we take three consecutive sentences and design a task where given the center sentence, we need to generate the previous sentence and the next sentence. It is similar to the previous skip-gram method but applied to sentences instead of words.  
+![](/images/nlp-ssl-neighbor-sentence.gif){.img-center}  
+This formulation has been used in the [Skip-Thought Vectors](https://arxiv.org/abs/1506.06726) paper.
+
+## 4. Auto-regressive Language Modeling  
 In this formulation, we take large corpus of unlabeled text and setup a task to predict the next word given the previous words. Since we already know what word should come next from the corpus, we don't need manually-annotated labels.  
 ![](/images/nlp-ssl-causal-language-modeling.gif){.img-center}   
 For example, we could setup the task as left-to-right language modeling by predicting <span style="color: #439f47;">next words</span> given the previous words.  
 ![](/images/nlp-ssl-causal-language-modeling-steps.png){.img-center}  
-We can also formulate this as predicting the <span style="color: #439f47;">previous words</span> given the future words. 
+We can also formulate this as predicting the <span style="color: #439f47;">previous words</span> given the future words. The direction will be from right to left.  
 ![](/images/nlp-ssl-causal-rtl.png){.img-center}  
 
-This formulation has been used in many papers ranging from n-gram models to neural network models like GPT.
+This formulation has been used in papers ranging from n-gram models to neural network models like GPT.
 
-## 2. Masked Language Modeling  
+## 5. Masked Language Modeling  
 In this formulation, words in a text are randomly masked and the task is to predict them. Compared to auto-regressive formulation, we can use context from both previous and next words when predicting the masked word.      
 ![](/images/nlp-ssl-masked-lm.png){.img-center}  
 This formulation has been used in the BERT, RoBERTa and ALBERT papers. Compared to auto-regressive formulation, in this task, we predict only a small subset of masked words and so amount of things learned from each sentence is lower.
 
-## 3. Next Sentence Prediction  
+## 6. Next Sentence Prediction  
+In this formulation, we take two consecutive sentences present in a document and another sentence from a random location in the same document or a different document.  
 ![](/images/nlp-ssl-nsp-sampling.png){.img-center}  
+Then, the task is classify whether two sentences can come one after another or not.  
 ![](/images/nlp-ssl-next-sentence-prediction.png){.img-center}  
+It was used in the BERT paper to improve performance on downstream tasks that requires understanding of sentence relations such as Natural Language Inference(NLI) and Question Answering. However, later works have questioned its effectiveness.  
 
-
-## 4. Sentence Order Prediction    
+## 7. Sentence Order Prediction    
+In this formulation, we take pairs of consecutive sentences from document. Another pair is also created where the positions of the two sentences are interchanged.    
 ![](/images/nlp-ssl-sop-sampling.png){.img-center}  
+The goal is to classify if a pair of sentences are in the correct order or not.  
 ![](/images/nlp-ssl-sop-example.png){.img-center}  
 
-## 5. Center Word Prediction  
-![](/images/nlp-ssl-center-word-prediction.gif){.img-center}  
-![](/images/nlp-ssl-cbow-explained.png){.img-center}  
-
-## 6. Neighbor Word Prediction  
-![](/images/nlp-ssl-neighbor-word-prediction.gif){.img-center}  
-
-## 7. Neighbor Sentence Prediction  
-![](/images/nlp-ssl-neighbor-sentence.gif){.img-center}  
+It was used in the ALBERT paper to replace the "Next Sentence Prediction" task.  
 
 ## 8. Emoji Prediction  
+This formulation was used in the DeepMoji paper and exploits the idea that we use emoji to express the emotion of the thing we are tweeting. As shown below, we can use the emoji present in the tweet as the label and formulate a supervised task to predict the emoji when given the text.  
 ![](/images/nlp-ssl-deepmoji.gif){.img-center}   
+Authors of DeepMoji used this concept to perform pre-training of a model on 1.2 billion tweets and then fine tuned it on emotion-related downstream tasks like sentiment analysis, hate speech detection and insult detection.  
 
 ## Citation Info (BibTex)
 If you found this blog post useful, please consider citing it as:
 ```
 @misc{chaudhary2020sslnlp,
-  title   = {Self Supervised Learning in NLP},
+  title   = {Self Supervised Representation Learning in NLP},
   author  = {Amit Chaudhary},
   year    = 2020,
   note    = {\url{https://amitness.com/2020/05/self-supervised-learning-nlp}
@@ -64,4 +80,5 @@ If you found this blog post useful, please consider citing it as:
 ```
 
 ## References
-- XYZ, et al. ["#"](https://arxiv.org/abs/1904.12848)  
+- Ryan Kiros, et al. ["Skip-Thought Vectors"](https://arxiv.org/abs/1506.06726)
+- Bjarke Felbo, et al. ["Using millions of emoji occurrences to learn any-domain representations for detecting sentiment, emotion and sarcasm"](https://arxiv.org/abs/1708.00524)  
