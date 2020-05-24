@@ -1,4 +1,4 @@
-Title: A Visual Survey of Semi-Supervised Learning Methods
+Title: A Visual Survey of Semi-Supervised Learning
 Date: 2020-04-26 18:04
 Modified: 2020-04-26 18:04
 Category: illustration
@@ -10,15 +10,19 @@ Authors: Amit Chaudhary
 
 
 
-## Methods
+## Semi-Supervised Methods
 ## **1. Pseudo-labeling**  
-- Pseudo-labeling
+- Pseudo-label
+
+**Paper Link:**    
+[Pseudo-Label : The Simple and Efficient Semi-Supervised Learning Method for Deep Neural Networks](http://deeplearning.net/wp-content/uploads/2013/03/pseudo_label_final.pdf)
+
+
 - Noisy Student  
  
 ## **2. Consistency regularization:**   
-
-- Temporal Ensembling
 - PI-model
+- Temporal Ensembling
 - Mean Teacher
 - VAT
 
