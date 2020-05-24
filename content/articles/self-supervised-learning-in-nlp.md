@@ -12,15 +12,15 @@ While Computer Vision is making [amazing progress](https://amitness.com/2020/02/
 
 At the core of these self-supervised methods lies a framing called "**pretext task**" that allows us to use the data itself to generate labels and use supervised methods to solve unsupervised problems. These are also referred to as "**auxiliary tasks**" or "**pre-training tasks**".
 
-In this post, I will provide an overview of the various problem formulations that researchers have designed to learn representations from text corpus without explicit data labeling. The focus will be on the formulation rather than the architecture.  
+In this post, I will provide an overview of the various problem formulations that researchers have designed to learn representations from text corpus without explicit data labeling. The focus of the article will be more on the formulation than the individual architectures.    
 
 ## Problem Formulations for NLP    
 ## 1. Auto-regressive Language Modeling  
 In this formulation, we take large corpus of unlabeled text and setup a task to predict the next word given the previous words. Since we already know what word should come next from the corpus, we don't need manually-annotated labels.  
 ![](/images/nlp-ssl-causal-language-modeling.gif){.img-center}   
-For example, we could setup the task as left-to-right language modeling by predicting next words given the previous words.  
+For example, we could setup the task as left-to-right language modeling by predicting <span style="color: #439f47;">next words</span> given the previous words.  
 ![](/images/nlp-ssl-causal-language-modeling-steps.png){.img-center}  
-We can also formulate this as predicting the previous words given the future words. 
+We can also formulate this as predicting the <span style="color: #439f47;">previous words</span> given the future words. 
 ![](/images/nlp-ssl-causal-rtl.png){.img-center}  
 
 This formulation has been used in many papers ranging from n-gram models to neural network models like GPT.
@@ -28,6 +28,7 @@ This formulation has been used in many papers ranging from n-gram models to neur
 ## 2. Masked Language Modeling  
 In this formulation, words in a text are randomly masked and the task is to predict them. Compared to auto-regressive formulation, we can use context from both previous and next words when predicting the masked word.      
 ![](/images/nlp-ssl-masked-lm.png){.img-center}  
+This formulation has been used in the BERT, RoBERTa and ALBERT papers. Compared to auto-regressive formulation, in this task, we predict only a small subset of masked words and so amount of things learned from each sentence is lower.
 
 ## 3. Next Sentence Prediction  
 ![](/images/nlp-ssl-nsp-sampling.png){.img-center}  
@@ -38,6 +39,12 @@ In this formulation, words in a text are randomly masked and the task is to pred
 ![](/images/nlp-ssl-sop-sampling.png){.img-center}  
 ![](/images/nlp-ssl-sop-example.png){.img-center}  
 
+## 5. Center Word Prediction  
+![](/images/nlp-ssl-center-word-prediction.gif){.img-center}  
+![](/images/nlp-ssl-cbow-explained.png){.img-center}  
+
+## 6. Neighbor Word Prediction
+![](/images/nlp-ssl-neighbor-word-prediction.gif){.img-center}  
 
 ## Citation Info (BibTex)
 If you found this blog post useful, please consider citing it as:
