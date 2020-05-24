@@ -43,8 +43,11 @@ This formulation has been used in the BERT, RoBERTa and ALBERT papers. Compared 
 ![](/images/nlp-ssl-center-word-prediction.gif){.img-center}  
 ![](/images/nlp-ssl-cbow-explained.png){.img-center}  
 
-## 6. Neighbor Word Prediction
+## 6. Neighbor Word Prediction  
 ![](/images/nlp-ssl-neighbor-word-prediction.gif){.img-center}  
+
+## 7. Neighbor Sentence Prediction  
+![](/images/nlp-ssl-neighbor-sentence.gif){.img-center}  
 
 ## Citation Info (BibTex)
 If you found this blog post useful, please consider citing it as:
