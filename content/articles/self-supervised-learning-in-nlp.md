@@ -49,6 +49,9 @@ This formulation has been used in the BERT, RoBERTa and ALBERT papers. Compared 
 ## 7. Neighbor Sentence Prediction  
 ![](/images/nlp-ssl-neighbor-sentence.gif){.img-center}  
 
+## 8. Emoji Prediction  
+![](/images/nlp-ssl-deepmoji.gif){.img-center}   
+
 ## Citation Info (BibTex)
 If you found this blog post useful, please consider citing it as:
 ```
