@@ -70,7 +70,13 @@ In this formulation, we take a continuous span of text from the corpus and break
 
 It has been used in the [BART](https://arxiv.org/abs/1910.13461) paper as one of the pre-training tasks.  
 
-## 9. Emoji Prediction  
+## 9. Document Rotation  
+In this formulation, a random token in the document is chosen as the rotation point. Then, the document is rotated such that this token becomes the starting word.  
+![](/images/nlp-ssl-document-rotation.gif){.img-center}  
+
+It has been used in the [BART](https://arxiv.org/abs/1910.13461) paper as one of the pre-training tasks. The intuition is that this will train the model to identify the start of a document.  
+
+## 10. Emoji Prediction  
 This formulation was used in the [DeepMoji](https://arxiv.org/abs/1708.00524) paper and exploits the idea that we use emoji to express the emotion of the thing we are tweeting. As shown below, we can use the emoji present in the tweet as the label and formulate a supervised task to predict the emoji when given the text.  
 ![](/images/nlp-ssl-deepmoji.gif){.img-center}   
 Authors of [DeepMoji](https://arxiv.org/abs/1708.00524) used this concept to perform pre-training of a model on 1.2 billion tweets and then fine-tuned it on emotion-related downstream tasks like sentiment analysis, hate speech detection and insult detection.  
