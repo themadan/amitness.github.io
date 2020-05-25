@@ -71,7 +71,7 @@ In this formulation, we take a continuous span of text from the corpus and break
 It has been used in the [BART](https://arxiv.org/abs/1910.13461) paper as one of the pre-training tasks.  
 
 ## 9. Document Rotation  
-In this formulation, a random token in the document is chosen as the rotation point. Then, the document is rotated such that this token becomes the starting word.  
+In this formulation, a random token in the document is chosen as the rotation point. Then, the document is rotated such that this token becomes the starting word. The task is to recover the original sentence from this rotated version.   
 ![](/images/nlp-ssl-document-rotation.gif){.img-center}  
 
 It has been used in the [BART](https://arxiv.org/abs/1910.13461) paper as one of the pre-training tasks. The intuition is that this will train the model to identify the start of a document.  
