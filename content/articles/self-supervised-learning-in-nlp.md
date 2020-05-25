@@ -69,17 +69,6 @@ This formulation was used in the [DeepMoji](https://arxiv.org/abs/1708.00524) pa
 ![](/images/nlp-ssl-deepmoji.gif){.img-center}   
 Authors of [DeepMoji](https://arxiv.org/abs/1708.00524) used this concept to perform pre-training of a model on 1.2 billion tweets and then fine-tuned it on emotion-related downstream tasks like sentiment analysis, hate speech detection and insult detection.  
 
-## Citation Info (BibTex)
-If you found this blog post useful, please consider citing it as:
-```
-@misc{chaudhary2020sslnlp,
-  title   = {Self Supervised Representation Learning in NLP},
-  author  = {Amit Chaudhary},
-  year    = 2020,
-  note    = {\url{https://amitness.com/2020/05/self-supervised-learning-nlp}
-}
-```
-
 ## References
 - Ryan Kiros, et al. ["Skip-Thought Vectors"](https://arxiv.org/abs/1506.06726)
 - Tomas Mikolov, et al. ["Efficient Estimation of Word Representations in Vector Space"](https://arxiv.org/abs/1301.3781)
