@@ -180,7 +180,7 @@ In this method, two sentences are taken and they are zero-padded to the same len
 This line of work tries to generate additional training data while preserving the class label.  
 
 - **Conditional Pre-trained Language Models**  
-This technique was proposed by [Kumar et al.](https://arxiv.org/abs/2003.02245) in their paper which uses transformers models to expand the training data. The problem formulation is as follows:   
+This technique was first proposed by Anaby-Tavor et al. in their paper ["Not Enough Data? Deep Learning to the Rescue!](https://arxiv.org/abs/1911.03118). A recent paper from [Kumar et al.](https://arxiv.org/abs/2003.02245) evaluated this idea across multiple transformer-based pre-trained models. The problem formulation is as follows:   
 
     - Prepend the class label to each text in your training data  
     ![](/images/nlp-aug-generation-training.png){.img-center}  
@@ -218,3 +218,4 @@ If you found this blog post useful, please consider citing it as:
 - Hongyi Zhang, et al. ["mixup: Beyond Empirical Risk Minimization"](https://arxiv.org/abs/1710.09412)
 - Varun Kumar, et al. ["Data Augmentation using Pre-trained Transformer Models"](https://arxiv.org/abs/2003.02245)
 - Jason Wei, et al. ["EDA: Easy Data Augmentation Techniques for Boosting Performance on Text Classification Tasks"](https://arxiv.org/abs/1901.11196)
+- Ateret Anaby-Tavor, et al. ["Not Enough Data? Deep Learning to the Rescue!"](https://arxiv.org/abs/1911.03118)
