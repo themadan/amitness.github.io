@@ -19,5 +19,5 @@ I write posts with hand-drawn diagrams and intuitions to clarify various machine
 
 <br>
 **Get Connected**  
-If you find my work interesting, let's get connected on [Twitter](https://twitter.com/amitness) or [Linkedin](https://np.linkedin.com/in/amitness)
+If you find my work interesting, let's get connected on [Twitter](https://twitter.com/amitness).
 
