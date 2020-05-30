@@ -59,8 +59,9 @@ Now, taking the trained model that can related sentences with labels, the author
 In this dataset, there are 420,000 sentences with 4 labels: technology, business, medicine and entertainment. They propose a heuristic called category tree where they expand each label with related words. The process is as follows:  
     - Take the unseen labels and add a few words related to this concept. For example, related words for business can be 'finance' and 'revenue'.  
     ![](/images/zero-shot-category-tree.png){.img-center}  
-    - To predict the class(category) for a sentence, they predict the relatedness of the sentence to related words under that category and take their mean as the final relatedness.
+    - To predict the class(category) for a sentence, they predict the relatedness of the sentence to related words under that category and take their mean as the final relatedness.  
     - The classes which had mean relatedness probability above threshold are assumed as the predicted classes.  This threshold is a hyperparameter.  The paper uses 0.5 as the threshold.  
+    ![](/images/zero-shot-threshold.png){.img-center}    
     
     The authors tested this process on the entire dataset and achieved 61.73%, 63% and 64.21% accuracy. In comparison, the supervised methods achieve 94.75% accuracy. The result is still interesting because without even training on a single sample, it achieve better than random accuracy.  
 
@@ -68,7 +69,7 @@ In this dataset, there are 420,000 sentences with 4 labels: technology, business
 This dataset has 1993 sentences with 6 labels: business, health, politics, sports, technology and entertainment. The authors tested their method over the whole dataset using threshold of 0.5 and category tree and achieved 64.5% accuracy with Architecture 3. In comparison, a supervised method such as multinominal naive bayes trained on the whole dataset can get 78% accuracy.    
 
 ## Conclusion  
-The paper proposes some really simple but clever techniques to learn relationship between sentences and labels and achieves better than random accuracy on unseen datasets and labels. Since this was proposed in the pre-transformer era, it could be interesting to try these ideas with recent developments in language models.    
+The paper proposes some really simple but clever techniques to learn relationship between sentences and labels and achieves better than random accuracy on unseen datasets and labels. Since this was proposed in the pre-transformer era, it can be interesting to try these ideas with recent models.      
 
 
 ## References
