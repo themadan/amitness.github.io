@@ -3,7 +3,7 @@ Date: 2020-05-30 17:27
 Modified: 2020-05-30 17:27
 Category: nlp
 Slug: zero-shot-text-classification
-Summary: An overview of zero-shot text classification in Natural Language Processing 
+Summary: A summary of “Train Once, Test Anywhere" paper for zero-shot text classification
 Status: published
 Authors: Amit Chaudhary
 Cover: /images/zero-shot-paper-idea.png
